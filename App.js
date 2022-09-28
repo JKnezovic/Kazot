@@ -3,11 +3,12 @@ import Parse from "parse/react-native.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { APPLICATION_ID } from "./config.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
 
 Parse.setAsyncStorage(AsyncStorage);
-Parse.initialize("", "");
+Parse.initialize(APPLICATION_ID, "");
 Parse.serverURL = "https://parseapi.back4app.com/";
 
 const Stack = createNativeStackNavigator();
