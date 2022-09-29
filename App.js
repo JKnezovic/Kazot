@@ -34,7 +34,9 @@ const App = () => {
           </Stack.Screen>
         ) : (
           <>
-            <Stack.Screen name="Main" component={MainScreen} />
+            <Stack.Screen name="Main">
+              {(props) => <MainScreen {...props} setUser={setUser} />}
+            </Stack.Screen>
           </>
         )}
       </Stack.Navigator>
