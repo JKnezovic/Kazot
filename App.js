@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { isSmartPhoneBasedOnRatio } from "./Scaling";
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
@@ -21,8 +23,15 @@ const App = () => {
     setIsSignedIn(currentUser ? true : false);
   };
 
+  async function changeScreenOrientation() {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT
+    );
+  }
+
   React.useEffect(() => {
     setUser();
+    if (isSmartPhoneBasedOnRatio()) changeScreenOrientation();
   }, []);
 
   return (

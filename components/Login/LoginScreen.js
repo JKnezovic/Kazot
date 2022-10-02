@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 import { UserLogin } from "./UserLogin";
-import useScreenDimensions from "../../useScreenDimensions.js";
-import { moderateScale, isSmartPhoneBasedOnRatio } from "../../Scaling";
-import * as ScreenOrientation from "expo-screen-orientation";
+import { moderateScale } from "../../Scaling";
 
 const LoginScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const screenData = useScreenDimensions();
-
-  useEffect(() => {
-    if (isSmartPhoneBasedOnRatio()) changeScreenOrientation();
-  }, []);
-
-  async function changeScreenOrientation() {
-    await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT
-    );
-  }
 
   return (
     <View style={styles.container}>
