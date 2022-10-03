@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
+import ClientDetails from "./components/clients/ClientDetails.js";
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
@@ -39,6 +40,7 @@ const App = () => {
             </Stack.Screen>
           </>
         )}
+        <Stack.Screen name="Client Details" component={ClientDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );
