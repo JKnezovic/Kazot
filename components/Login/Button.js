@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
+import { moderateScale } from "../../Scaling";
 
 export default function Button({ onPress, title, style, disabled, small }) {
   return (
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   bigButton: {
-    width: "80%",
+    width: moderateScale(300),
   },
   disabledButton: {
     alignItems: "center",

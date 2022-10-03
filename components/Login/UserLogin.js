@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, TextInput, View } from "react-native";
+import { Alert, TextInput, KeyboardAvoidingView } from "react-native";
 import Parse from "parse/react-native";
 import Styles from "../../Styles";
 import Button from "./Button";
@@ -31,7 +31,7 @@ export const UserLogin = (props) => {
   };
 
   return (
-    <View style={Styles.form}>
+    <KeyboardAvoidingView behavior="padding" style={Styles.form}>
       <TextInput
         style={Styles.form_input}
         value={username}
@@ -49,6 +49,6 @@ export const UserLogin = (props) => {
         onChangeText={(text) => setPassword(text)}
       />
       <Button title={"Sign in"} onPress={() => doUserLogin()} />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
