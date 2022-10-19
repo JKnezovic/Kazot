@@ -20,7 +20,13 @@ const useGetServicesForClient = () => {
     setIsLoaded(true);
   };
 
-  return { services, getServices, isLoading, isLoaded };
+  const reset = () => {
+    setServices([]);
+    setIsLoading(false);
+    setIsLoaded(false);
+  };
+
+  return { services, getServices, isLoading, isLoaded, reset };
 };
 
 export default useGetServicesForClient;

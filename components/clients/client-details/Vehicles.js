@@ -7,7 +7,7 @@ import { colours } from "../../../utils/constants";
 import useDeleteVehicle from "./useDeleteVehicle";
 import DeleteVehiclesModal from "./DeleteVehicleModal";
 
-export default function Vehicles({ clientId = {} }) {
+export default function Vehicles({ clientId }) {
   const { vehicles, getVehicles, isLoaded } = useGetVehicles();
   const [vehicleIdToDelete, setVehicleIdToDelete] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,8 +16,9 @@ export default function Vehicles({ clientId = {} }) {
 
   //get vehicles on first render
   useEffect(() => {
+    reset();
     getVehicles({ clientId });
-  }, []);
+  }, [clientId]);
 
   // set the id of vehicle to delete
   const deleteWithId = (vehicleId) => {

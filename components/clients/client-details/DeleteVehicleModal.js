@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, Portal, Button, Divider } from "react-native-paper";
 import { StyleSheet, View, Text, Pressable } from "react-native";
-import { Feather, Entypo } from "@expo/vector-icons";
-import useGetServicesForClient from "./useGetServicesForClient";
-import { getDate } from "../../../utils/getDate";
 import { colours } from "../../../utils/constants";
-import { useNavigation } from "@react-navigation/native";
 
 export default function DeleteVehiclesModal({
   isOpen,

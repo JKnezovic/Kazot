@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
 import { Avatar } from "react-native-paper";
 import { colours } from "../../../utils/constants";
-import { getDate } from "../../../utils/getDate";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
@@ -21,7 +20,9 @@ const ClientDetails = ({ client }) => {
       <View style={styles.heading}>
         <View style={styles.info}>
           <Text> ID: {client.id}</Text>
-          <Text>Created at: {getDate(client.get("createdAt"))}</Text>
+          <Text>
+            Created at: {client.get("createdAt").toLocaleString("en-GB")}
+          </Text>
         </View>
         <Avatar.Text
           size={120}

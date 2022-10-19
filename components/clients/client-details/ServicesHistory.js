@@ -2,18 +2,18 @@ import React, { useEffect } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 import useGetServicesForClient from "./useGetServicesForClient";
-import { getDate } from "../../../utils/getDate";
 import { Divider } from "react-native-paper";
 import { colours } from "../../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ServicesHistory({ clientId }) {
-  const { services, getServices, isLoaded } = useGetServicesForClient();
+  const { services, getServices, isLoaded, reset } = useGetServicesForClient();
   const navigation = useNavigation();
 
   useEffect(() => {
+    reset();
     getServices({ clientId });
-  }, []);
+  }, [clientId]);
   const navigateToOrder = (orderId) => {
     console.log("navigate to order");
     // navigation.navigate("Service Order", orderId);
@@ -35,7 +35,14 @@ export default function ServicesHistory({ clientId }) {
             style={[styles.row, styles.item]}
             onPress={() => navigateToOrder(service.id)}
           >
-            <Text>{getDate(service.get("updatedAt"))}</Text>
+            <Text>
+              {service.get("updatedAt").toLocaleString("en-GB", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </Text>
             <Feather name="external-link" size={24} color="black" />
           </Pressable>
         ))
