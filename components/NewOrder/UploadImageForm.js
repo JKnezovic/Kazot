@@ -62,7 +62,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         color="#14213D"
         style={{
           backgroundColor: "#E5E5E5",
-          marginVertical: "10%",
+          marginVertical: "8%",
           width: moderateScale(300),
           alignSelf: "center",
         }}
@@ -98,13 +98,18 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
       <Dialog
         visible={visibleDialog}
         onDismiss={hideDialog}
-        style={{ backgroundColor: "#E5E5E5" }}
+        style={{
+          backgroundColor: "#E5E5E5",
+          width: moderateScale(300),
+          alignSelf: "center",
+        }}
       >
         <Dialog.Content
           style={{
             display: "flex",
             flexDirection: "row",
             alignContent: "center",
+            justifyContent: "space-around",
           }}
         >
           <Button
@@ -140,8 +145,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageItem: {
-    width: 100,
-    height: 100,
+    width: moderateScale(100),
+    height: moderateScale(100),
     resizeMode: "cover",
     marginHorizontal: 5,
     marginVertical: 5,

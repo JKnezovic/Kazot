@@ -1,6 +1,6 @@
 import { useEffect, useState, Fragment } from "react";
 import { View } from "react-native";
-import { Menu, Divider, TextInput } from "react-native-paper";
+import { Menu, Divider, TextInput, List } from "react-native-paper";
 import Styles from "./Styles";
 import { moderateScale } from "../../Scaling";
 
@@ -55,21 +55,21 @@ const DropdownSelect = ({
     } else setVisible(false);
   };
 
-  const items = selectList.map((x) => (
+  const items = selectList.map((x, i) => (
     <Fragment key={x.id}>
-      <Menu.Item
+      <List.Item
         onPress={() => updateForm(x)}
         title={x.get("name") + " " + x.get("surname")}
       />
-      <Divider bold={true} />
+      {/* Remove divider from last item */}
+      {i !== selectList.length - 1 && <Divider bold={true} />}
     </Fragment>
   ));
   return (
-    <View>
+    <View style={{ width: moderateScale(300), alignSelf: "center" }}>
       <Menu
         style={{
-          marginTop: 60,
-          marginLeft: moderateScale(20),
+          paddingTop: 60,
           width: moderateScale(300),
         }}
         visible={visible}
