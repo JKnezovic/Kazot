@@ -6,9 +6,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
+import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
-
+import { Provider as PaperProvider } from "react-native-paper";
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
 Parse.serverURL = "https://parseapi.back4app.com/";
@@ -36,19 +37,22 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {!isSignedIn ? (
-          <Stack.Screen name="Login" options={{ headerShown: false }}>
-            {(props) => <LoginScreen {...props} setUser={setUser} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Main">
-              {(props) => <MainScreen {...props} setUser={setUser} />}
+      <PaperProvider>
+        <Stack.Navigator initialRouteName="Login">
+          {!isSignedIn ? (
+            <Stack.Screen name="Login" options={{ headerShown: false }}>
+              {(props) => <LoginScreen {...props} setUser={setUser} />}
             </Stack.Screen>
-          </>
-        )}
-      </Stack.Navigator>
+          ) : (
+            <>
+              <Stack.Screen name="Main" options={{ headerShown: false }}>
+                {(props) => <MainScreen {...props} setUser={setUser} />}
+              </Stack.Screen>
+              <Stack.Screen name="NewOrder" component={NewOrderMainScreen} />
+            </>
+          )}
+        </Stack.Navigator>
+      </PaperProvider>
     </NavigationContainer>
   );
 };
