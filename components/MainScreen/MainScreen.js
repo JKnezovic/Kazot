@@ -28,15 +28,6 @@ export default function MainScreen(props) {
         }}
       />
       <Tab.Screen
-        name="Add New Order"
-        component={NewOrderMainScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="plus" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Clients"
         component={ClientsMainScreen}
         options={{
