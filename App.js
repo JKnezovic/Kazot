@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
+import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
+import { Provider } from "react-native-paper";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
 
@@ -35,21 +37,24 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {!isSignedIn ? (
-          <Stack.Screen name="Login" options={{ headerShown: false }}>
-            {(props) => <LoginScreen {...props} setUser={setUser} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Main">
-              {(props) => <MainScreen {...props} setUser={setUser} />}
+    <Provider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          {!isSignedIn ? (
+            <Stack.Screen name="Login" options={{ headerShown: false }}>
+              {(props) => <LoginScreen {...props} setUser={setUser} />}
             </Stack.Screen>
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+          ) : (
+            <>
+              <Stack.Screen name="Main">
+                {(props) => <MainScreen {...props} setUser={setUser} />}
+              </Stack.Screen>
+            </>
+          )}
+          <Stack.Screen name="Client Details" component={ClientDetailsView} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
