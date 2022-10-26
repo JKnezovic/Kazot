@@ -7,6 +7,7 @@ import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
 import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
+import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -51,6 +52,7 @@ const App = () => {
               <Stack.Screen name="NewOrder" component={NewOrderMainScreen} />
             </>
           )}
+          <Stack.Screen name="Client Details" component={ClientDetailsView} />
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
