@@ -7,6 +7,8 @@ import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import OrderDetailsMainScreen from "./components/OrderDetails/OrderDetailsMainScreen.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
+import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
+import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -38,23 +40,25 @@ const App = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Stack.Navigator initialRouteName="orderDetails">
+        <Stack.Navigator initialRouteName="Login">
           {!isSignedIn ? (
             <Stack.Screen name="Login" options={{ headerShown: false }}>
               {(props) => <LoginScreen {...props} setUser={setUser} />}
             </Stack.Screen>
           ) : (
             <>
-              <Stack.Screen name="Main">
+              <Stack.Screen name="Main" options={{ headerShown: false }}>
                 {(props) => <MainScreen {...props} setUser={setUser} />}
               </Stack.Screen>
-              <Stack.Screen
-                name="orderDetails"
-                component={OrderDetailsMainScreen}
-                initialParams={{ serviceId: "p5yxXzCTz0" }}
-              ></Stack.Screen>
+              <Stack.Screen name="NewOrder" component={NewOrderMainScreen} />
             </>
           )}
+          <Stack.Screen name="Client Details" component={ClientDetailsView} />
+          <Stack.Screen
+            name="orderDetails"
+            component={OrderDetailsMainScreen}
+            initialParams={{ serviceId: "p5yxXzCTz0" }}
+          ></Stack.Screen>
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>

@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import UserProfile from "../UserProfile/UserProfile";
 import NewOrderMainScreen from "../NewOrder/NewOrderMainScreen";
 import OrderMainScreen from "../Orders/OrderMainScreen";
 import InventoryMainScreen from "../Inventory/InventoryMainScreen";
+import ClientsMainScreen from "../clients/ClientsView";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,11 +28,11 @@ export default function MainScreen(props) {
         }}
       />
       <Tab.Screen
-        name="Add New Order"
-        component={NewOrderMainScreen}
+        name="Clients"
+        component={ClientsMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="plus" size={size} color={color} />
+            <Ionicons name="people-outline" size={size} color={color} />
           ),
         }}
       />

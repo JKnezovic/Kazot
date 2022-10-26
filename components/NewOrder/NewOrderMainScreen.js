@@ -1,20 +1,35 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import OrderForm from "./OrderForm";
+import ClientForm from "./ClientForm";
+import UploadImageForm from "./UploadImageForm";
+import { View } from "react-native";
+import AnimatedMultistep from "./AnimatedMultistep";
 
-export default function NewOrderMainScreen() {
+const allSteps = [
+  { name: "step 1", component: ClientForm },
+  { name: "step 2", component: OrderForm },
+  { name: "step 3", component: UploadImageForm },
+];
+
+const NewOrderMainScreen = ({ navigation }) => {
+  onNext = () => {};
+
+  onBack = () => {};
+
+  finish = (finalState) => {
+    console.log(finalState);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>NewOrderMainScreen</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <AnimatedMultistep
+        steps={allSteps}
+        onFinish={finish}
+        onBack={onBack}
+        onNext={onNext}
+        navigation={navigation}
+      />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default NewOrderMainScreen;
