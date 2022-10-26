@@ -8,6 +8,8 @@ import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
 import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import { Provider } from "react-native-paper";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { isSmartPhoneBasedOnRatio } from "./Scaling";
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
@@ -23,8 +25,15 @@ const App = () => {
     setIsSignedIn(currentUser ? true : false);
   };
 
+  async function changeScreenOrientation() {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT
+    );
+  }
+
   React.useEffect(() => {
     setUser();
+    if (isSmartPhoneBasedOnRatio()) changeScreenOrientation();
   }, []);
 
   return (

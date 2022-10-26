@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 import { UserLogin } from "./UserLogin";
+import { moderateScale } from "../../Scaling";
 
 const LoginScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
   logo: {
     justifyContent: "center",
     alignSelf: "center",
-    width: 120,
-    height: 140,
+    width: moderateScale(150),
+    height: moderateScale(150),
   },
   text: {
     color: "black",
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   bigText: {
-    fontSize: 42,
+    fontSize: moderateScale(40, 0.3),
     lineHeight: 84,
     fontWeight: "bold",
   },
