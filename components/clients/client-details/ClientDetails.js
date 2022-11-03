@@ -21,7 +21,12 @@ const ClientDetails = ({ client }) => {
         <View style={styles.info}>
           <Text> ID: {client.id}</Text>
           <Text>
-            Created at: {client.get("createdAt").toLocaleString("en-GB")}
+            Created at:{" "}
+            {client.get("createdAt").toLocaleString("en-GB", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
           </Text>
         </View>
         <Avatar.Text
@@ -71,7 +76,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     backgroundColor: colours.WHITE,
-    padding: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -94,6 +100,7 @@ const styles = StyleSheet.create({
   },
   initials: {
     backgroundColor: colours.ORANGE_WEB,
+    marginVertical: 20,
   },
   row: {
     display: "flex",

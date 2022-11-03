@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
-import { Feather, Entypo } from "@expo/vector-icons";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Pressable } from "react-native";
 import useGetServicesForClient from "./useGetServicesForClient";
-import { Divider } from "react-native-paper";
+import { List } from "react-native-paper";
 import { colours } from "../../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ServicesHistory({ clientId }) {
   const { services, getServices, isLoaded, reset } = useGetServicesForClient();
   const navigation = useNavigation();
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const handleExpansion = () => setIsExpanded(!isExpanded);
 
   useEffect(() => {
     reset();
@@ -20,33 +22,39 @@ export default function ServicesHistory({ clientId }) {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Entypo name="tools" size={24} />
-        <Text>Services History</Text>
-      </View>
-
-      <Divider style={styles.divider} bold />
-      {!services.length && isLoaded ? (
-        <Text style={styles.noOrders}>No services found</Text>
-      ) : (
-        services.map((service, key) => (
-          <Pressable
-            key={key}
-            style={[styles.row, styles.item]}
-            onPress={() => navigateToOrder(service.id)}
-          >
-            <Text>
-              {service.get("updatedAt").toLocaleString("en-GB", {
+      <List.Accordion
+        title="Services History"
+        left={(props) => <List.Icon {...props} icon="hammer-wrench" />}
+        expanded={isExpanded}
+        onPress={handleExpansion}
+      >
+        {!services.length && isLoaded ? (
+          <List.Item
+            title="No orders found"
+            titleStyle={{
+              textAlign: "center",
+            }}
+            right={() => <View />}
+          />
+        ) : (
+          services.map((service, key) => (
+            <List.Item
+              key={key}
+              title={service.get("updatedAt").toLocaleString("en-GB", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
-            </Text>
-            <Feather name="external-link" size={24} color="black" />
-          </Pressable>
-        ))
-      )}
+              right={(props) => (
+                <Pressable onPress={() => navigateToOrder(service.id)}>
+                  <List.Icon {...props} icon="open-in-new" />
+                </Pressable>
+              )}
+            />
+          ))
+        )}
+      </List.Accordion>
     </View>
   );
 }

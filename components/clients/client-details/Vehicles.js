@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Pressable, Alert } from "react-native";
-import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import useGetVehicles from "./useGetVehicles";
-import { Divider, Portal, Snackbar } from "react-native-paper";
+import { Portal, Snackbar, List } from "react-native-paper";
 import { colours } from "../../../utils/constants";
 import useDeleteVehicle from "./useDeleteVehicle";
 import DeleteVehiclesModal from "./DeleteVehicleModal";
@@ -12,7 +11,10 @@ export default function Vehicles({ clientId }) {
   const [vehicleIdToDelete, setVehicleIdToDelete] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarShown, setSnackbarShown] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const { deleteVehicle, isLoaded: isDoneDeleting, reset } = useDeleteVehicle();
+
+  const handleExpansion = () => setIsExpanded(!isExpanded);
 
   //get vehicles on first render
   useEffect(() => {
@@ -52,37 +54,36 @@ export default function Vehicles({ clientId }) {
         deleteId={vehicleIdToDelete}
         deleteVehicle={deleteVehicle}
       />
-      <View style={styles.row}>
-        <MaterialCommunityIcons
-          name="scooter"
-          size={24}
-          color={colours.OXFORD_BLUE}
-        />
-        <Text>Vehicles</Text>
-      </View>
-      <Divider style={styles.divider} bold />
 
-      {!vehicles.length && isLoaded ? (
-        <Text style={styles.noVehicles}>No vehicles found</Text>
-      ) : (
-        vehicles.map((vehicle, key) => (
-          <View key={key} style={[styles.row, styles.item]}>
-            <View style={styles.row}>
-              {vehicle.get("serial_number") && (
-                <Text> S/N: {vehicle.get("serial_number")} |</Text>
+      <List.Accordion
+        title="Vehicles"
+        left={(props) => <List.Icon {...props} icon="scooter" />}
+        expanded={isExpanded}
+        onPress={handleExpansion}
+      >
+        {!vehicles.length && isLoaded ? (
+          <List.Item
+            title="No vehicles found"
+            titleStyle={{
+              textAlign: "center",
+            }}
+            right={() => <View />}
+          />
+        ) : (
+          vehicles.map((vehicle, key) => (
+            <List.Item
+              title={`Model: ${vehicle.get("model")}`}
+              description={`S/N: ${vehicle.get("serial_number")}`}
+              right={(props) => (
+                <Pressable onPress={() => deleteWithId(vehicle.id)}>
+                  <List.Icon {...props} icon="delete-outline" />
+                </Pressable>
               )}
-              <Text> Model: {vehicle.get("model")}</Text>
-            </View>
-            <Pressable onPress={() => deleteWithId(vehicle.id)}>
-              <FontAwesome
-                name="trash-o"
-                size={24}
-                color={colours.OXFORD_BLUE}
-              />
-            </Pressable>
-          </View>
-        ))
-      )}
+            />
+          ))
+        )}
+      </List.Accordion>
+
       <Portal>
         <Snackbar
           visible={snackbarShown}
@@ -144,5 +145,6 @@ const styles = StyleSheet.create({
   noVehicles: {
     alignSelf: "center",
     paddingVertical: 10,
+    justifyContent: "center",
   },
 });
