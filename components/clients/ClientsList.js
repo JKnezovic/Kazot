@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
   firstChild: { flex: 3 },
   secondChild: { flex: 1 },
   list: {
-    padding: 10,
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 100,
+    marginBottom: 70,
   },
 });
