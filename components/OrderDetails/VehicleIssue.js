@@ -1,9 +1,8 @@
 import * as React from "react";
-import { List, Button } from "react-native-paper";
+import { List } from "react-native-paper";
 import { Text } from "react-native";
-import { moderateScale } from "../../Scaling";
 
-const VehicleIssue = () => {
+const VehicleIssue = ({ service }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handlePress = () => setExpanded(!expanded);
@@ -23,7 +22,7 @@ const VehicleIssue = () => {
             {"Service Type:"}
           </Text>
         )}
-        title="Coco boco warranty"
+        title={service.get("type")}
       />
       <List.Item
         left={() => (
@@ -31,7 +30,7 @@ const VehicleIssue = () => {
             {"Vehicle S/N:"}
           </Text>
         )}
-        title="2135614-4351-35"
+        title={service.get("vehicle_fkey")?.get("serial_number")}
       />
       <List.Item
         left={() => (
@@ -39,7 +38,7 @@ const VehicleIssue = () => {
             {"Vehicle Model:"}
           </Text>
         )}
-        title="kek koko roko"
+        title={service.get("vehicle_fkey")?.get("model")}
       />
       <List.Item
         left={() => (
@@ -48,7 +47,7 @@ const VehicleIssue = () => {
           </Text>
         )}
         titleNumberOfLines={3}
-        title="Problem s baterijom ili punjačem"
+        title={service.get("issue")}
       />
       <List.Item
         left={() => (
@@ -57,7 +56,7 @@ const VehicleIssue = () => {
           </Text>
         )}
         titleNumberOfLines={3}
-        title="Ne puni, ne pali"
+        title={service.get("notes")}
       />
     </List.Accordion>
   );

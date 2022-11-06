@@ -11,7 +11,9 @@ import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
 import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
-import { Provider as PaperProvider } from "react-native-paper";
+import { Provider as PaperProvider, Button } from "react-native-paper";
+import { colours } from "./utils/constants";
+
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
 Parse.serverURL = "https://parseapi.back4app.com/";
@@ -40,7 +42,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="orderDetails">
           {!isSignedIn ? (
             <Stack.Screen name="Login" options={{ headerShown: false }}>
               {(props) => <LoginScreen {...props} setUser={setUser} />}
@@ -57,7 +59,19 @@ const App = () => {
           <Stack.Screen
             name="orderDetails"
             component={OrderDetailsMainScreen}
-            initialParams={{ serviceId: "p5yxXzCTz0" }}
+            initialParams={{ serviceId: "wAkT5FhJwM" }}
+            options={{
+              title: "wAkT5FhJwM",
+              headerRight: () => (
+                <Button
+                  mode="outlined"
+                  textColor={colours.ORANGE_WEB}
+                  style={{ borderColor: colours.ORANGE_WEB }}
+                >
+                  {"Created"}
+                </Button>
+              ),
+            }}
           ></Stack.Screen>
         </Stack.Navigator>
       </PaperProvider>

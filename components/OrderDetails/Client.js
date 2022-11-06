@@ -3,9 +3,8 @@ import { FAB, List, Button } from "react-native-paper";
 import { View, Text } from "react-native";
 import { moderateScale } from "../../Scaling";
 
-const Client = () => {
+const Client = ({ service }) => {
   const [expanded, setExpanded] = React.useState(false);
-
   const handlePress = () => setExpanded(!expanded);
 
   return (
@@ -25,7 +24,11 @@ const Client = () => {
             {"Name:"}
           </Text>
         )}
-        title="Matko Slatko"
+        title={
+          service.get("client_fkey").get("name") +
+          " " +
+          service.get("client_fkey").get("surname")
+        }
       />
       <List.Item
         left={() => (
@@ -33,7 +36,7 @@ const Client = () => {
             {"Contact:"}
           </Text>
         )}
-        title="0375612286"
+        title={service.get("client_fkey").get("contact")}
       />
       <List.Item
         left={() => (
@@ -41,7 +44,7 @@ const Client = () => {
             {"Email:"}
           </Text>
         )}
-        title="matkoslatko@gmail.com"
+        title={service.get("client_fkey").get("email")}
       />
 
       <Button
