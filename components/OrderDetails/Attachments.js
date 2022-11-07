@@ -8,8 +8,8 @@ import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
 import { colours } from "../../utils/constants";
 
-const Attachments = ({ service, setSnackbar }) => {
-  const [expanded, setExpanded] = useState(false);
+const Attachments = ({ service, setSnackbar, open }) => {
+  const [expanded, setExpanded] = useState(open);
   const [attachments, setAttachments] = useState([]);
   const [visible, setIsVisible] = useState(false);
   const [visibleDialog, setVisibleDialog] = useState(false);
@@ -170,7 +170,7 @@ const Attachments = ({ service, setSnackbar }) => {
           style={{
             backgroundColor: "#E5E5E5",
             marginVertical: "8%",
-            width: moderateScale(300),
+            width: moderateScale(250),
             alignSelf: "center",
             paddingLeft: 0,
           }}

@@ -7,8 +7,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { moderateScale } from "../../Scaling";
 import { colours } from "../../utils/constants";
 
-const PartsSpent = ({ service, setSnackbar }) => {
-  const [expanded, setExpanded] = useState(false);
+const PartsSpent = ({ service, setSnackbar, open }) => {
+  const [expanded, setExpanded] = useState(open);
   const [allParts, setAllParts] = useState([]);
   const [partsUsed, setPartsUsed] = useState([]);
   const [visible, setVisible] = useState(false);

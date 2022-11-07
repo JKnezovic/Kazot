@@ -2,9 +2,11 @@ import * as React from "react";
 import { FAB, List, Button } from "react-native-paper";
 import { View, Text } from "react-native";
 import { moderateScale } from "../../Scaling";
+import { useNavigation } from "@react-navigation/native";
 
-const Client = ({ service }) => {
-  const [expanded, setExpanded] = React.useState(false);
+const Client = ({ service, open }) => {
+  const [expanded, setExpanded] = React.useState(open);
+  const navigation = useNavigation();
   const handlePress = () => setExpanded(!expanded);
 
   return (
@@ -52,12 +54,14 @@ const Client = ({ service }) => {
         mode="elevated"
         style={{
           backgroundColor: "#E5E5E5",
-          width: moderateScale(300),
+          width: moderateScale(250),
           alignSelf: "center",
           paddingLeft: 0,
           marginVertical: 15,
         }}
-        onPress={() => console.log("Hee Hee")}
+        onPress={() =>
+          navigation.navigate("Client Details", service.get("client_fkey"))
+        }
       >
         {"View client"}
       </Button>

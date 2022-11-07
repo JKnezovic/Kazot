@@ -2,8 +2,8 @@ import * as React from "react";
 import { List } from "react-native-paper";
 import { Text } from "react-native";
 
-const VehicleIssue = ({ service }) => {
-  const [expanded, setExpanded] = React.useState(false);
+const VehicleIssue = ({ service, open }) => {
+  const [expanded, setExpanded] = React.useState(open);
 
   const handlePress = () => setExpanded(!expanded);
 

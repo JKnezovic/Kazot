@@ -42,7 +42,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Stack.Navigator initialRouteName="orderDetails">
+        <Stack.Navigator initialRouteName="Main">
           {!isSignedIn ? (
             <Stack.Screen name="Login" options={{ headerShown: false }}>
               {(props) => <LoginScreen {...props} setUser={setUser} />}

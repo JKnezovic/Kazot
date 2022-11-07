@@ -10,6 +10,7 @@ import Attachments from "./Attachments";
 import { Divider, Snackbar, Button, Portal, Dialog } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { colours } from "../../utils/constants";
+import useScreenDimensions from "../../useScreenDimensions";
 
 const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [service, setService] = useState(null);
@@ -21,6 +22,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
+  const screenData = useScreenDimensions();
 
   useEffect(() => {
     getService();
@@ -123,17 +125,41 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   return (
     <>
       <ScrollView style={styles.container}>
-        <Client service={service} />
-        <Divider bold={true} />
-        <VehicleIssue service={service} />
-        <Divider bold={true} />
-        <ServiceStatusHistory service={service} />
-        <Divider bold={true} />
-        <ServicesDone service={service} setSnackbar={setSnackbar} />
-        <Divider bold={true} />
-        <PartsSpent service={service} setSnackbar={setSnackbar} />
-        <Divider bold={true} />
-        <Attachments service={service} setSnackbar={setSnackbar} />
+        <View style={screenData.isLandscape && styles.landscapeLayout}>
+          <View style={screenData.isLandscape && styles.landscapeItems}>
+            <Client service={service} open={screenData.isLandscape && true} />
+            <Divider bold={true} />
+            <VehicleIssue
+              service={service}
+              open={screenData.isLandscape && true}
+            />
+            <Divider bold={true} />
+            <ServiceStatusHistory
+              service={service}
+              open={screenData.isLandscape && true}
+            />
+            <Divider bold={true} />
+          </View>
+          <View style={screenData.isLandscape && styles.landscapeItems}>
+            <ServicesDone
+              service={service}
+              setSnackbar={setSnackbar}
+              open={screenData.isLandscape && true}
+            />
+            <Divider bold={true} />
+            <PartsSpent
+              service={service}
+              setSnackbar={setSnackbar}
+              open={screenData.isLandscape && true}
+            />
+            <Divider bold={true} />
+            <Attachments
+              service={service}
+              setSnackbar={setSnackbar}
+              open={screenData.isLandscape && true}
+            />
+          </View>
+        </View>
       </ScrollView>
       <Snackbar
         visible={visibleSnackbar}
@@ -178,6 +204,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  landscapeLayout: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  landscapeItems: {
+    width: "49%",
   },
 });
 

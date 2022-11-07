@@ -12,8 +12,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { colours } from "../../utils/constants";
 import Parse from "parse/react-native.js";
 
-const ServicesDone = ({ service, setSnackbar }) => {
-  const [expanded, setExpanded] = useState(false);
+const ServicesDone = ({ service, setSnackbar, open }) => {
+  const [expanded, setExpanded] = useState(open);
   const [visible, setVisible] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [serviceDescription, setServiceDescription] = useState("");

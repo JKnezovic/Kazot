@@ -3,8 +3,8 @@ import { List, Button } from "react-native-paper";
 import { Text, View } from "react-native";
 import Parse from "parse/react-native.js";
 
-const ServiceStatusHistory = ({ service }) => {
-  const [expanded, setExpanded] = useState(false);
+const ServiceStatusHistory = ({ service, open }) => {
+  const [expanded, setExpanded] = useState(open);
   const [orderStatuses, setOrderStatuses] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,6 @@ const ServiceStatusHistory = ({ service }) => {
     try {
       let ServiceHistory = await serviceQuery.find();
       setOrderStatuses(ServiceHistory);
-      console.log(ServiceHistory);
       return true;
     } catch (error) {
       console.log("Error!", error.message);
