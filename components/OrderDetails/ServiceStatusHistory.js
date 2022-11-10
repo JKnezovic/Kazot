@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { List, Button } from "react-native-paper";
-import { Text, View } from "react-native";
+import { List, DataTable } from "react-native-paper";
 import Parse from "parse/react-native.js";
 
 const ServiceStatusHistory = ({ service, open }) => {
@@ -27,25 +26,14 @@ const ServiceStatusHistory = ({ service, open }) => {
     }
   };
 
-  const listItems = orderStatuses.map((item) => (
-    <List.Item
-      key={item.id}
-      left={() => (
-        <View style={{ justifyContent: "center", flex: 1 }}>
-          <Text style={{ alignSelf: "center" }}>
-            {item.get("createdAt").toLocaleDateString("en-GB")}
-          </Text>
-        </View>
-      )}
-      right={() => (
-        <View style={{ justifyContent: "center", flex: 1 }}>
-          <Text style={{ alignSelf: "center" }}>{item.get("user_name")}</Text>
-        </View>
-      )}
-      titleStyle={{ alignSelf: "center" }}
-      title={item.get("status")}
-      titleNumberOfLines={2}
-    />
+  const tableRows = orderStatuses.map((item) => (
+    <DataTable.Row key={item.id}>
+      <DataTable.Cell>{item.get("status")}</DataTable.Cell>
+      <DataTable.Cell numeric>
+        {item.get("createdAt").toLocaleDateString("en-GB")}
+      </DataTable.Cell>
+      <DataTable.Cell numeric>{item.get("user_name")}</DataTable.Cell>
+    </DataTable.Row>
   ));
 
   return (
@@ -59,25 +47,14 @@ const ServiceStatusHistory = ({ service, open }) => {
       expanded={expanded}
       onPress={handlePress}
     >
-      <List.Item
-        left={() => (
-          <View style={{ justifyContent: "center", flex: 1 }}>
-            <Text style={{ alignSelf: "center", fontWeight: "bold" }}>
-              {"Date"}
-            </Text>
-          </View>
-        )}
-        right={() => (
-          <View style={{ justifyContent: "center", flex: 1 }}>
-            <Text style={{ alignSelf: "center", fontWeight: "bold" }}>
-              {"User"}
-            </Text>
-          </View>
-        )}
-        titleStyle={{ alignSelf: "center", fontWeight: "bold" }}
-        title="Status"
-      />
-      {listItems}
+      <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
+        <DataTable.Header>
+          <DataTable.Title>Status</DataTable.Title>
+          <DataTable.Title numeric>Date</DataTable.Title>
+          <DataTable.Title numeric>User</DataTable.Title>
+        </DataTable.Header>
+        {tableRows}
+      </DataTable>
     </List.Accordion>
   );
 };

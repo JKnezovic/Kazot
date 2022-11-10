@@ -1,6 +1,6 @@
 import * as React from "react";
-import { FAB, List, Button } from "react-native-paper";
-import { View, Text } from "react-native";
+import { List, Button, DataTable } from "react-native-paper";
+import { Linking } from "react-native";
 import { moderateScale } from "../../Scaling";
 import { useNavigation } from "@react-navigation/native";
 
@@ -8,7 +8,12 @@ const Client = ({ service, open }) => {
   const [expanded, setExpanded] = React.useState(open);
   const navigation = useNavigation();
   const handlePress = () => setExpanded(!expanded);
-
+  const goToCall = async () => {
+    await Linking.openURL(`tel://${service.get("client_fkey").get("contact")}`);
+  };
+  const goToEmail = async () => {
+    await Linking.openURL(`mailto:${service.get("client_fkey").get("email")}`);
+  };
   return (
     <List.Accordion
       style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
@@ -20,35 +25,28 @@ const Client = ({ service, open }) => {
       expanded={expanded}
       onPress={handlePress}
     >
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", marginLeft: 5 }}>
-            {"Name:"}
-          </Text>
-        )}
-        title={
-          service.get("client_fkey").get("name") +
-          " " +
-          service.get("client_fkey").get("surname")
-        }
-      />
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", marginLeft: 5 }}>
-            {"Contact:"}
-          </Text>
-        )}
-        title={service.get("client_fkey").get("contact")}
-      />
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", marginLeft: 5 }}>
-            {"Email:"}
-          </Text>
-        )}
-        title={service.get("client_fkey").get("email")}
-      />
-
+      <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
+        <DataTable.Row>
+          <DataTable.Cell>{"Name:"}</DataTable.Cell>
+          <DataTable.Cell>
+            {service.get("client_fkey").get("name") +
+              " " +
+              service.get("client_fkey").get("surname")}
+          </DataTable.Cell>
+        </DataTable.Row>
+        <DataTable.Row onPress={goToCall}>
+          <DataTable.Cell>{"Contact:"}</DataTable.Cell>
+          <DataTable.Cell>
+            {service.get("client_fkey").get("contact")}
+          </DataTable.Cell>
+        </DataTable.Row>
+        <DataTable.Row onPress={goToEmail}>
+          <DataTable.Cell>{"Email:"}</DataTable.Cell>
+          <DataTable.Cell>
+            {service.get("client_fkey").get("email")}
+          </DataTable.Cell>
+        </DataTable.Row>
+      </DataTable>
       <Button
         textColor="#14213D"
         mode="elevated"

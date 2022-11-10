@@ -1,6 +1,6 @@
 import * as React from "react";
-import { List } from "react-native-paper";
-import { Text } from "react-native";
+import { List, DataTable } from "react-native-paper";
+import { Text, View } from "react-native";
 
 const VehicleIssue = ({ service, open }) => {
   const [expanded, setExpanded] = React.useState(open);
@@ -16,48 +16,48 @@ const VehicleIssue = ({ service, open }) => {
       expanded={expanded}
       onPress={handlePress}
     >
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", paddingLeft: 5 }}>
-            {"Service Type:"}
-          </Text>
-        )}
-        title={service.get("type")}
-      />
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", paddingLeft: 5 }}>
-            {"Vehicle S/N:"}
-          </Text>
-        )}
-        title={service.get("vehicle_fkey")?.get("serial_number")}
-      />
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", paddingLeft: 5 }}>
-            {"Vehicle Model:"}
-          </Text>
-        )}
-        title={service.get("vehicle_fkey")?.get("model")}
-      />
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", paddingLeft: 5 }}>
-            {"Issue:"}
-          </Text>
-        )}
-        titleNumberOfLines={3}
-        title={service.get("issue")}
-      />
-      <List.Item
-        left={() => (
-          <Text style={{ alignSelf: "center", width: "30%", paddingLeft: 5 }}>
-            {"Notes:"}
-          </Text>
-        )}
-        titleNumberOfLines={3}
-        title={service.get("notes")}
-      />
+      <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
+        <DataTable.Row>
+          <DataTable.Cell>{"Service Type:"}</DataTable.Cell>
+          <DataTable.Cell>{service.get("type")}</DataTable.Cell>
+        </DataTable.Row>
+        <DataTable.Row>
+          <DataTable.Cell>{"Vehicle S/N:"}</DataTable.Cell>
+          <DataTable.Cell>
+            {service.get("vehicle_fkey")?.get("serial_number")}
+          </DataTable.Cell>
+        </DataTable.Row>
+        <DataTable.Row>
+          <DataTable.Cell>{"Vehicle Model:"}</DataTable.Cell>
+          <DataTable.Cell>
+            {service.get("vehicle_fkey")?.get("model")}
+          </DataTable.Cell>
+        </DataTable.Row>
+        <DataTable.Row>
+          <DataTable.Cell>{"Issue:"}</DataTable.Cell>
+          <View
+            style={{
+              width: "50%",
+              marginVertical: 8,
+              justifyContent: "center",
+            }}
+          >
+            <Text numberOfLines={10}>{service.get("issue")}</Text>
+          </View>
+        </DataTable.Row>
+        <DataTable.Row>
+          <DataTable.Cell>{"Notes:"}</DataTable.Cell>
+          <View
+            style={{
+              width: "50%",
+              marginVertical: 8,
+              justifyContent: "center",
+            }}
+          >
+            <Text numberOfLines={10}>{service.get("notes")}</Text>
+          </View>
+        </DataTable.Row>
+      </DataTable>
     </List.Accordion>
   );
 };

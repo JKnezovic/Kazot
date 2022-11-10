@@ -73,7 +73,7 @@ const App = () => {
             component={OrderDetailsMainScreen}
             initialParams={{ serviceId: "wAkT5FhJwM" }}
             options={{
-              title: "wAkT5FhJwM",
+              title: "SO-10023-22",
               headerRight: () => (
                 <Button
                   mode="outlined"

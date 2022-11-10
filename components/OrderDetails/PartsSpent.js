@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { List, Dialog, Portal, Button, TextInput } from "react-native-paper";
+import {
+  List,
+  Dialog,
+  Portal,
+  Button,
+  TextInput,
+  DataTable,
+} from "react-native-paper";
 import { Text, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Parse from "parse/react-native.js";
@@ -18,7 +25,6 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
   const [updateItem, setUpdateItem] = useState(null);
   const [dropdownDisabled, setDropdownDisabled] = useState(false);
   const [update, setUpdate] = useState(false);
-  const [updateNumber, setUpdateNumber] = useState(null);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -29,11 +35,11 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
 
   const DeletePartsUsed = async () => {
     let PartsUsed = new Parse.Object("PartsUsed");
-    PartsUsed.set("objectId", updateItem.id);
+    PartsUsed.set("objectId", updateItem.objectId);
 
     try {
       await PartsUsed.destroy();
-      updateInventory(updateItem, updateItem.get("quantity_spent"));
+      updateInventory(updateItem, updateItem.quantity_spent);
       setVisible(false);
       setValuePU("");
       setNumber("1");
@@ -51,7 +57,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     console.log(difference);
     let query = new Parse.Query("Inventory");
     // equalTo can be used in any data type
-    query.equalTo("name", item.get("part_name"));
+    query.equalTo("name", item.part_name);
 
     try {
       let queryResult = await query.first();
@@ -105,7 +111,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
 
     try {
       let partsUsed = await PartsUsed.save();
-      updateInventory(partsUsed, -parseInt(number));
+      updateInventory(JSON.parse(JSON.stringify(partsUsed)), -parseInt(number));
       setVisible(false);
       setValuePU("");
       setNumber("1");
@@ -121,12 +127,12 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
 
   const UpdatePartsUsed = async () => {
     let PartsUsed = new Parse.Object("PartsUsed");
-    PartsUsed.set("objectId", updateItem.id);
+    PartsUsed.set("objectId", updateItem.objectId);
     PartsUsed.set("quantity_spent", parseInt(number));
     try {
       let partsUsed = await PartsUsed.save();
       setVisible(false);
-      updateInventory(updateItem, updateNumber - parseInt(number));
+      updateInventory(updateItem, updateItem.quantity_spent - parseInt(number));
       setValuePU("");
       setNumber("1");
       setSnackbar(true, "Saved successfully");
@@ -140,10 +146,9 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
   };
 
   const prepareUpdate = (item) => {
-    setUpdateItem(item);
+    setUpdateItem(JSON.parse(JSON.stringify(item)));
     setValuePU(item.get("part_name"));
     setVisible(true);
-    setUpdateNumber(item.get("quantity_spent"));
     setNumber(item.get("quantity_spent").toString());
     setDropdownDisabled(true);
     setUpdate(true);
@@ -158,28 +163,19 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     setUpdate(false);
   };
 
-  const listItems = partsUsed.map((item) => (
-    <List.Item
-      key={item.id}
-      left={() => (
-        <View style={{ justifyContent: "center", flex: 1 }}>
-          <Text style={{ alignSelf: "center" }}>{item.get("part_name")}</Text>
-        </View>
-      )}
-      right={() => (
-        <View style={{ justifyContent: "center", flex: 1 }}>
-          <AntDesign
-            style={{ alignSelf: "center" }}
-            name="edit"
-            size={24}
-            color={colours.ORANGE_WEB}
-            onPress={() => prepareUpdate(item)}
-          />
-        </View>
-      )}
-      titleStyle={{ alignSelf: "center" }}
-      title={item.get("quantity_spent")}
-    />
+  const tableRows = partsUsed.map((item) => (
+    <DataTable.Row key={item.id} onPress={() => prepareUpdate(item)}>
+      <DataTable.Cell>{item.get("part_name")}</DataTable.Cell>
+      <DataTable.Cell numeric>{item.get("quantity_spent")}</DataTable.Cell>
+      <DataTable.Cell numeric>
+        <AntDesign
+          style={{ alignSelf: "center" }}
+          name="edit"
+          size={24}
+          color={colours.ORANGE_WEB}
+        />
+      </DataTable.Cell>
+    </DataTable.Row>
   ));
 
   return (
@@ -194,16 +190,11 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
         expanded={expanded}
         onPress={handlePress}
       >
-        <List.Item
-          left={() => (
-            <View style={{ justifyContent: "center", flex: 1 }}>
-              <Text style={{ alignSelf: "center", fontWeight: "bold" }}>
-                {"Name"}
-              </Text>
-            </View>
-          )}
-          right={() => (
-            <View style={{ justifyContent: "center", flex: 1 }}>
+        <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
+          <DataTable.Header>
+            <DataTable.Title>Name</DataTable.Title>
+            <DataTable.Title numeric>Quantity</DataTable.Title>
+            <DataTable.Title numeric>
               <AntDesign
                 style={{ alignSelf: "center" }}
                 name="pluscircleo"
@@ -211,12 +202,10 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
                 color="green"
                 onPress={() => prepareAddNew()}
               />
-            </View>
-          )}
-          titleStyle={{ alignSelf: "center", fontWeight: "bold" }}
-          title="Quantity"
-        />
-        {listItems}
+            </DataTable.Title>
+          </DataTable.Header>
+          {tableRows}
+        </DataTable>
       </List.Accordion>
       <Portal>
         <Dialog
