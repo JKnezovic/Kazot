@@ -3,10 +3,11 @@ import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import UserProfile from "../UserProfile/UserProfile";
-import NewOrderMainScreen from "../NewOrder/NewOrderMainScreen";
 import OrderMainScreen from "../Orders/OrderMainScreen";
 import InventoryMainScreen from "../Inventory/InventoryMainScreen";
 import ClientsMainScreen from "../clients/ClientsView";
+import { Button } from "react-native-paper";
+import { colours } from "../../utils/constants";
 
 const Tab = createBottomTabNavigator();
 
@@ -42,6 +43,15 @@ export default function MainScreen(props) {
         options={{
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="barcode" size={size} color={color} />
+          ),
+          headerRight: () => (
+            <Button
+              mode="outlined"
+              textColor={colours.ORANGE_WEB}
+              style={{ borderColor: colours.ORANGE_WEB, marginRight: 5 }}
+            >
+              {"Add new"}
+            </Button>
           ),
         }}
       />

@@ -11,12 +11,24 @@ import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
 import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
-import { Provider as PaperProvider, Button } from "react-native-paper";
+import {
+  MD3LightTheme,
+  Provider as PaperProvider,
+  Button,
+} from "react-native-paper";
 import { colours } from "./utils/constants";
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
 Parse.serverURL = "https://parseapi.back4app.com/";
+
+const theme = {
+  ...MD3LightTheme, // or MD3DarkTheme
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: colours.ORANGE_WEB,
+  },
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +53,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         <Stack.Navigator initialRouteName="Main">
           {!isSignedIn ? (
             <Stack.Screen name="Login" options={{ headerShown: false }}>

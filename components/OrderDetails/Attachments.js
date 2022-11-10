@@ -74,7 +74,7 @@ const Attachments = ({ service, setSnackbar, open }) => {
         setSnackbar(true, "Images saved");
         getAttachments();
       } catch (error) {
-        setSnackbar("Oops, something went wrong!");
+        setSnackbar(true, "Oops, something went wrong!");
       }
     });
   };

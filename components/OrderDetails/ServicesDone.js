@@ -159,7 +159,6 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
               onChangeText={(text) => setServiceDescription(text)}
               value={serviceDescription}
               style={{ backgroundColor: "#FFFFFF" }}
-              autoCapitalize={"none"}
               multiline
               numberOfLines={4}
             />
