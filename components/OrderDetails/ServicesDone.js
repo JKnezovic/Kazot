@@ -11,6 +11,7 @@ import { Text, View, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { colours } from "../../utils/constants";
 import Parse from "parse/react-native.js";
+import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const ServicesDone = ({ service, setSnackbar, open }) => {
   const [expanded, setExpanded] = useState(open);
@@ -105,7 +106,7 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
           }}
         >
           <Text style={{ color: "grey" }}>
-            {item.get("createdAt").toLocaleDateString("de-DE")}
+            {DateToDDMMYY(item.get("createdAt"))}
           </Text>
           <Text style={{ color: "gray" }}>{item.get("user_name")}</Text>
         </View>

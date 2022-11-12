@@ -35,7 +35,6 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
   const captureImage = async () => {
     hideDialog();
     let status = await ImagePicker.requestCameraPermissionsAsync();
-    console.log(status);
     if (status) {
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -99,7 +98,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         visible={visibleDialog}
         onDismiss={hideDialog}
         style={{
-          backgroundColor: "#E5E5E5",
+          backgroundColor: "#FFFFFF",
           width: moderateScale(300),
           alignSelf: "center",
         }}

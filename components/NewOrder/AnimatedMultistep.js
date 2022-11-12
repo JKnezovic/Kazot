@@ -5,14 +5,13 @@ import {
   StyleSheet,
   Text,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import { fadeIn, fadeOutLeft, fadeOutRight } from "./Animations";
 import { ProgressBar, Button } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
 
-const AnimatedMultistep = ({ steps, navigation }) => {
+const AnimatedMultistep = ({ steps, setSnackbar }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
   const [orderState, setOrderState] = useState({
@@ -37,23 +36,6 @@ const AnimatedMultistep = ({ steps, navigation }) => {
     setTotalSteps(steps.length - 1);
   }, []);
 
-  const showAlert = (title, message) =>
-    Alert.alert(
-      title,
-      message,
-      [
-        {
-          text: "Ok",
-          onPress: () => navigation.navigate("Main"),
-          style: "default",
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => navigation.navigate("Main"),
-      }
-    );
-
   const next = () => {
     const duration = 200;
     if (currentStep !== totalSteps) {
@@ -77,11 +59,11 @@ const AnimatedMultistep = ({ steps, navigation }) => {
     }
   };
 
-  const UploadAttachments = async (serviceOrder) => {
+  const UploadAttachments = async (serviceOrder, service_id) => {
     // 1. Create a file
     images.forEach(async (image, i) => {
       const { base64 } = image;
-      const filename = "testing" + i;
+      const filename = service_id + "_" + i;
       const parseFile = new Parse.File(filename, { base64 });
       // 2. Save the file
       try {
@@ -92,9 +74,9 @@ const AnimatedMultistep = ({ steps, navigation }) => {
         attachments.set("service_fkey", serviceOrder);
         await attachments.save();
       } catch (error) {
-        Alert.alert(
-          "The file either could not be read, or could not be saved to Back4app.",
-          error
+        setSnackbar(
+          true,
+          "The file either could not be read, or could not be saved to Back4app."
         );
       }
     });
@@ -133,19 +115,18 @@ const AnimatedMultistep = ({ steps, navigation }) => {
     }
   };
 
-  const SaveServiceOrder = async (client, vehicle) => {
+  const SaveServiceOrder = async (client, vehicle, service_id) => {
     let Service = new Parse.Object("Services");
     Service.set("issue", orderState.problem);
     Service.set("notes", orderState.notes);
     Service.set("type", orderState.serviceType);
-    Service.set("service_id", 10002);
+    Service.set("service_id", service_id);
     Service.set("status", "Created");
     Service.set("client_fkey", client);
     Service.set("vehicle_fkey", vehicle);
 
     try {
       var serviceOrder = await Service.save();
-      showAlert("Success!", "Service order created!");
       return serviceOrder;
     } catch (error) {
       // Error can be caused by lack of Internet connection
@@ -164,7 +145,7 @@ const AnimatedMultistep = ({ steps, navigation }) => {
       let queryResult = await query.find();
       return queryResult;
     } catch (error) {
-      Alert.alert("Error!", error.message);
+      setSnackbar(true, "Oops, something went wrong with vehicle");
       return false;
     }
   };
@@ -179,7 +160,7 @@ const AnimatedMultistep = ({ steps, navigation }) => {
       client = orderState.client;
     else client = await SaveNewClient();
     if (client === false) {
-      Alert.alert("Failed to add Client");
+      setSnackbar(true, "Failed to add Client");
       setActivityIndicator(false);
       return;
     }
@@ -189,25 +170,73 @@ const AnimatedMultistep = ({ steps, navigation }) => {
       if (isNew.length === 0) {
         vehicle = await SaveNewVehicle(client);
         if (vehicle === false) {
-          Alert.alert("Failed to add Vehicle");
+          setSnackbar(true, "Failed to add Vehicle");
           setActivityIndicator(false);
           return;
         }
       } else vehicle = isNew[0];
     } else vehicle = null;
 
+    var service_id = await ServiceIDParser();
     //Create service order with client and vehicle foreign key
-    var serviceOrder = await SaveServiceOrder(client, vehicle);
+    var serviceOrder = await SaveServiceOrder(client, vehicle, service_id);
     if (serviceOrder === false) {
-      Alert.alert("Failed to create service order");
+      setSnackbar(true, "Failed to create service order");
       setActivityIndicator(false);
       return;
     }
+
+    await SaveNewStatusHistory(serviceOrder);
     //Upoladimages if they exist
-    if (images.length > 0) await UploadAttachments(serviceOrder);
+    if (images.length > 0) await UploadAttachments(serviceOrder, service_id);
 
     resetState();
     setActivityIndicator(false);
+    setSnackbar(true, "Service order created successfully!", true);
+  };
+
+  const SaveNewStatusHistory = async (service) => {
+    const currentUser = await Parse.User.currentAsync();
+    let StatusHistory = new Parse.Object("OrderStatusHistory");
+    StatusHistory.set("status", "Created");
+    StatusHistory.set("service_fkey", service);
+    StatusHistory.set("user_name", currentUser.get("username"));
+
+    try {
+      await StatusHistory.save();
+      return true;
+    } catch (error) {
+      setSnackbar(true, "Oops, something went wrong");
+      console.log(error);
+      return false;
+    }
+  };
+
+  const ServiceIDParser = async () => {
+    let Service = new Parse.Query("Services");
+    Service.descending("createdAt");
+    Service.limit(1);
+
+    try {
+      var result = await Service.find();
+      let string_id = result[0]
+        .get("service_id")
+        .split("SO-")
+        .pop()
+        .split("-")[0];
+      let number = parseInt(string_id) + 1;
+
+      let service_id =
+        "SO-" +
+        "0".repeat(6 - number.toString().length) +
+        number.toString() +
+        "-" +
+        orderState.date.getFullYear().toString().slice(-2);
+      return service_id;
+    } catch (error) {
+      // Error can be caused by lack of Internet connection
+      return false;
+    }
   };
 
   const resetState = () => {

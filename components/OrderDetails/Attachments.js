@@ -98,7 +98,6 @@ const Attachments = ({ service, setSnackbar, open }) => {
   const captureImage = async () => {
     hideDialog();
     let status = await ImagePicker.requestCameraPermissionsAsync();
-    console.log(status);
     if (status) {
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,

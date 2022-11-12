@@ -71,9 +71,8 @@ const App = () => {
           <Stack.Screen
             name="orderDetails"
             component={OrderDetailsMainScreen}
-            initialParams={{ serviceId: "wAkT5FhJwM" }}
             options={{
-              title: "SO-10023-22",
+              title: "SO-000000-22",
               headerRight: () => (
                 <Button
                   mode="outlined"

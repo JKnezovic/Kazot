@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { List, DataTable } from "react-native-paper";
 import Parse from "parse/react-native.js";
+import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const ServiceStatusHistory = ({ service, open }) => {
   const [expanded, setExpanded] = useState(open);
@@ -8,7 +9,7 @@ const ServiceStatusHistory = ({ service, open }) => {
 
   useEffect(() => {
     getStatusHistory();
-  }, []);
+  }, [service]);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -30,7 +31,7 @@ const ServiceStatusHistory = ({ service, open }) => {
     <DataTable.Row key={item.id}>
       <DataTable.Cell>{item.get("status")}</DataTable.Cell>
       <DataTable.Cell numeric>
-        {item.get("createdAt").toLocaleDateString("en-GB")}
+        {DateToDDMMYY(item.get("createdAt"))}
       </DataTable.Cell>
       <DataTable.Cell numeric>{item.get("user_name")}</DataTable.Cell>
     </DataTable.Row>

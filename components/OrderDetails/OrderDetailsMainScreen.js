@@ -31,6 +31,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
+      title: service?.get("service_id"),
       headerRight: () => (
         <Button
           mode="outlined"
@@ -41,6 +42,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
           {service?.get("status")}
         </Button>
       ),
+      headerBackVisible: false,
     });
   }, [navigation, service]);
 

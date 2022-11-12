@@ -54,20 +54,17 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
   };
 
   const updateInventory = async (item, difference = 0) => {
-    console.log(difference);
     let query = new Parse.Query("Inventory");
     // equalTo can be used in any data type
     query.equalTo("name", item.part_name);
 
     try {
       let queryResult = await query.first();
-      console.log(queryResult);
 
       let updateQuery = new Parse.Object("Inventory");
       updateQuery.set("objectId", queryResult.id);
       updateQuery.set("stock", queryResult.get("stock") + difference);
       let result = await updateQuery.save();
-      console.log(result);
       return true;
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");

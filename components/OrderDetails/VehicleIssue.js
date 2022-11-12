@@ -19,18 +19,18 @@ const VehicleIssue = ({ service, open }) => {
       <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
         <DataTable.Row>
           <DataTable.Cell>{"Service Type:"}</DataTable.Cell>
-          <DataTable.Cell>{service.get("type")}</DataTable.Cell>
+          <DataTable.Cell>{service?.get("type")}</DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row>
           <DataTable.Cell>{"Vehicle S/N:"}</DataTable.Cell>
           <DataTable.Cell>
-            {service.get("vehicle_fkey")?.get("serial_number")}
+            {service?.get("vehicle_fkey")?.get("serial_number")}
           </DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row>
           <DataTable.Cell>{"Vehicle Model:"}</DataTable.Cell>
           <DataTable.Cell>
-            {service.get("vehicle_fkey")?.get("model")}
+            {service?.get("vehicle_fkey")?.get("model")}
           </DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row>
@@ -42,7 +42,7 @@ const VehicleIssue = ({ service, open }) => {
               justifyContent: "center",
             }}
           >
-            <Text numberOfLines={10}>{service.get("issue")}</Text>
+            <Text numberOfLines={10}>{service?.get("issue")}</Text>
           </View>
         </DataTable.Row>
         <DataTable.Row>
@@ -54,7 +54,7 @@ const VehicleIssue = ({ service, open }) => {
               justifyContent: "center",
             }}
           >
-            <Text numberOfLines={10}>{service.get("notes")}</Text>
+            <Text numberOfLines={10}>{service?.get("notes")}</Text>
           </View>
         </DataTable.Row>
       </DataTable>
