@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Keyboard } from "react-native";
-import { TextInput, Searchbar } from "react-native-paper";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { Searchbar } from "react-native-paper";
 import { colours } from "../../utils/constants";
 
 export default function ClientsSearch({ setQuery, searchQuery }) {
