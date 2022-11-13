@@ -13,15 +13,18 @@ import {
 import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import useGetOrderStatuses from "./useGetOrderStatuses";
+import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const Filter = ({ orders = [], setOrders }) => {
   const [isModalOpen, setIsModalOpen] = useState();
-  const date = new Date();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const { orderStatuses, getOrderStatuses } = useGetOrderStatuses();
   const [selectedTypes, setSelectedTypes] = useState({});
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const [isByDateOpen, setIsByDateOpen] = useState(false);
+  const [isByOrderStatusOpen, setIsByOrderStatusOpen] = useState(false);
+
   const [initialOrders, setInitialOrders] = useState([]);
   const isFirstRender = useRef(true);
 
@@ -31,24 +34,31 @@ const Filter = ({ orders = [], setOrders }) => {
 
   const checkForValue = (status) => {
     for (const [key, value] of Object.entries(selectedTypes)) {
-      if (key === status && value === true) {
-        return true;
-      }
+      if (key === status && value === true) return true;
     }
     return false;
   };
 
-  const applyFilter = () => {
-    const filtered = orders.filter((order) =>
-      checkForValue(order.get("status"))
+  const filterByDate = (toFilter) => {
+    return toFilter.filter(
+      (order) =>
+        DateToDDMMYY(order.get("createdAt")) === DateToDDMMYY(selectedDate)
     );
-    setFilteredOrders(filtered);
-    // call filter function
+  };
+
+  const applyFilter = () => {
+    let filtered = orders.filter((order) => checkForValue(order.get("status")));
+    if (filtered.length === 0) {
+      //setOrders(initialOrders);
+      filtered = [...initialOrders];
+    }
+    if (selectedDate !== null) filtered = filterByDate(filtered);
+
+    setOrders(filtered);
     setIsModalOpen(false);
   };
 
   const handleCheckbox = (selected) => {
-    console.log(selectedTypes, selected);
     setSelectedTypes((previous) => {
       let temp = previous;
       temp[selected] = !temp[selected];
@@ -57,12 +67,28 @@ const Filter = ({ orders = [], setOrders }) => {
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
+    if (isFirstRender.current && orders.length) {
       setInitialOrders(orders);
       isFirstRender.current = false;
     }
     setFilteredOrders(orders);
   }, [orders]);
+
+  const setDate = (e, selDate) => {
+    setSelectedDate(selDate);
+    setIsPickerOpen(false);
+  };
+
+  const isListChecked = () => {
+    return Object.values(selectedTypes).find((type) => type === true);
+  };
+
+  const clearByOrderStatus = () => {
+    setSelectedTypes([]);
+  };
+  const clearByDate = () => {
+    setSelectedDate(null);
+  };
 
   return (
     <>
@@ -88,51 +114,93 @@ const Filter = ({ orders = [], setOrders }) => {
           </Text>
 
           <View style={styles.body}>
-            <Pressable style={styles.title}>
-              <Text variant="titleMedium">By order status</Text>
-              <IconButton icon="menu-down" />
-            </Pressable>
-            {orderStatuses.map((element, key) => (
-              <View
-                key={`${key}_${
-                  selectedTypes[element.get("name")] ? "checked" : "unchecked"
-                }`}
-                style={styles.checkbox}
+            <View style={styles.row}>
+              <Pressable
+                style={styles.title}
+                onPress={() => setIsByOrderStatusOpen(!isByOrderStatusOpen)}
               >
-                <Checkbox.Android
-                  status={
-                    selectedTypes[element.get("name")] ? "checked" : "unchecked"
+                <Text variant="titleMedium">By order status</Text>
+                <IconButton
+                  icon="menu-down"
+                  iconColor={
+                    isByOrderStatusOpen
+                      ? colours.ORANGE_WEB
+                      : colours.OXFORD_BLUE
                   }
-                  onPress={() => handleCheckbox(element.get("name"))}
                 />
-                <Text variant="labelMedium">{element.get("name")}</Text>
-              </View>
-            ))}
+              </Pressable>
+              {isByOrderStatusOpen && isListChecked() && (
+                <IconButton icon="close" onPress={clearByOrderStatus} />
+              )}
+            </View>
 
-            <Pressable style={styles.title}>
-              <Text variant="titleMedium">By date</Text>
-              <IconButton icon="menu-down" />
-            </Pressable>
-            <FAB
-              icon="calendar"
-              label={"Selected date: "}
-              mode="elevated"
-              color="#14213D"
-              style={{
-                backgroundColor: "#E5E5E5",
-                marginVertical: "4%",
-                width: moderateScale(300),
-                alignSelf: "center",
-              }}
-              onPress={() => setIsPickerOpen(true)}
-            />
-            {isPickerOpen && (
-              <DateTimePicker
-                value={selectedDate || date}
-                mode="date"
-                is24Hour={true}
-                style={styles.picker}
-              />
+            {isByOrderStatusOpen &&
+              orderStatuses.map((element, key) => (
+                <View
+                  key={`${key}_${
+                    selectedTypes[element.get("Name")] ? "checked" : "unchecked"
+                  }`}
+                  style={styles.checkbox}
+                >
+                  <Checkbox.Android
+                    status={
+                      selectedTypes[element.get("Name")]
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onPress={() => handleCheckbox(element.get("Name"))}
+                  />
+                  <Text variant="labelMedium">{element.get("Name")}</Text>
+                </View>
+              ))}
+
+            <View style={styles.row}>
+              <Pressable
+                style={styles.title}
+                onPress={() => setIsByDateOpen(!isByDateOpen)}
+              >
+                <Text variant="titleMedium">By date</Text>
+                <IconButton
+                  icon="menu-down"
+                  iconColor={
+                    isByDateOpen ? colours.ORANGE_WEB : colours.OXFORD_BLUE
+                  }
+                />
+              </Pressable>
+              {isByDateOpen && selectedDate && (
+                <IconButton icon="close" onPress={clearByDate} />
+              )}
+            </View>
+            {isByDateOpen && (
+              <View>
+                <FAB
+                  icon="calendar"
+                  label={`${
+                    selectedDate
+                      ? "Selected date: " + DateToDDMMYY(selectedDate)
+                      : "All dates"
+                  }`}
+                  mode="elevated"
+                  color="#14213D"
+                  style={{
+                    backgroundColor: "#E5E5E5",
+                    marginVertical: "4%",
+                    width: moderateScale(300),
+                    alignSelf: "center",
+                  }}
+                  onPress={() => setIsPickerOpen(true)}
+                />
+                {isPickerOpen && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={selectedDate || new Date()}
+                    mode="date"
+                    is24Hour={true}
+                    onChange={setDate}
+                    maximumDate={new Date()}
+                  />
+                )}
+              </View>
             )}
           </View>
           <View style={styles.buttonContainer}>
@@ -205,5 +273,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+  },
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

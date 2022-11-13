@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
-import { Portal, Snackbar } from "react-native-paper";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { moderateScale } from "../../Scaling";
 import { colours } from "../../utils/constants";
 import Order from "./Order";
@@ -24,6 +23,7 @@ const OrdersList = ({ orders = [], deleteOrder }) => {
           {...{ key, order, setSelectedOrderId }}
         />
       ))}
+      <View style={{ height: moderateScale(20) }} />
     </ScrollView>
   );
 };

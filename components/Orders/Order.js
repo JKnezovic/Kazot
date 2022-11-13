@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import { IconButton, Menu } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import { colours, orderOptions } from "../../utils/constants";
@@ -15,17 +15,22 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
       modal.setIsModalOpen(true);
       setSelectedOrderId(order.id);
     } else if (action === "order_details") {
-      navigation.navigate("Service order", { orderId: order.id });
+      navigation.navigate("orderDetails", { serviceId: order.id });
     } else if (action === "client_details") {
       navigation.navigate("Client Details", order.get("client_fkey"));
     }
   };
 
   return (
-    <View style={styles.shadowWrapper}>
+    <Pressable
+      style={styles.shadowWrapper}
+      onPress={() =>
+        navigation.navigate("orderDetails", { serviceId: order.id })
+      }
+    >
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.text}>{order.id}</Text>
+          <Text style={styles.text}>{order.get("service_id")}</Text>
           <Text style={styles.text}>
             {order.get("createdAt").toLocaleString("en-GB", {
               year: "numeric",
@@ -46,6 +51,9 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
               <Text>
                 <Text>Contact:</Text> {order.get("client_fkey")?.get("contact")}
               </Text>
+              <Text>
+                <Text>Status:</Text>
+              </Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.order}>
@@ -57,6 +65,15 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
               </Text>
               <Text>
                 <Text>Issue:</Text> {order.get("issue")}
+              </Text>
+              <Text
+                style={{
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                  color: colours.OXFORD_BLUE,
+                }}
+              >
+                {order.get("status")}
               </Text>
             </View>
           </View>
@@ -81,7 +98,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
           </Menu>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -127,13 +144,17 @@ const styles = StyleSheet.create({
     maxWidth: "90%",
     overflow: "hidden",
   },
-  client: {},
-  order: {},
+  client: {
+    minWidth: "40%",
+  },
+  order: {
+    minWidth: "50%",
+  },
   divider: {
     borderRight: "solid",
     borderRightColor: colours.PLATINUM,
     borderRightWidth: 1,
     height: "100%",
-    marginHorizontal: moderateScale(5),
+    marginHorizontal: moderateScale(7),
   },
 });

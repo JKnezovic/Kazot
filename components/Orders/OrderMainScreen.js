@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import { Portal, Snackbar, FAB } from "react-native-paper";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  Keyboard,
+} from "react-native";
+import { Portal, Snackbar } from "react-native-paper";
 import SearchBar from "./SearchBar";
 import Filter from "./Filter";
 import useGetOrders from "./useGetOrders";
@@ -31,33 +36,31 @@ export default function OrderMainScreen({ navigation }) {
   }, [orders]);
 
   return (
-    <View style={styles.container}>
-      <Portal>
-        <Snackbar
-          visible={isSnackbarVisible}
-          onDismiss={() => setIsSnackbarVisible(false)}
-        >
-          {" "}
-          Order succesfully deleted.{" "}
-        </Snackbar>
-      </Portal>
-      <View style={styles.header}>
-        <SearchBar
-          orders={filteredOrders}
-          initialOrders={orders}
-          setOrders={setFilteredOrders}
-        />
-        <Filter orders={filteredOrders} />
+    <TouchableWithoutFeedback
+      style={styles.container}
+      onPress={Keyboard.dismiss}
+    >
+      <View>
+        <Portal>
+          <Snackbar
+            visible={isSnackbarVisible}
+            onDismiss={() => setIsSnackbarVisible(false)}
+          >
+            {" "}
+            Order succesfully deleted.{" "}
+          </Snackbar>
+        </Portal>
+        <View style={styles.header}>
+          <SearchBar
+            orders={filteredOrders}
+            initialOrders={orders}
+            setOrders={setFilteredOrders}
+          />
+          <Filter orders={filteredOrders} setOrders={setFilteredOrders} />
+        </View>
+        <OrdersList orders={filteredOrders} deleteOrder={deleteOrder} />
       </View>
-      <OrdersList orders={filteredOrders} deleteOrder={deleteOrder} />
-
-      <FAB
-        icon="plus"
-        customSize={80}
-        style={styles.fab}
-        onPress={() => navigation.navigate("NewOrder")}
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
