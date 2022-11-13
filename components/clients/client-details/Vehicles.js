@@ -72,6 +72,7 @@ export default function Vehicles({ clientId }) {
         ) : (
           vehicles.map((vehicle, key) => (
             <List.Item
+              key={key}
               title={`Model: ${vehicle.get("model")}`}
               description={`S/N: ${vehicle.get("serial_number")}`}
               right={(props) => (

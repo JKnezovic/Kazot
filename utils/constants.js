@@ -6,3 +6,22 @@ export const colours = {
   PLATINUM: "#E5E5E5",
   WHITE: "#FFFFFF",
 };
+export const filter = [
+  { value: "all", label: "All" },
+  { value: "created", label: "Created" },
+];
+
+export const orderOptions = [
+  {
+    label: "View order",
+    value: "order_details",
+  },
+  {
+    label: "View client",
+    value: "client_details",
+  },
+  {
+    label: "Delete order",
+    value: "delete_order",
+  },
+];

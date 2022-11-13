@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import UserProfile from "../UserProfile/UserProfile";
 import OrderMainScreen from "../Orders/OrderMainScreen";
 import InventoryMainScreen from "../Inventory/InventoryMainScreen";
+import NewOrderMainScreen from "../NewOrder/NewOrderMainScreen";
 import ClientsMainScreen from "../clients/ClientsView";
 import { Button } from "react-native-paper";
 import { colours } from "../../utils/constants";
@@ -25,6 +26,15 @@ export default function MainScreen(props) {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="tools" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="New Order"
+        component={NewOrderMainScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="plus" size={size} color={color} />
           ),
         }}
       />
