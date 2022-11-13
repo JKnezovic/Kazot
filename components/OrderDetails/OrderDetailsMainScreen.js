@@ -36,13 +36,13 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
         <Button
           mode="outlined"
           textColor={colours.ORANGE_WEB}
-          style={{ borderColor: colours.ORANGE_WEB }}
+          style={{ borderColor: colours.ORANGE_WEB, marginLeft: 10 }}
           onPress={() => setVisible(true)}
         >
           {service?.get("status")}
         </Button>
       ),
-      headerBackVisible: false,
+      headerTitleAlign: "center",
     });
   }, [navigation, service]);
 

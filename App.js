@@ -42,7 +42,7 @@ const App = () => {
 
   async function changeScreenOrientation() {
     await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT
+      ScreenOrientation.OrientationLock.PORTRAIT_UP
     );
   }
 

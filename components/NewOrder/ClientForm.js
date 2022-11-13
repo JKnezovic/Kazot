@@ -87,7 +87,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
         <FAB
           icon="calendar"
           label={"Selected date: " + DateToDDMMYY(orderState.date)}
-          mode="elevated"
+          mode="flat"
           color="#14213D"
           style={{
             backgroundColor: "#E5E5E5",

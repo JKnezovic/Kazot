@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Image, View, Pressable, StyleSheet, FlatList } from "react-native";
+import {
+  Image,
+  View,
+  Pressable,
+  StyleSheet,
+  FlatList,
+  Modal,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import ImageView from "react-native-image-viewing";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FAB, Dialog, Button } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
+import ImageViewer from "react-native-image-zoom-viewer";
 
 const UploadImageForm = ({ FadeIn, images, setImages }) => {
   const [visible, setIsVisible] = useState(false);
   const [visibleDialog, setVisibleDialog] = useState(false);
   const hideDialog = () => setVisibleDialog(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     FadeIn();
@@ -26,9 +34,13 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
       base64: true,
     });
     if (!result.cancelled) {
-      if (Array.isArray(result.selected))
-        setImages((array) => [...array, ...result.selected]);
-      else setImages((array) => [...array, result]);
+      if (Array.isArray(result.selected)) {
+        let arrayURL = result.selected.map((v) => ({ ...v, url: v.uri }));
+        setImages((array) => [...array, ...arrayURL]);
+      } else {
+        result.url = result.uri;
+        setImages((array) => [...array, result]);
+      }
     }
   };
 
@@ -43,6 +55,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         base64: true,
       });
       if (!result.cancelled) {
+        result.url = result.uri;
         setImages((array) => [...array, result]);
       }
     }
@@ -51,13 +64,17 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
   const removeImage = (uri) => {
     setImages(images.filter((image) => image.uri != uri));
   };
+  const prepareImageView = (index) => {
+    setIsVisible(true);
+    setIndex(index);
+  };
 
   return (
     <View style={styles.container}>
       <FAB
         icon="upload"
         label="Upload images"
-        mode="elevated"
+        mode="flat"
         color="#14213D"
         style={{
           backgroundColor: "#E5E5E5",
@@ -72,8 +89,8 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         data={images}
         horizontal={false}
         numColumns={3}
-        renderItem={({ item }) => (
-          <Pressable onPress={() => setIsVisible(true)}>
+        renderItem={({ item, index }) => (
+          <Pressable onPress={() => prepareImageView(index)}>
             <MaterialIcons
               name="highlight-remove"
               size={24}
@@ -86,6 +103,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
                 zIndex: 2,
                 backgroundColor: "rgba(52, 52, 52, 0.5)",
                 borderRadius: 20,
+                overflow: "hidden",
               }}
             />
 
@@ -127,12 +145,29 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
           </Button>
         </Dialog.Content>
       </Dialog>
-      <ImageView
-        images={images}
-        imageIndex={0}
+      <Modal
         visible={visible}
+        transparent={true}
         onRequestClose={() => setIsVisible(false)}
-      />
+      >
+        <ImageViewer
+          renderHeader={() => (
+            <Pressable
+              alignSelf="flex-end"
+              right={8}
+              top={15}
+              zIndex={1}
+              position="absolute"
+              onPress={() => setIsVisible(false)}
+            >
+              <MaterialIcons name="highlight-remove" size={28} color="white" />
+            </Pressable>
+          )}
+          saveToLocalByLongPress={false}
+          imageUrls={images}
+          index={index}
+        />
+      </Modal>
     </View>
   );
 };

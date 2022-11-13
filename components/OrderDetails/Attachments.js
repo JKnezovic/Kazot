@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Image, View, Pressable, StyleSheet } from "react-native";
+import { Image, View, Pressable, StyleSheet, Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import ImageView from "react-native-image-viewing";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FAB, Dialog, Button, List } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
 import { colours } from "../../utils/constants";
+import ImageViewer from "react-native-image-zoom-viewer";
 
 const Attachments = ({ service, setSnackbar, open }) => {
   const [expanded, setExpanded] = useState(open);
@@ -18,6 +18,7 @@ const Attachments = ({ service, setSnackbar, open }) => {
   const [deleteItem, setDeleteItem] = useState(null);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [images, setImages] = useState([]);
+  const [index, setIndex] = useState(0);
 
   const getAttachments = async () => {
     const attachmentQuery = new Parse.Query("Attachments");
@@ -34,7 +35,7 @@ const Attachments = ({ service, setSnackbar, open }) => {
   };
 
   const createImageArray = (Attachments) => {
-    var array = Attachments.map((x) => ({ uri: x.get("attachment").url() }));
+    var array = Attachments.map((x) => ({ url: x.get("attachment").url() }));
     setImages(array);
   };
 
@@ -111,6 +112,10 @@ const Attachments = ({ service, setSnackbar, open }) => {
     }
   };
 
+  const prepareImageView = (index) => {
+    setIsVisible(true);
+    setIndex(index);
+  };
   useEffect(() => {
     getAttachments();
   }, []);
@@ -133,11 +138,11 @@ const Attachments = ({ service, setSnackbar, open }) => {
               flexWrap: "wrap",
             }}
           >
-            {attachments.map((item) => (
+            {attachments.map((item, index) => (
               <Pressable
                 key={item.id}
                 style={styles.imageItem}
-                onPress={() => setIsVisible(true)}
+                onPress={() => prepareImageView(index)}
               >
                 <MaterialIcons
                   name="highlight-remove"
@@ -151,6 +156,7 @@ const Attachments = ({ service, setSnackbar, open }) => {
                     zIndex: 2,
                     backgroundColor: "rgba(52, 52, 52, 0.5)",
                     borderRadius: 20,
+                    overflow: "hidden",
                   }}
                 />
                 <Image
@@ -230,12 +236,29 @@ const Attachments = ({ service, setSnackbar, open }) => {
           </Button>
         </Dialog.Actions>
       </Dialog>
-      <ImageView
-        images={images}
-        imageIndex={0}
+      <Modal
         visible={visible}
+        transparent={true}
         onRequestClose={() => setIsVisible(false)}
-      />
+      >
+        <ImageViewer
+          renderHeader={() => (
+            <Pressable
+              alignSelf="flex-end"
+              right={8}
+              top={15}
+              zIndex={1}
+              position="absolute"
+              onPress={() => setIsVisible(false)}
+            >
+              <MaterialIcons name="highlight-remove" size={28} color="white" />
+            </Pressable>
+          )}
+          saveToLocalByLongPress={false}
+          imageUrls={images}
+          index={index}
+        />
+      </Modal>
     </>
   );
 };
