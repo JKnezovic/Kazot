@@ -7,6 +7,7 @@ import Parse from "parse/react-native";
 import { moderateScale } from "../../Scaling";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { FAB } from "react-native-paper";
+import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
   const [open, setOpen] = useState(false);
@@ -85,8 +86,8 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
         />
         <FAB
           icon="calendar"
-          label={"Selected date: " + orderState.date.toLocaleDateString()}
-          mode="elevated"
+          label={"Selected date: " + DateToDDMMYY(orderState.date)}
+          mode="flat"
           color="#14213D"
           style={{
             backgroundColor: "#E5E5E5",
