@@ -6,9 +6,11 @@ import Filter from "./Filter";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
+import { moderateScale } from "../../Scaling";
 
 export default function OrderMainScreen({ navigation }) {
   const { getOrders, orders } = useGetOrders();
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const { deleteOrder, isLoading, isLoaded, reset } = useDeleteOrder();
   const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
 
@@ -24,6 +26,10 @@ export default function OrderMainScreen({ navigation }) {
     }
   }, [isLoading, isLoaded]);
 
+  useEffect(() => {
+    setFilteredOrders(orders);
+  }, [orders]);
+
   return (
     <View style={styles.container}>
       <Portal>
@@ -36,10 +42,14 @@ export default function OrderMainScreen({ navigation }) {
         </Snackbar>
       </Portal>
       <View style={styles.header}>
-        <SearchBar />
-        <Filter />
+        <SearchBar
+          orders={filteredOrders}
+          initialOrders={orders}
+          setOrders={setFilteredOrders}
+        />
+        <Filter orders={filteredOrders} />
       </View>
-      <OrdersList {...{ orders, deleteOrder }} />
+      <OrdersList orders={filteredOrders} deleteOrder={deleteOrder} />
 
       <FAB
         icon="plus"
@@ -67,5 +77,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     backgroundColor: "blue",
+    height: moderateScale(50),
   },
 });

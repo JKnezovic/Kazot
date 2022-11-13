@@ -1,20 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { StyleSheet, View } from "react-native";
-import { Button, Checkbox, Modal, Portal, Text, FAB } from "react-native-paper";
-import { colours, filter } from "../../utils/constants";
+import { Pressable, StyleSheet, View } from "react-native";
+import {
+  Button,
+  Checkbox,
+  Modal,
+  Portal,
+  Text,
+  FAB,
+  IconButton,
+} from "react-native-paper";
+import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
+import useGetOrderStatuses from "./useGetOrderStatuses";
 
-const Filter = () => {
+const Filter = ({ orders = [], setOrders }) => {
   const [isModalOpen, setIsModalOpen] = useState();
   const date = new Date();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const { orderStatuses, getOrderStatuses } = useGetOrderStatuses();
+  const [selectedTypes, setSelectedTypes] = useState({});
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [initialOrders, setInitialOrders] = useState([]);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    getOrderStatuses();
+  }, []);
+
+  const checkForValue = (status) => {
+    for (const [key, value] of Object.entries(selectedTypes)) {
+      if (key === status && value === true) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   const applyFilter = () => {
+    const filtered = orders.filter((order) =>
+      checkForValue(order.get("status"))
+    );
+    setFilteredOrders(filtered);
     // call filter function
     setIsModalOpen(false);
   };
+
+  const handleCheckbox = (selected) => {
+    console.log(selectedTypes, selected);
+    setSelectedTypes((previous) => {
+      let temp = previous;
+      temp[selected] = !temp[selected];
+      return { ...temp };
+    });
+  };
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      setInitialOrders(orders);
+      isFirstRender.current = false;
+    }
+    setFilteredOrders(orders);
+  }, [orders]);
 
   return (
     <>
@@ -22,7 +70,9 @@ const Filter = () => {
         icon="tune"
         mode="contained"
         style={styles.filterButton}
+        contentStyle={{ height: "100%" }}
         onPress={() => setIsModalOpen(true)}
+        buttonColor={colours.ORANGE_WEB}
       >
         Filter
       </Button>
@@ -31,20 +81,38 @@ const Filter = () => {
           visible={isModalOpen}
           onDismiss={() => setIsModalOpen(false)}
           contentContainerStyle={styles.modalContainerStyle}
+          key={JSON.stringify(selectedTypes)}
         >
           <Text variant="titleLarge" style={styles.modalTitle}>
             Filter orders list
           </Text>
+
           <View style={styles.body}>
-            <Text variant="titleMedium">By order status</Text>
-            {filter.map((element, key) => (
-              <View {...key} style={styles.checkbox}>
-                <Checkbox.Android status={"checked"} />
-                <Text variant="labelMedium">{element.label}</Text>
+            <Pressable style={styles.title}>
+              <Text variant="titleMedium">By order status</Text>
+              <IconButton icon="menu-down" />
+            </Pressable>
+            {orderStatuses.map((element, key) => (
+              <View
+                key={`${key}_${
+                  selectedTypes[element.get("name")] ? "checked" : "unchecked"
+                }`}
+                style={styles.checkbox}
+              >
+                <Checkbox.Android
+                  status={
+                    selectedTypes[element.get("name")] ? "checked" : "unchecked"
+                  }
+                  onPress={() => handleCheckbox(element.get("name"))}
+                />
+                <Text variant="labelMedium">{element.get("name")}</Text>
               </View>
             ))}
 
-            <Text variant="titleMedium">By date</Text>
+            <Pressable style={styles.title}>
+              <Text variant="titleMedium">By date</Text>
+              <IconButton icon="menu-down" />
+            </Pressable>
             <FAB
               icon="calendar"
               label={"Selected date: "}
@@ -97,6 +165,7 @@ const styles = StyleSheet.create({
   filterButton: {
     borderRadius: 0,
     minWidth: "30%",
+    minHeight: "100%",
   },
   modalContainerStyle: {
     backgroundColor: colours.WHITE,
@@ -131,5 +200,10 @@ const styles = StyleSheet.create({
   },
   body: {
     paddingVertical: 10,
+  },
+  title: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

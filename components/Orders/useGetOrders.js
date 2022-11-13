@@ -11,9 +11,9 @@ const useGetOrders = () => {
     setIsLoading(true);
     setIsLoaded(false);
     let parseOrders = new Parse.Query("Services");
-    let parseClients = new Parse.Query("Clients");
-    // Match the TableA query by the "link" property
-    parseOrders.matchesQuery("client_fkey", parseClients);
+
+    parseOrders.include("client_fkey");
+    parseOrders.include("vehicle_fkey");
     try {
       let joinedResults = await parseOrders.find();
       setOrders(joinedResults);

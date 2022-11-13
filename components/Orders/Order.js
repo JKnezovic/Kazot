@@ -20,6 +20,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
       navigation.navigate("Client Details", order.get("client_fkey"));
     }
   };
+
   return (
     <View style={styles.shadowWrapper}>
       <View style={styles.container}>
@@ -52,7 +53,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
                 <Text>Type:</Text> {order.get("type")}
               </Text>
               <Text>
-                <Text>Model:</Text> {order.get("model")}
+                <Text>Model:</Text> {order.get("vehicle_fkey")?.get("model")}
               </Text>
               <Text>
                 <Text>Issue:</Text> {order.get("issue")}
