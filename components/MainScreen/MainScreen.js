@@ -30,7 +30,7 @@ export default function MainScreen(props) {
         }}
       />
       <Tab.Screen
-        name="Add New Order"
+        name="New Order"
         component={NewOrderMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
