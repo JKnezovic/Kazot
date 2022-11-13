@@ -17,8 +17,7 @@ export default function ServicesHistory({ clientId }) {
     getServices({ clientId });
   }, [clientId]);
   const navigateToOrder = (orderId) => {
-    console.log("navigate to order");
-    // navigation.navigate("Service Order", orderId);
+    navigation.navigate("orderDetails", { serviceId: orderId });
   };
   return (
     <View style={styles.container}>

@@ -11,6 +11,8 @@ import Styles from "./Styles";
 import Parse from "parse/react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AntDesign } from "@expo/vector-icons";
+import { moderateScale } from "../../Scaling";
+import { colours } from "../../utils/constants";
 
 const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
   const [serviceTypes, setServiceTypes] = useState([]);
@@ -82,7 +84,15 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
   return (
     <KeyboardAvoidingView style={{ marginTop: 10 }}>
       <Portal>
-        <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+        <Dialog
+          style={{
+            backgroundColor: "#FFFFFF",
+            width: moderateScale(300),
+            alignSelf: "center",
+          }}
+          visible={visible}
+          onDismiss={() => setVisible(false)}
+        >
           <Dialog.Content>
             <Paragraph>
               Do you want to save this custom value for further use as dropdown
@@ -90,7 +100,12 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setVisible(false)}>Cancel</Button>
+            <Button
+              textColor={colours.OXFORD_BLUE}
+              onPress={() => setVisible(false)}
+            >
+              Cancel
+            </Button>
             <Button onPress={() => saveServiceType()}>Save</Button>
           </Dialog.Actions>
         </Dialog>
