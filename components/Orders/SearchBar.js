@@ -82,5 +82,6 @@ const styles = StyleSheet.create({
     borderBottomColor: colours.OXFORD_BLUE,
     minWidth: "70%",
     borderRadius: 0,
+    height: "100%",
   },
 });
