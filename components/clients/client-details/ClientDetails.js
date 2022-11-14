@@ -5,6 +5,8 @@ import { colours } from "../../../utils/constants";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
+import DateToDDMMYY from "../../../utils/DateToDDMMYY";
+import { moderateScale } from "../../../Scaling";
 
 const ClientDetails = ({ client }) => {
   // open contact
@@ -19,15 +21,7 @@ const ClientDetails = ({ client }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.heading}>
         <View style={styles.info}>
-          <Text> ID: {client.id}</Text>
-          <Text>
-            Created at:{" "}
-            {client.get("createdAt").toLocaleString("en-GB", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </Text>
+          <Text>Created at: {DateToDDMMYY(client.get("createdAt"))}</Text>
         </View>
         <Avatar.Text
           size={120}
@@ -95,7 +89,7 @@ const styles = StyleSheet.create({
   info: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     width: "100%",
   },
   initials: {
@@ -111,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     marginTop: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: moderateScale(5),
   },
   contactText: {
     color: colours.OXFORD_BLUE,
