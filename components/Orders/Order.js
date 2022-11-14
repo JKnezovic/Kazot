@@ -4,6 +4,7 @@ import { IconButton, Menu } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import { colours, orderOptions } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
+import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,11 +33,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
         <View style={styles.header}>
           <Text style={styles.text}>{order.get("service_id")}</Text>
           <Text style={styles.text}>
-            {order.get("createdAt").toLocaleString("en-GB", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
+            {DateToDDMMYY(order.get("createdAt"))}
           </Text>
         </View>
         <View style={styles.content}>
