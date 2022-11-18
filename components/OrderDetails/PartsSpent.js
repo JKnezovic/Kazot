@@ -6,6 +6,7 @@ import {
   Button,
   TextInput,
   DataTable,
+  IconButton,
 } from "react-native-paper";
 import { Text, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -160,6 +161,16 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     setUpdate(false);
   };
 
+  const increment = () => {
+    var value = parseInt(number) + 1;
+    setNumber(value.toString());
+  };
+
+  const decrement = () => {
+    var value = parseInt(number) - 1;
+    setNumber(value.toString());
+  };
+
   const tableRows = partsUsed.map((item) => (
     <DataTable.Row key={item.id} onPress={() => prepareUpdate(item)}>
       <DataTable.Cell>{item.get("part_name")}</DataTable.Cell>
@@ -180,7 +191,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       <List.Accordion
         style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
         titleStyle={{ color: "#14213D" }}
-        title={"Parts Spent"}
+        title={"Parts Used"}
         left={(props) => (
           <List.Icon {...props} icon="archive-cog" color="#fca311" />
         )}
@@ -218,7 +229,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
                 value: "name",
               }}
               disabled={dropdownDisabled}
-              listMode="SCROLLVIEW"
+              listMode="MODAL"
               closeOnBackPressed={true}
               itemSeparator={true}
               searchable={true}
@@ -242,6 +253,14 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
               <Text style={{ alignSelf: "center" }}>
                 {"Quantity Spent:   "}
               </Text>
+              <IconButton
+                style={{ alignSelf: "center" }}
+                icon="minus"
+                mode="outlined"
+                iconColor={colours.ORANGE_WEB}
+                size={20}
+                onPress={() => decrement()}
+              />
               <TextInput
                 style={{
                   width: moderateScale(50),
@@ -252,6 +271,14 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
                 keyboardType="number-pad"
                 value={number}
                 onChangeText={(text) => setNumber(text)}
+              />
+              <IconButton
+                icon="plus"
+                style={{ alignSelf: "center" }}
+                mode="outlined"
+                iconColor={colours.ORANGE_WEB}
+                size={20}
+                onPress={() => increment()}
               />
             </View>
           </Dialog.Content>
