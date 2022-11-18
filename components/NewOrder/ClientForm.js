@@ -64,14 +64,13 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           name={"surname"}
           setOrderState={setOrderState}
         />
-        <TextInput
-          mode="outlined"
-          label={"Contact Number"}
-          activeOutlineColor="#fca311"
-          style={Styles.form_input}
+        <DropdownSelect
           value={orderState.contact}
-          onChangeText={(text) => handleChange("contact", text)}
-          autoCapitalize={"none"}
+          label={"Contact Number"}
+          handleChange={handleChange}
+          clients={allClients}
+          name={"contact"}
+          setOrderState={setOrderState}
           keyboardType={"number-pad"}
         />
         <TextInput

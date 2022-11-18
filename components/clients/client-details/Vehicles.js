@@ -56,6 +56,8 @@ export default function Vehicles({ clientId }) {
       />
 
       <List.Accordion
+        style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
+        titleStyle={{ color: "#14213D" }}
         title="Vehicles"
         left={(props) => <List.Icon {...props} icon="scooter" />}
         expanded={isExpanded}
