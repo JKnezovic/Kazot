@@ -12,7 +12,7 @@ import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
 import MandatoryInputsDialog from "./MandatoryInputsDialog";
 
-const AnimatedMultistep = ({ steps, setSnackbar, navigation }) => {
+const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
   const [orderState, setOrderState] = useState({
@@ -37,6 +37,18 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation }) => {
   useEffect(() => {
     setTotalSteps(steps.length - 1);
   }, []);
+
+  useEffect(() => {
+    if (client) {
+      setOrderState((prevState) => ({
+        ...prevState,
+        name: client.get("name"),
+        surname: client.get("surname"),
+        contact: client.get("contact"),
+        email: client.get("email"),
+      }));
+    }
+  }, [client]);
 
   const next = () => {
     const duration = 200;
