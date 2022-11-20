@@ -129,11 +129,13 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       <ScrollView style={styles.container}>
         <View style={screenData.isLandscape && styles.landscapeLayout}>
           <View style={screenData.isLandscape && styles.landscapeItems}>
-            <Client service={service} open={screenData.isLandscape && true} />
+            <Client service={service} open={true} />
             <Divider bold={true} />
             <VehicleIssue
               service={service}
-              open={screenData.isLandscape && true}
+              open={true}
+              setSnackbar={setSnackbar}
+              getService={getService}
             />
             <Divider bold={true} />
             <ServiceStatusHistory
