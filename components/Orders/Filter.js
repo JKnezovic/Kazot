@@ -136,11 +136,12 @@ const Filter = ({ orders = [], setOrders }) => {
 
             {isByOrderStatusOpen &&
               orderStatuses.map((element, key) => (
-                <View
+                <Pressable
                   key={`${key}_${
                     selectedTypes[element.get("Name")] ? "checked" : "unchecked"
                   }`}
                   style={styles.checkbox}
+                  onPress={() => handleCheckbox(element.get("Name"))}
                 >
                   <Checkbox.Android
                     status={
@@ -148,10 +149,9 @@ const Filter = ({ orders = [], setOrders }) => {
                         ? "checked"
                         : "unchecked"
                     }
-                    onPress={() => handleCheckbox(element.get("Name"))}
                   />
                   <Text variant="labelMedium">{element.get("Name")}</Text>
-                </View>
+                </Pressable>
               ))}
 
             <View style={styles.row}>
@@ -197,7 +197,6 @@ const Filter = ({ orders = [], setOrders }) => {
                     mode="date"
                     is24Hour={true}
                     onChange={setDate}
-                    maximumDate={new Date()}
                   />
                 )}
               </View>

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 import { colours } from "../../utils/constants";
-// import { isLandscape } from ../../useScreenDimensions
+import useScreenDimensions from "../../useScreenDimensions";
 
 export default function ClientItem({
   client = {},
@@ -11,13 +11,13 @@ export default function ClientItem({
   setSelectedClient,
 }) {
   const navigation = useNavigation();
+  const { isLandscape } = useScreenDimensions();
   const openClientDetails = () => {
-    // if(isLandscape())
-    // setSelectedClient((prevClient) => {
-    //  return prevClient?.id === client.id ? null : client;
-    // });
-    // else
-    navigation.navigate("Client Details", client);
+    if (isLandscape)
+      setSelectedClient((prevClient) => {
+        return prevClient?.id === client.id ? null : client;
+      });
+    else navigation.navigate("Client Details", client);
   };
   return (
     <View>
