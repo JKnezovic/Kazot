@@ -1,19 +1,22 @@
-import {
-  DataTable,
-  Dialog,
-  Portal,
-  Button,
-  TextInput,
-  Snackbar,
-} from "react-native-paper";
+import { DataTable, Snackbar } from "react-native-paper";
 import { useState, useEffect } from "react";
-import Parse from "parse/react-native.js";
-import { colours } from "../../utils/constants";
-import { moderateScale } from "../../Scaling";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import FABGroup from "./FABGroup";
+import { Feather } from "@expo/vector-icons";
+import AddNewDialog from "./Dialogs/AddNewDialog";
+import UpdateDialog from "./Dialogs/UpdateDialog";
+import ItemViewDetails from "./Dialogs/ItemViewDetails";
+import Parse from "parse/react-native.js";
+import Searchbar from "./Searchbar";
 
 const numberOfItemsPerPageList = [5, 10, 20];
+const defaultItem = {
+  MSQ: 0,
+  stock: 0,
+  inventoryStock: 0,
+  name: "",
+};
 
 const InventoryMainScreen = () => {
   const [page, setPage] = useState(0);
@@ -22,25 +25,28 @@ const InventoryMainScreen = () => {
   );
   const from = page * numberOfItemsPerPage;
   const [allParts, setAllParts] = useState([]);
+  const [partsFiltered, setPartsFiltered] = useState([]);
   const to = Math.min((page + 1) * numberOfItemsPerPage, allParts.length);
   const [visible, setVisible] = useState(false);
-  const [MSQ, setMSQ] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [inventoryStock, setInventoryStock] = useState(0);
+  const [newItem, setNewItem] = useState(defaultItem);
   const [title, setTitle] = useState("temp");
-  const [name, setName] = useState("temp");
   const navigation = useNavigation();
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [updateItem, setUpdateItem] = useState(false);
+  const [isPurchase, setIsPurchase] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
   const [activityIndicator, setActivityIndicator] = useState(true);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [showAction, setShowAction] = useState(false);
+  const [updateDialogVisible, setUpdateDialogVisible] = useState(false);
+  const [viewDialogVisible, setViewDialogVisible] = useState(false);
+  const [sortDirection, setSortDirection] = useState(-1);
+  const [sortColumn, setSortColumn] = useState("Name");
 
   const getAllParts = async () => {
     const serviceQuery = new Parse.Query("Inventory");
+    serviceQuery.ascending("name");
     try {
-      let Parts = await serviceQuery.findAll();
+      let Parts = await serviceQuery.find();
       setAllParts(Parts);
       setActivityIndicator(false);
       return true;
@@ -53,33 +59,9 @@ const InventoryMainScreen = () => {
     }
   };
 
-  const updateInventory = async () => {
-    let Inventory = new Parse.Object("Inventory");
-    Inventory.set("objectId", updateItem.objectId);
-    Inventory.set("stock", parseInt(stock));
-    Inventory.set("MSQ", parseInt(MSQ));
-    Inventory.set("inventory_stock", parseInt(inventoryStock));
-    if (parseInt(stock) !== updateItem.stock)
-      Inventory.set("last_purchase", new Date());
-    if (parseInt(inventoryStock) !== updateItem.inventory_stock)
-      Inventory.set("last_inventory_check", new Date());
-
-    try {
-      let result = await Inventory.save();
-      setVisible(false);
-      setSnackbar(true, "Updated successfully");
-      getAllParts();
-      return true;
-    } catch (error) {
-      setSnackbar(true, "Oops, something went wrong");
-      console.log(error);
-      return false;
-    }
-  };
-
   const DeleteInventoryItem = async () => {
     let Inventory = new Parse.Object("Inventory");
-    Inventory.set("objectId", updateItem.objectId);
+    Inventory.set("objectId", viewItem.id);
 
     try {
       await Inventory.destroy();
@@ -97,10 +79,10 @@ const InventoryMainScreen = () => {
 
   const SaveInventoryItem = async () => {
     let Inventory = new Parse.Object("Inventory");
-    Inventory.set("stock", parseInt(stock));
-    Inventory.set("MSQ", parseInt(MSQ));
-    Inventory.set("inventory_stock", parseInt(inventoryStock));
-    Inventory.set("name", name);
+    Inventory.set("stock", parseInt(newItem.stock));
+    Inventory.set("MSQ", parseInt(newItem.MSQ));
+    Inventory.set("inventory_stock", parseInt(newItem.inventoryStock));
+    Inventory.set("name", newItem.name);
     Inventory.set("last_purchase", new Date());
     Inventory.set("last_inventory_check", new Date());
 
@@ -124,23 +106,36 @@ const InventoryMainScreen = () => {
   };
 
   const prepareDialogAddNew = () => {
-    setIsUpdate(false);
-    setMSQ("");
-    setStock("");
-    setInventoryStock("");
+    setNewItem(defaultItem);
     setTitle("Create new item");
-    setName("");
     setVisible(true);
   };
 
-  const prepareDialogUpdate = (item) => {
-    setIsUpdate(true);
-    setMSQ(item.get("MSQ").toString());
-    setStock(item.get("stock").toString());
-    setInventoryStock(item.get("inventory_stock").toString());
-    setTitle("Update " + item.get("name"));
-    setUpdateItem(JSON.parse(JSON.stringify(item)));
-    setVisible(true);
+  const prepareDialogUpdate = (isInventory) => {
+    if (isInventory) {
+      setTitle("Inventory update");
+      setIsPurchase(false);
+    } else {
+      setTitle("Purchase items");
+      setIsPurchase(true);
+    }
+    setUpdateDialogVisible(true);
+  };
+
+  const prepareDialogView = (item) => {
+    setViewItem(item);
+    setViewDialogVisible(true);
+  };
+
+  const handleSortColumn = (name) => {
+    if (sortColumn === name) setSortDirection(sortDirection * -1);
+    else setSortColumn(name);
+  };
+
+  const renderSortIcon = (name) => {
+    if (sortColumn === name)
+      return sortDirection === 1 ? "descending" : "ascending";
+    else return null;
   };
 
   useEffect(() => {
@@ -154,26 +149,30 @@ const InventoryMainScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          mode="outlined"
-          textColor={colours.ORANGE_WEB}
-          style={{ borderColor: colours.ORANGE_WEB, marginRight: 5 }}
-          onPress={() => prepareDialogAddNew()}
-        >
-          {"Add new"}
-        </Button>
+        <Feather name="search" size={24} style={styles.search} />
       ),
     });
   }, [navigation]);
 
-  const tableRows = allParts
+  useEffect(() => {
+    setPartsFiltered(allParts);
+  }, [allParts]);
+
+  const tableRows = partsFiltered
+    .sort((a, b) =>
+      a.get(sortColumn) > b.get(sortColumn)
+        ? 1 * sortDirection
+        : b.get(sortColumn) > a.get(sortColumn)
+        ? -1 * sortDirection
+        : 0
+    )
     .slice(
       page * numberOfItemsPerPage,
       page * numberOfItemsPerPage + numberOfItemsPerPage
     )
     .map((item) => (
       <DataTable.Row
-        onPress={() => prepareDialogUpdate(item)}
+        onPress={() => prepareDialogView(item)}
         key={item.id}
         style={
           item.get("stock") <= item.get("MSQ") && {
@@ -182,9 +181,6 @@ const InventoryMainScreen = () => {
         }
       >
         <DataTable.Cell>{item.get("name")}</DataTable.Cell>
-        <DataTable.Cell>
-          {item.get("last_inventory_check").toLocaleDateString("en-GB")}
-        </DataTable.Cell>
         <DataTable.Cell numeric>{item.get("stock")}</DataTable.Cell>
         <DataTable.Cell numeric>{item.get("MSQ")}</DataTable.Cell>
         <DataTable.Cell numeric>{item.get("inventory_stock")}</DataTable.Cell>
@@ -204,144 +200,94 @@ const InventoryMainScreen = () => {
 
   return (
     <>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Name</DataTable.Title>
-          <DataTable.Title>Purchased</DataTable.Title>
-          <DataTable.Title numeric>Stock</DataTable.Title>
-          <DataTable.Title numeric>MSQ</DataTable.Title>
-          <DataTable.Title numeric>Inventory</DataTable.Title>
-        </DataTable.Header>
-        {tableRows}
-        <DataTable.Pagination
-          page={page}
-          numberOfPages={Math.ceil(allParts.length / numberOfItemsPerPage)}
-          onPageChange={(page) => setPage(page)}
-          label={`${from + 1}-${to} of ${allParts.length}`}
-          showFastPaginationControls
-          numberOfItemsPerPageList={numberOfItemsPerPageList}
-          numberOfItemsPerPage={numberOfItemsPerPage}
-          onItemsPerPageChange={onItemsPerPageChange}
-          selectPageDropdownLabel={"Rows per page"}
-        />
-      </DataTable>
-      <Portal>
-        <Dialog
-          style={{
-            backgroundColor: "#FFFFFF",
-            width: moderateScale(300),
-            alignSelf: "center",
-          }}
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-        >
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Content>
-            {!isUpdate && (
-              <TextInput
-                mode="outlined"
-                label="Name"
-                style={{
-                  //width: moderateScale(50),
-                  marginVertical: 5,
-                  backgroundColor: "#FFFFFF",
-                }}
-                activeUnderlineColor={colours.ORANGE_WEB}
-                value={name}
-                onChangeText={(text) => setName(text)}
-              />
-            )}
-            <TextInput
-              mode="outlined"
-              label="stock"
-              style={{
-                //width: moderateScale(50),
-                marginVertical: 5,
-                backgroundColor: "#FFFFFF",
-              }}
-              activeUnderlineColor={colours.ORANGE_WEB}
-              keyboardType="number-pad"
-              value={stock}
-              onChangeText={(text) => setStock(text)}
-            />
-
-            <TextInput
-              mode="outlined"
-              label="MSQ"
-              style={{
-                //width: moderateScale(50),
-                marginVertical: 5,
-                backgroundColor: "#FFFFFF",
-              }}
-              activeUnderlineColor={colours.ORANGE_WEB}
-              keyboardType="number-pad"
-              value={MSQ}
-              onChangeText={(text) => setMSQ(text)}
-            />
-
-            <TextInput
-              mode="outlined"
-              label="Inventory"
-              style={{
-                //width: moderateScale(300),
-                marginVertical: 5,
-                backgroundColor: "#FFFFFF",
-              }}
-              activeUnderlineColor={colours.ORANGE_WEB}
-              keyboardType="number-pad"
-              value={inventoryStock}
-              onChangeText={(text) => setInventoryStock(text)}
-            />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              textColor={colours.OXFORD_BLUE}
-              onPress={() => setVisible(false)}
+      <Searchbar
+        orders={partsFiltered}
+        initialOrders={allParts}
+        setOrders={setPartsFiltered}
+      />
+      <ScrollView style={{ flex: 1 }}>
+        <DataTable style={{ marginBottom: 80 }}>
+          <DataTable.Header>
+            <DataTable.Title
+              sortDirection={renderSortIcon("name")}
+              onPress={() => handleSortColumn("name")}
             >
-              Cancel
-            </Button>
-            {isUpdate ? (
-              <>
-                <Button
-                  textColor={colours.ANTIQUE_RUBY}
-                  onPress={() =>
-                    setSnackbar(true, "Are you sure you want to delete", true)
-                  }
-                >
-                  Delete
-                </Button>
-                <Button
-                  textColor={colours.ORANGE_WEB}
-                  onPress={() => updateInventory()}
-                >
-                  Update
-                </Button>
-              </>
-            ) : (
-              <Button
-                textColor={colours.ORANGE_WEB}
-                disabled={name && MSQ && stock && inventoryStock ? false : true}
-                onPress={() => SaveInventoryItem()}
-              >
-                Save
-              </Button>
-            )}
-          </Dialog.Actions>
-        </Dialog>
-        <Snackbar
-          visible={visibleSnackbar}
-          onDismiss={() => setVisibleSnackbar(false)}
-          duration={showAction ? 3000 : 1000}
-          action={
-            showAction && {
-              label: "Delete",
-              onPress: () => DeleteInventoryItem(),
-            }
+              Name
+            </DataTable.Title>
+            <DataTable.Title
+              sortDirection={renderSortIcon("stock")}
+              onPress={() => handleSortColumn("stock")}
+              numeric
+            >
+              Stock
+            </DataTable.Title>
+            <DataTable.Title
+              sortDirection={renderSortIcon("MSQ")}
+              onPress={() => handleSortColumn("MSQ")}
+              numeric
+            >
+              MSQ
+            </DataTable.Title>
+            <DataTable.Title
+              sortDirection={renderSortIcon("inventory_stock")}
+              onPress={() => handleSortColumn("inventory_stock")}
+              numeric
+            >
+              Inventory
+            </DataTable.Title>
+          </DataTable.Header>
+          {tableRows}
+          <DataTable.Pagination
+            page={page}
+            numberOfPages={Math.ceil(allParts.length / numberOfItemsPerPage)}
+            onPageChange={(page) => setPage(page)}
+            label={`${from + 1}-${to} of ${allParts.length}`}
+            showFastPaginationControls
+            numberOfItemsPerPageList={numberOfItemsPerPageList}
+            numberOfItemsPerPage={numberOfItemsPerPage}
+            onItemsPerPageChange={onItemsPerPageChange}
+            selectPageDropdownLabel={"Rows per page"}
+          />
+        </DataTable>
+      </ScrollView>
+      <FABGroup
+        prepareDialogAddNew={prepareDialogAddNew}
+        prepareDialogUpdate={prepareDialogUpdate}
+      />
+      <AddNewDialog
+        visible={visible}
+        setVisible={setVisible}
+        title={title}
+        SaveInventoryItem={SaveInventoryItem}
+        newItem={newItem}
+        setNewItem={setNewItem}
+      />
+      <UpdateDialog
+        visible={updateDialogVisible}
+        setVisible={setUpdateDialogVisible}
+        title={title}
+        setSnackbar={setSnackbar}
+        isPurchase={isPurchase}
+      />
+      <ItemViewDetails
+        visible={viewDialogVisible}
+        setVisible={setViewDialogVisible}
+        DeleteInventoryItem={DeleteInventoryItem}
+        item={viewItem}
+      />
+      <Snackbar
+        visible={visibleSnackbar}
+        onDismiss={() => setVisibleSnackbar(false)}
+        duration={showAction ? 3000 : 1000}
+        action={
+          showAction && {
+            label: "Delete",
+            onPress: () => DeleteInventoryItem(),
           }
-        >
-          {snackbarMessage}
-        </Snackbar>
-      </Portal>
+        }
+      >
+        {snackbarMessage}
+      </Snackbar>
     </>
   );
 };
@@ -351,6 +297,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  search: {
+    marginRight: 15,
   },
 });
 
