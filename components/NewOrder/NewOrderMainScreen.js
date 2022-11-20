@@ -12,24 +12,18 @@ const allSteps = [
   { name: "step 3", component: UploadImageForm },
 ];
 
-const NewOrderMainScreen = ({ navigation }) => {
+const NewOrderMainScreen = ({ route, navigation }) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
-  const [shouldNavigate, setShouldNavigate] = useState(false);
+  const { client } = route.params ?? {};
 
-  const setSnackbar = (visible, message, navigate = false) => {
+  const setSnackbar = (visible, message) => {
     setSnackbarMessage(message);
     setVisibleSnackbar(visible);
-
-    if (navigate) setShouldNavigate(true);
   };
 
   const dismissSnackbar = () => {
     setVisibleSnackbar(false);
-    if (shouldNavigate) {
-      setShouldNavigate(false);
-      navigation.navigate("Main");
-    }
   };
 
   const onNext = () => {};
@@ -49,6 +43,7 @@ const NewOrderMainScreen = ({ navigation }) => {
         onNext={onNext}
         navigation={navigation}
         setSnackbar={setSnackbar}
+        client={client}
       />
       <Snackbar
         visible={visibleSnackbar}

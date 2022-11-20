@@ -22,6 +22,8 @@ export default function ServicesHistory({ clientId }) {
   return (
     <View style={styles.container}>
       <List.Accordion
+        style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
+        titleStyle={{ color: "#14213D" }}
         title="Services History"
         left={(props) => <List.Icon {...props} icon="hammer-wrench" />}
         expanded={isExpanded}

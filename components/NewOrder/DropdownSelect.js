@@ -11,6 +11,7 @@ const DropdownSelect = ({
   clients,
   name,
   setOrderState,
+  keyboardType,
 }) => {
   const [visible, setVisible] = useState(false);
   const [selectList, setSelectList] = useState([]);
@@ -46,7 +47,8 @@ const DropdownSelect = ({
       var result = clients.filter(
         (x) =>
           x.get("name").toLowerCase().startsWith(text.toLowerCase()) ||
-          x.get("surname").toLowerCase().startsWith(text.toLowerCase())
+          x.get("surname").toLowerCase().startsWith(text.toLowerCase()) ||
+          x.get("contact").toLowerCase().startsWith(text.toLowerCase())
       );
       if (result.length > 0) {
         setSelectList(result);
@@ -59,7 +61,9 @@ const DropdownSelect = ({
     <Fragment key={x.id}>
       <List.Item
         onPress={() => updateForm(x)}
-        title={x.get("name") + " " + x.get("surname")}
+        title={
+          x.get("name") + " " + x.get("surname") + "   " + x.get("contact")
+        }
       />
       {/* Remove divider from last item */}
       {i !== selectList.length - 1 && <Divider bold={true} />}
@@ -82,6 +86,7 @@ const DropdownSelect = ({
             value={value}
             activeOutlineColor="#fca311"
             onChangeText={(text) => handeChange(text)}
+            keyboardType={keyboardType}
           />
         }
       >

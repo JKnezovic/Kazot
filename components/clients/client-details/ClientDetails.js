@@ -1,14 +1,16 @@
 import React from "react";
 import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
-import { Avatar } from "react-native-paper";
+import { Avatar, FAB } from "react-native-paper";
 import { colours } from "../../../utils/constants";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
-import DateToDDMMYY from "../../../utils/DateToDDMMYY";
 import { moderateScale } from "../../../Scaling";
+import { useNavigation } from "@react-navigation/native";
 
 const ClientDetails = ({ client }) => {
+  const navigation = useNavigation();
+
   // open contact
   // will not work on a simulator
   const goToCall = async () => {
@@ -20,9 +22,6 @@ const ClientDetails = ({ client }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.heading}>
-        <View style={styles.info}>
-          <Text>Created at: {DateToDDMMYY(client.get("createdAt"))}</Text>
-        </View>
         <Avatar.Text
           size={120}
           label={`${client.get("name")[0]}${client.get("surname")[0]}`}
@@ -51,6 +50,14 @@ const ClientDetails = ({ client }) => {
       </View>
       <Vehicles clientId={client.id} />
       <ServicesHistory clientId={client.id} />
+      <FAB
+        icon="plus"
+        label={"New Order"}
+        mode="elevated"
+        color={colours.OXFORD_BLUE}
+        style={styles.FAB}
+        onPress={() => navigation.navigate("New Order", { client: client })}
+      />
     </ScrollView>
   );
 };
@@ -110,6 +117,12 @@ const styles = StyleSheet.create({
   contactText: {
     color: colours.OXFORD_BLUE,
     fontSize: 15,
+  },
+  FAB: {
+    backgroundColor: colours.ORANGE_WEB,
+    position: "absolute",
+    bottom: "3%",
+    right: "3%",
   },
 });
 

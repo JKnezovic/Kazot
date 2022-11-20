@@ -10,8 +10,9 @@ import { fadeIn, fadeOutLeft, fadeOutRight } from "./Animations";
 import { ProgressBar, Button } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
+import MandatoryInputsDialog from "./MandatoryInputsDialog";
 
-const AnimatedMultistep = ({ steps, setSnackbar }) => {
+const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
   const [orderState, setOrderState] = useState({
@@ -29,12 +30,25 @@ const AnimatedMultistep = ({ steps, setSnackbar }) => {
   });
   const [images, setImages] = useState([]);
   const [activityIndicator, setActivityIndicator] = useState(false);
+  const [visibleMandatoryInputs, setVisibleMandatoryInputs] = useState(false);
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const translateFadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     setTotalSteps(steps.length - 1);
   }, []);
+
+  useEffect(() => {
+    if (client) {
+      setOrderState((prevState) => ({
+        ...prevState,
+        name: client.get("name"),
+        surname: client.get("surname"),
+        contact: client.get("contact"),
+        email: client.get("email"),
+      }));
+    }
+  }, [client]);
 
   const next = () => {
     const duration = 200;
@@ -192,7 +206,7 @@ const AnimatedMultistep = ({ steps, setSnackbar }) => {
 
     resetState();
     setActivityIndicator(false);
-    setSnackbar(true, "Service order created successfully!", true);
+    navigation.navigate("orderDetails", { serviceId: serviceOrder.id });
   };
 
   const SaveNewStatusHistory = async (service) => {
@@ -253,7 +267,18 @@ const AnimatedMultistep = ({ steps, setSnackbar }) => {
       problem: "",
       notes: "",
     });
+    setCurrentStep(0);
     setImages([]);
+  };
+
+  const checkMandatoryInputs = () => {
+    return orderState.name === "" ||
+      orderState.contact === "" ||
+      orderState.problem === "" ||
+      orderState.model === "" ||
+      orderState.serviceType === ""
+      ? true
+      : false;
   };
 
   const Step = steps[currentStep].component;
@@ -332,17 +357,40 @@ const AnimatedMultistep = ({ steps, setSnackbar }) => {
           Previous
         </Button>
 
-        <Button
-          style={{ width: moderateScale(120) }}
-          textColor="#14213D"
-          mode="elevated"
-          buttonColor="#fca311"
-          onPress={currentStep === totalSteps ? () => finish() : () => next()}
-          color="#000000"
-        >
-          {currentStep === totalSteps ? "Finish" : "Next"}
-        </Button>
+        {currentStep === totalSteps ? (
+          <Button
+            style={{ width: moderateScale(120) }}
+            textColor="#14213D"
+            mode="elevated"
+            buttonColor="#fca311"
+            onPress={
+              checkMandatoryInputs()
+                ? () => setVisibleMandatoryInputs(true)
+                : () => finish()
+            }
+            color="#000000"
+          >
+            {"Finish"}
+          </Button>
+        ) : (
+          <Button
+            style={{ width: moderateScale(120) }}
+            textColor="#14213D"
+            mode="elevated"
+            buttonColor="#fca311"
+            onPress={() => next()}
+            color="#000000"
+          >
+            {"Next"}
+          </Button>
+        )}
       </View>
+
+      <MandatoryInputsDialog
+        setVisibleMandatoryInputs={setVisibleMandatoryInputs}
+        visibleMandatoryInputs={visibleMandatoryInputs}
+        orderState={orderState}
+      />
     </View>
   );
 };
