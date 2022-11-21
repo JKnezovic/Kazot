@@ -1,0 +1,46 @@
+import { Dialog, Button } from "react-native-paper";
+import { colours } from "../../utils/constants";
+import Parse from "parse/react-native.js";
+import { Text } from "react-native";
+
+const SignOutDialog = ({ visible, setVisible, setSnackBar, setUser }) => {
+  const doUserLogOut = async function () {
+    return await Parse.User.logOut()
+      .then(async () => {
+        const currentUser = await Parse.User.currentAsync();
+        if (currentUser === null) {
+          setUser();
+        }
+      })
+      .catch((error) => {
+        setSnackBar(true, "Oops, something went wrong!");
+        return false;
+      });
+  };
+
+  return (
+    <Dialog
+      visible={visible}
+      onDismiss={() => setVisible(false)}
+      style={{ backgroundColor: colours.WHITE }}
+    >
+      <Dialog.Title>Hold on!</Dialog.Title>
+      <Dialog.Content>
+        <Text>Are you sure you want to sign out?</Text>
+      </Dialog.Content>
+      <Dialog.Actions>
+        <Button
+          textColor={colours.OXFORD_BLUE}
+          onPress={() => setVisible(false)}
+        >
+          Cancel
+        </Button>
+        <Button textColor={colours.ORANGE_WEB} onPress={() => doUserLogOut()}>
+          Yes
+        </Button>
+      </Dialog.Actions>
+    </Dialog>
+  );
+};
+
+export default SignOutDialog;

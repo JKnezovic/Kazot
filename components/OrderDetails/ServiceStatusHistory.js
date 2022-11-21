@@ -30,10 +30,8 @@ const ServiceStatusHistory = ({ service, open }) => {
   const tableRows = orderStatuses.map((item) => (
     <DataTable.Row key={item.id}>
       <DataTable.Cell>{item.get("status")}</DataTable.Cell>
-      <DataTable.Cell numeric>
-        {DateToDDMMYY(item.get("createdAt"))}
-      </DataTable.Cell>
-      <DataTable.Cell numeric>{item.get("user_name")}</DataTable.Cell>
+      <DataTable.Cell>{DateToDDMMYY(item.get("createdAt"))}</DataTable.Cell>
+      <DataTable.Cell>{item.get("user_name")}</DataTable.Cell>
     </DataTable.Row>
   ));
 
@@ -51,8 +49,8 @@ const ServiceStatusHistory = ({ service, open }) => {
       <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
         <DataTable.Header>
           <DataTable.Title>Status</DataTable.Title>
-          <DataTable.Title numeric>Date</DataTable.Title>
-          <DataTable.Title numeric>User</DataTable.Title>
+          <DataTable.Title>Date</DataTable.Title>
+          <DataTable.Title>User</DataTable.Title>
         </DataTable.Header>
         {tableRows}
       </DataTable>

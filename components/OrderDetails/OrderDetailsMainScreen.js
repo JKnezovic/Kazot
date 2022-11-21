@@ -11,6 +11,7 @@ import { Divider, Snackbar, Button, Portal, Dialog } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { colours } from "../../utils/constants";
 import useScreenDimensions from "../../useScreenDimensions";
+import { serviceStatuses } from "../../utils/constants";
 
 const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [service, setService] = useState(null);
@@ -18,15 +19,14 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [activityIndicator, setActivityIndicator] = useState(true);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
-  const [orderStatuses, setOrderStatuses] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [orderStatuses, setOrderStatuses] = useState(serviceStatuses);
+  const [open, setOpen] = useState(true);
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const screenData = useScreenDimensions();
 
   useEffect(() => {
     getService();
-    getOrderStatuses();
   }, []);
 
   useEffect(() => {
@@ -45,19 +45,6 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       headerTitleAlign: "center",
     });
   }, [navigation, service]);
-
-  const getOrderStatuses = async () => {
-    const serviceQuery = new Parse.Query("OrderStatus");
-    try {
-      let statuses = await serviceQuery.findAll();
-      let resultJSON = JSON.parse(JSON.stringify(statuses));
-      setOrderStatuses(resultJSON);
-      return true;
-    } catch (error) {
-      console.log("Error!", error.message);
-      return false;
-    }
-  };
 
   const setSnackbar = (visible, message) => {
     setSnackbarMessage(message);
@@ -174,17 +161,13 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       </Snackbar>
       <Portal>
         <Dialog
-          style={{ backgroundColor: "#FFFFFF" }}
+          style={{ backgroundColor: "#FFFFFF", height: "50%" }}
           visible={visible}
           onDismiss={() => setVisible(false)}
         >
           <Dialog.Title>Change order status:</Dialog.Title>
           <Dialog.Content>
             <DropDownPicker
-              schema={{
-                label: "Name",
-                value: "Name",
-              }}
               listMode="SCROLLVIEW"
               closeOnBackPressed={true}
               itemSeparator={true}

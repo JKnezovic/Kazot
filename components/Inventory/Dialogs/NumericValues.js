@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textInput: {
-    width: moderateScale(50),
+    width: moderateScale(58),
     backgroundColor: "#FFFFFF",
   },
   center: {

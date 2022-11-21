@@ -1,6 +1,12 @@
 import { DataTable, Snackbar } from "react-native-paper";
 import { useState, useEffect } from "react";
-import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  ScrollView,
+  Text,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import FABGroup from "./FABGroup";
 import { Feather } from "@expo/vector-icons";
@@ -39,8 +45,8 @@ const InventoryMainScreen = () => {
   const [showAction, setShowAction] = useState(false);
   const [updateDialogVisible, setUpdateDialogVisible] = useState(false);
   const [viewDialogVisible, setViewDialogVisible] = useState(false);
-  const [sortDirection, setSortDirection] = useState(-1);
-  const [sortColumn, setSortColumn] = useState("Name");
+  const [sortDirection, setSortDirection] = useState(1);
+  const [sortColumn, setSortColumn] = useState("name");
 
   const getAllParts = async () => {
     const serviceQuery = new Parse.Query("Inventory");
@@ -180,7 +186,9 @@ const InventoryMainScreen = () => {
           }
         }
       >
-        <DataTable.Cell>{item.get("name")}</DataTable.Cell>
+        <View style={styles.customCell}>
+          <Text numberOfLines={5}>{item.get("name")}</Text>
+        </View>
         <DataTable.Cell numeric>{item.get("stock")}</DataTable.Cell>
         <DataTable.Cell numeric>{item.get("MSQ")}</DataTable.Cell>
         <DataTable.Cell numeric>{item.get("inventory_stock")}</DataTable.Cell>
@@ -208,12 +216,13 @@ const InventoryMainScreen = () => {
       <ScrollView style={{ flex: 1 }}>
         <DataTable style={{ marginBottom: 80 }}>
           <DataTable.Header>
-            <DataTable.Title
+            <View
+              style={styles.customCell}
               sortDirection={renderSortIcon("name")}
               onPress={() => handleSortColumn("name")}
             >
-              Name
-            </DataTable.Title>
+              <Text>Name</Text>
+            </View>
             <DataTable.Title
               sortDirection={renderSortIcon("stock")}
               onPress={() => handleSortColumn("stock")}
@@ -300,6 +309,11 @@ const styles = StyleSheet.create({
   },
   search: {
     marginRight: 15,
+  },
+  customCell: {
+    width: "40%",
+    marginVertical: 8,
+    justifyContent: "center",
   },
 });
 
