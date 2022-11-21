@@ -1,7 +1,7 @@
 import { Dialog, Portal, Button, DataTable } from "react-native-paper";
 import { colours } from "../../../utils/constants";
 import { moderateScale } from "../../../Scaling";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { useEffect, useState } from "react";
 import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -124,7 +124,9 @@ const UpdateDialog = ({
 
   const tableRows = array.map((x) => (
     <DataTable.Row key={x.product.objectId}>
-      <DataTable.Cell>{x?.name}</DataTable.Cell>
+      <View style={styles.customCell}>
+        <Text numberOfLines={5}>{x.name}</Text>
+      </View>
       <DataTable.Cell numeric>{x.amount}</DataTable.Cell>
       {!isPurchase && <DataTable.Cell numeric>{x.MSQ}</DataTable.Cell>}
       <DataTable.Cell numeric>
@@ -201,7 +203,9 @@ const UpdateDialog = ({
           <ScrollView style={{ height: "40%" }}>
             <DataTable style={{ marginVertical: 20 }}>
               <DataTable.Header>
-                <DataTable.Title>Name</DataTable.Title>
+                <View style={styles.customCell}>
+                  <Text>Name</Text>
+                </View>
                 <DataTable.Title numeric>QNTY</DataTable.Title>
                 {!isPurchase && <DataTable.Title numeric>MSQ</DataTable.Title>}
                 <DataTable.Title numeric></DataTable.Title>
@@ -242,6 +246,11 @@ const styles = StyleSheet.create({
   },
   downPush: {
     backgroundColor: "#FFFFFF",
+  },
+  customCell: {
+    width: "50%",
+    marginVertical: 8,
+    justifyContent: "center",
   },
 });
 

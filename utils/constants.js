@@ -25,3 +25,50 @@ export const orderOptions = [
     value: "delete_order",
   },
 ];
+
+export const serviceStatuses = [
+  {
+    value: "Called",
+    label: "Called",
+  },
+  {
+    value: "Closed",
+    label: "Closed",
+  },
+  {
+    value: "Created",
+    label: "Created",
+  },
+  {
+    value: "Diagnosed",
+    label: "Diagnosed",
+  },
+  {
+    value: "NO SHOW",
+    label: "NO SHOW",
+  },
+  {
+    value: "Not Registered",
+    label: "Not Registered",
+  },
+  {
+    value: "Recieved",
+    label: "Recieved",
+  },
+  {
+    value: "Registered",
+    label: "Registered",
+  },
+  {
+    value: "Opened",
+    label: "Opened",
+  },
+  {
+    value: "Waiting for Parts",
+    label: "Waiting for Parts",
+  },
+  {
+    value: "Won't come",
+    label: "Won't come",
+  },
+];

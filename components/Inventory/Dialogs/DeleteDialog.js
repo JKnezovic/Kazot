@@ -1,4 +1,4 @@
-import { Dialog, Button, DataTable } from "react-native-paper";
+import { Dialog, Button } from "react-native-paper";
 import { Text } from "react-native";
 import { colours } from "../../../utils/constants";
 
@@ -7,7 +7,7 @@ const DeleteDialog = ({ doDelete, setIsDelete, item }) => {
     <>
       <Dialog.Title>Delete</Dialog.Title>
       <Dialog.Content>
-        <Text>{"Are you sure you want to delete product:"}</Text>
+        <Text>{"Are you sure you want to delete:"}</Text>
         <Text>{item + "?"}</Text>
       </Dialog.Content>
       <Dialog.Actions>

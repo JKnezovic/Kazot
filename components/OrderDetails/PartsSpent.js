@@ -8,7 +8,7 @@ import {
   DataTable,
   IconButton,
 } from "react-native-paper";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -173,7 +173,9 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
 
   const tableRows = partsUsed.map((item) => (
     <DataTable.Row key={item.id} onPress={() => prepareUpdate(item)}>
-      <DataTable.Cell>{item.get("part_name")}</DataTable.Cell>
+      <View style={styles.customCell}>
+        <Text numberOfLines={5}>{item.get("part_name")}</Text>
+      </View>
       <DataTable.Cell numeric>{item.get("quantity_spent")}</DataTable.Cell>
       <DataTable.Cell numeric>
         <AntDesign
@@ -200,7 +202,9 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       >
         <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
           <DataTable.Header>
-            <DataTable.Title>Name</DataTable.Title>
+            <View style={styles.customCell}>
+              <Text>Name</Text>
+            </View>
             <DataTable.Title numeric>Quantity</DataTable.Title>
             <DataTable.Title numeric>
               <AntDesign
@@ -319,5 +323,13 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  customCell: {
+    width: "60%",
+    marginVertical: 8,
+    justifyContent: "center",
+  },
+});
 
 export default PartsSpent;
