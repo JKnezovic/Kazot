@@ -1,7 +1,7 @@
 import { Dialog, Button, DataTable } from "react-native-paper";
 import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import Parse from "parse/react-native.js";
 import { AntDesign } from "@expo/vector-icons";
@@ -114,15 +114,17 @@ const ServiceTypeDialog = ({ visible, setVisible, setSnackbar }) => {
                   <View style={styles.customCell}>
                     <Text>Name</Text>
                   </View>
-                  <DataTable.Title numeric>
+                  <Pressable
+                    onPress={() => setIsAdd(true)}
+                    style={styles.customTitle}
+                  >
                     <AntDesign
-                      style={{ alignSelf: "center" }}
+                      style={styles.end}
                       name="pluscircleo"
-                      size={23}
-                      color={"green"}
-                      onPress={() => setIsAdd(true)}
+                      size={25}
+                      color="green"
                     />
-                  </DataTable.Title>
+                  </Pressable>
                 </DataTable.Header>
                 {tableRows}
               </DataTable>
@@ -159,6 +161,17 @@ const styles = StyleSheet.create({
     width: "80%",
     marginVertical: 8,
     justifyContent: "center",
+  },
+  customTitle: {
+    alignSelf: "center",
+    width: "20%",
+  },
+  text: {
+    color: "gray",
+    fontWeight: "500",
+  },
+  end: {
+    alignSelf: "flex-end",
   },
 });
 

@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   ScrollView,
   Text,
+  Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import FABGroup from "./FABGroup";
@@ -216,13 +217,13 @@ const InventoryMainScreen = () => {
       <ScrollView style={{ flex: 1 }}>
         <DataTable style={{ marginBottom: 80 }}>
           <DataTable.Header>
-            <View
+            <Pressable
               style={styles.customCell}
               sortDirection={renderSortIcon("name")}
               onPress={() => handleSortColumn("name")}
             >
               <Text>Name</Text>
-            </View>
+            </Pressable>
             <DataTable.Title
               sortDirection={renderSortIcon("stock")}
               onPress={() => handleSortColumn("stock")}

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     padding: 13,
   },
   action: {
-    fontSize: moderateScale(16),
+    fontSize: 16,
     alignSelf: "center",
     marginLeft: 15,
   },

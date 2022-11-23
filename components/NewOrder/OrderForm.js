@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, ScrollView, Alert } from "react-native";
-import {
-  TextInput,
-  Dialog,
-  Paragraph,
-  Button,
-  Portal,
-} from "react-native-paper";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
+import { TextInput } from "react-native-paper";
 import Styles from "./Styles";
 import Parse from "parse/react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { AntDesign } from "@expo/vector-icons";
-import { moderateScale } from "../../Scaling";
-import { colours } from "../../utils/constants";
 
 const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
   const [serviceTypes, setServiceTypes] = useState([]);
@@ -21,7 +12,6 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
   const [vehicles, setVehicles] = useState([]);
   const [openVehicle, setOpenVehicle] = useState(false);
   const [valueVehicle, setValueVehicle] = useState(null);
-  const [visible, setVisible] = React.useState(false);
 
   useEffect(() => {
     FadeIn();
@@ -64,52 +54,8 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
     }));
   };
 
-  const saveServiceType = async () => {
-    let service_type = new Parse.Object("ServiceType");
-    service_type.set("name", valueST);
-    try {
-      await service_type.save();
-      // Success
-      getServiceTypes();
-      Alert.alert("Success!", "New service type added!");
-      setVisible(false);
-      return true;
-    } catch (error) {
-      Alert.alert("Error!", error.message);
-      setVisible(false);
-      return false;
-    }
-  };
-
   return (
     <KeyboardAvoidingView style={{ marginTop: 10 }}>
-      <Portal>
-        <Dialog
-          style={{
-            backgroundColor: "#FFFFFF",
-            width: moderateScale(300),
-            alignSelf: "center",
-          }}
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-        >
-          <Dialog.Content>
-            <Paragraph>
-              Do you want to save this custom value for further use as dropdown
-              item?
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              textColor={colours.OXFORD_BLUE}
-              onPress={() => setVisible(false)}
-            >
-              Cancel
-            </Button>
-            <Button onPress={() => saveServiceType()}>Save</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
       <ScrollView>
         <DropDownPicker
           schema={{
@@ -132,20 +78,6 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
           setItems={setServiceTypes}
           setValue={setValueST}
           setOpen={setOpenST}
-          ArrowDownIconComponent={({ style }) =>
-            serviceTypes.some(
-              (e) => e.objectId === undefined && e.name === valueST
-            ) ? (
-              <AntDesign
-                name="plus"
-                size={24}
-                color="green"
-                onPress={() => setVisible(true)}
-              />
-            ) : (
-              <AntDesign name="down" size={15} color="black" />
-            )
-          }
         ></DropDownPicker>
         {orderState.client ? (
           <DropDownPicker
@@ -172,9 +104,6 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
             setItems={setVehicles}
             setValue={setValueVehicle}
             setOpen={setOpenVehicle}
-            ArrowDownIconComponent={({ style }) => (
-              <AntDesign name="down" size={15} color="black" />
-            )}
           ></DropDownPicker>
         ) : (
           <TextInput

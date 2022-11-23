@@ -42,41 +42,37 @@ const ItemViewDetails = ({
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Name:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text numberOfLines={5}>{item?.get("name")}</Text>
+                  <Text>{item?.get("name")}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Stock:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text numberOfLines={5}>{item?.get("stock")}</Text>
+                  <Text>{item?.get("stock")}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Purchased at:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text numberOfLines={5}>
-                    {DateToDDMMYY(item?.get("last_purchase"))}
-                  </Text>
+                  <Text>{DateToDDMMYY(item?.get("last_purchase"))}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Inventory:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text numberOfLines={5}>{item?.get("inventory_stock")}</Text>
+                  <Text>{item?.get("inventory_stock")}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Last Inventory:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text numberOfLines={5}>
-                    {DateToDDMMYY(item?.get("last_inventory_check"))}
-                  </Text>
+                  <Text>{DateToDDMMYY(item?.get("last_inventory_check"))}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"MSQ:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text numberOfLines={5}>{item?.get("MSQ")}</Text>
+                  <Text>{item?.get("MSQ")}</Text>
                 </View>
               </DataTable.Row>
             </DataTable>
@@ -108,13 +104,8 @@ const styles = StyleSheet.create({
     width: moderateScale(300),
     alignSelf: "center",
   },
-  textInput: {
-    marginVertical: 5,
-    backgroundColor: "#FFFFFF",
-  },
   cell: {
     width: "55%",
-    marginVertical: 5,
     justifyContent: "center",
   },
   row: {

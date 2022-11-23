@@ -8,7 +8,7 @@ import {
   DataTable,
   IconButton,
 } from "react-native-paper";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -203,18 +203,22 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
         <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
           <DataTable.Header>
             <View style={styles.customCell}>
-              <Text>Name</Text>
+              <Text style={styles.text}>Name</Text>
             </View>
-            <DataTable.Title numeric>Quantity</DataTable.Title>
-            <DataTable.Title numeric>
+            <View style={styles.customTitle}>
+              <Text style={[styles.text, styles.end]}> Quantity</Text>
+            </View>
+            <Pressable
+              onPress={() => prepareAddNew()}
+              style={styles.customTitle}
+            >
               <AntDesign
-                style={{ alignSelf: "center" }}
+                style={styles.end}
                 name="pluscircleo"
-                size={24}
+                size={25}
                 color="green"
-                onPress={() => prepareAddNew()}
               />
-            </DataTable.Title>
+            </Pressable>
           </DataTable.Header>
           {tableRows}
         </DataTable>
@@ -329,6 +333,17 @@ const styles = StyleSheet.create({
     width: "60%",
     marginVertical: 8,
     justifyContent: "center",
+  },
+  customTitle: {
+    alignSelf: "center",
+    width: "20%",
+  },
+  text: {
+    color: "gray",
+    fontWeight: "500",
+  },
+  end: {
+    alignSelf: "flex-end",
   },
 });
 

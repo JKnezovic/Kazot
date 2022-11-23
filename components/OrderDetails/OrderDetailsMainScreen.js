@@ -7,7 +7,14 @@ import ServiceStatusHistory from "./ServiceStatusHistory";
 import ServicesDone from "./ServicesDone";
 import PartsSpent from "./PartsSpent";
 import Attachments from "./Attachments";
-import { Divider, Snackbar, Button, Portal, Dialog } from "react-native-paper";
+import {
+  Divider,
+  Snackbar,
+  Button,
+  Portal,
+  Dialog,
+  DataTable,
+} from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { colours } from "../../utils/constants";
 import useScreenDimensions from "../../useScreenDimensions";
@@ -19,9 +26,6 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [activityIndicator, setActivityIndicator] = useState(true);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
-  const [orderStatuses, setOrderStatuses] = useState(serviceStatuses);
-  const [open, setOpen] = useState(true);
-  const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const screenData = useScreenDimensions();
 
@@ -68,13 +72,8 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     }
   };
 
-  const setChange = (text) => {
-    setValue(text);
+  const SaveNewStatusHistory = async (value) => {
     setVisible(false);
-    SaveNewStatusHistory();
-  };
-
-  const SaveNewStatusHistory = async () => {
     const currentUser = await Parse.User.currentAsync();
     let StatusHistory = new Parse.Object("OrderStatusHistory");
     StatusHistory.set("status", value);
@@ -88,8 +87,6 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     try {
       let statusHistory = await StatusHistory.save();
       let serviceUpdate = await serviceQuery.save();
-      setVisible(false);
-      setValue("");
       setService(serviceUpdate);
       setSnackbar(true, "Saved successfully");
       return true;
@@ -110,6 +107,14 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
         />
       </View>
     );
+
+  const items = serviceStatuses.map((item, index) => (
+    <DataTable.Row key={index}>
+      <DataTable.Cell onPress={() => SaveNewStatusHistory(item.value)}>
+        {item.label}
+      </DataTable.Cell>
+    </DataTable.Row>
+  ));
 
   return (
     <>
@@ -161,25 +166,15 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       </Snackbar>
       <Portal>
         <Dialog
-          style={{ backgroundColor: "#FFFFFF", height: "50%" }}
+          style={{ backgroundColor: "#FFFFFF", height: "70%" }}
           visible={visible}
           onDismiss={() => setVisible(false)}
         >
           <Dialog.Title>Change order status:</Dialog.Title>
           <Dialog.Content>
-            <DropDownPicker
-              listMode="SCROLLVIEW"
-              closeOnBackPressed={true}
-              itemSeparator={true}
-              value={value}
-              open={open}
-              items={orderStatuses}
-              placeholder="Select Status"
-              onChangeValue={(text) => setChange(text)}
-              setItems={setOrderStatuses}
-              setValue={setValue}
-              setOpen={setOpen}
-            ></DropDownPicker>
+            <DataTable>
+              <ScrollView style={{ height: "90%" }}>{items}</ScrollView>
+            </DataTable>
           </Dialog.Content>
         </Dialog>
       </Portal>
