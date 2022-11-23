@@ -3,7 +3,6 @@ import Parse from "parse/react-native.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { APPLICATION_ID, JAVASCRIPT_KEY } from "./config.js";
 import OrderDetailsMainScreen from "./components/OrderDetails/OrderDetailsMainScreen.js";
 import LoginScreen from "./components/Login/LoginScreen";
 import MainScreen from "./components/MainScreen/MainScreen";
@@ -11,6 +10,8 @@ import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
 import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
+import { APPLICATION_ID, JAVASCRIPT_KEY } from "./auth_keys.js";
+
 import {
   MD3LightTheme,
   Provider as PaperProvider,
