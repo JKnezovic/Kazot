@@ -40,6 +40,7 @@ export default function ServicesHistory({ clientId }) {
         ) : (
           services.map((service, key) => (
             <List.Item
+              onPress={() => navigateToOrder(service.id)}
               key={key}
               title={service.get("updatedAt").toLocaleString("en-GB", {
                 weekday: "long",
@@ -47,11 +48,7 @@ export default function ServicesHistory({ clientId }) {
                 month: "long",
                 day: "numeric",
               })}
-              right={(props) => (
-                <Pressable onPress={() => navigateToOrder(service.id)}>
-                  <List.Icon {...props} icon="open-in-new" />
-                </Pressable>
-              )}
+              right={(props) => <List.Icon {...props} icon="open-in-new" />}
             />
           ))
         )}

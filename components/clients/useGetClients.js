@@ -10,7 +10,8 @@ const useGetClients = () => {
     setIsLoading(true);
     setIsLoaded(false);
     let parseClients = new Parse.Query("Clients");
-    let queryResult = await parseClients.findAll();
+    parseClients.ascending("name");
+    let queryResult = await parseClients.find();
     setClients(transformClients(queryResult, query));
     setIsLoading(false);
     setIsLoaded(true);

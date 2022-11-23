@@ -62,7 +62,7 @@ const UserProfile = ({ setUser }) => {
           {userItem?.role === "admin" && (
             <>
               <ActionTile
-                title={"Create new user"}
+                title={"Create New User"}
                 icon={"adduser"}
                 position={0}
                 action={() => setCreateUserVisible(true)}

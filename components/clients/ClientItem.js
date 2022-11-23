@@ -3,21 +3,21 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 import { colours } from "../../utils/constants";
-// import { isLandscape } from ../../useScreenDimensions
+import useScreenDimensions from "../../useScreenDimensions";
 
 export default function ClientItem({
   client = {},
   selected = false,
   setSelectedClient,
 }) {
+  const screenData = useScreenDimensions();
   const navigation = useNavigation();
   const openClientDetails = () => {
-    // if(isLandscape())
-    // setSelectedClient((prevClient) => {
-    //  return prevClient?.id === client.id ? null : client;
-    // });
-    // else
-    navigation.navigate("Client Details", client);
+    if (screenData.isLandscape)
+      setSelectedClient((prevClient) => {
+        return prevClient?.id === client.id ? null : client;
+      });
+    else navigation.navigate("Client Details", client);
   };
   return (
     <View>
@@ -27,7 +27,12 @@ export default function ClientItem({
       >
         <Avatar.Text
           size={60}
-          label={`${client.get("name")[0]}${client.get("surname")[0]}`}
+          label={
+            client.get("surname")[0]
+              ? `${client.get("name")[0]}${client.get("surname")[0]}`
+              : `${client.get("name")[0]}${client.get("name")[1]}`
+          }
+          labelStyle={styles.label}
           style={styles.initials}
           color={colours.WHITE}
         />
@@ -42,9 +47,7 @@ export default function ClientItem({
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "white",
-    marginBottom: 10,
     paddingHorizontal: 10,
-    paddingVertical: 5,
     height: 75,
     display: "flex",
     flexDirection: "row",
@@ -72,6 +75,9 @@ const styles = StyleSheet.create({
   },
   initials: {
     backgroundColor: colours.ORANGE_WEB,
-    marginRight: 5,
+    marginRight: 10,
+  },
+  label: {
+    fontSize: 25,
   },
 });
