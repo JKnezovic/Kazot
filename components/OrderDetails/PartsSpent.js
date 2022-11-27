@@ -6,8 +6,9 @@ import {
   Button,
   TextInput,
   DataTable,
+  IconButton,
 } from "react-native-paper";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -160,9 +161,21 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     setUpdate(false);
   };
 
+  const increment = () => {
+    var value = parseInt(number) + 1;
+    setNumber(value.toString());
+  };
+
+  const decrement = () => {
+    var value = parseInt(number) - 1;
+    setNumber(value.toString());
+  };
+
   const tableRows = partsUsed.map((item) => (
     <DataTable.Row key={item.id} onPress={() => prepareUpdate(item)}>
-      <DataTable.Cell>{item.get("part_name")}</DataTable.Cell>
+      <View style={styles.customCell}>
+        <Text numberOfLines={5}>{item.get("part_name")}</Text>
+      </View>
       <DataTable.Cell numeric>{item.get("quantity_spent")}</DataTable.Cell>
       <DataTable.Cell numeric>
         <AntDesign
@@ -180,7 +193,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       <List.Accordion
         style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
         titleStyle={{ color: "#14213D" }}
-        title={"Parts Spent"}
+        title={"Parts Used"}
         left={(props) => (
           <List.Icon {...props} icon="archive-cog" color="#fca311" />
         )}
@@ -189,17 +202,23 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       >
         <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
           <DataTable.Header>
-            <DataTable.Title>Name</DataTable.Title>
-            <DataTable.Title numeric>Quantity</DataTable.Title>
-            <DataTable.Title numeric>
+            <View style={styles.customCell}>
+              <Text style={styles.text}>Name</Text>
+            </View>
+            <View style={styles.customTitle}>
+              <Text style={[styles.text, styles.end]}> Quantity</Text>
+            </View>
+            <Pressable
+              onPress={() => prepareAddNew()}
+              style={styles.customTitle}
+            >
               <AntDesign
-                style={{ alignSelf: "center" }}
+                style={styles.end}
                 name="pluscircleo"
-                size={24}
+                size={25}
                 color="green"
-                onPress={() => prepareAddNew()}
               />
-            </DataTable.Title>
+            </Pressable>
           </DataTable.Header>
           {tableRows}
         </DataTable>
@@ -218,7 +237,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
                 value: "name",
               }}
               disabled={dropdownDisabled}
-              listMode="SCROLLVIEW"
+              listMode="MODAL"
               closeOnBackPressed={true}
               itemSeparator={true}
               searchable={true}
@@ -242,6 +261,14 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
               <Text style={{ alignSelf: "center" }}>
                 {"Quantity Spent:   "}
               </Text>
+              <IconButton
+                style={{ alignSelf: "center" }}
+                icon="minus"
+                mode="outlined"
+                iconColor={colours.ORANGE_WEB}
+                size={20}
+                onPress={() => decrement()}
+              />
               <TextInput
                 style={{
                   width: moderateScale(50),
@@ -252,6 +279,14 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
                 keyboardType="number-pad"
                 value={number}
                 onChangeText={(text) => setNumber(text)}
+              />
+              <IconButton
+                icon="plus"
+                style={{ alignSelf: "center" }}
+                mode="outlined"
+                iconColor={colours.ORANGE_WEB}
+                size={20}
+                onPress={() => increment()}
               />
             </View>
           </Dialog.Content>
@@ -292,5 +327,24 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  customCell: {
+    width: "60%",
+    marginVertical: 8,
+    justifyContent: "center",
+  },
+  customTitle: {
+    alignSelf: "center",
+    width: "20%",
+  },
+  text: {
+    color: "gray",
+    fontWeight: "500",
+  },
+  end: {
+    alignSelf: "flex-end",
+  },
+});
 
 export default PartsSpent;

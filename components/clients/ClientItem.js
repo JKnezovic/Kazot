@@ -10,10 +10,11 @@ export default function ClientItem({
   selected = false,
   setSelectedClient,
 }) {
+  const screenData = useScreenDimensions();
   const navigation = useNavigation();
   const { isLandscape } = useScreenDimensions();
   const openClientDetails = () => {
-    if (isLandscape)
+    if (screenData.isLandscape)
       setSelectedClient((prevClient) => {
         return prevClient?.id === client.id ? null : client;
       });
@@ -27,7 +28,12 @@ export default function ClientItem({
       >
         <Avatar.Text
           size={60}
-          label={`${client.get("name")[0]}${client.get("surname")[0]}`}
+          label={
+            client.get("surname")[0]
+              ? `${client.get("name")[0]}${client.get("surname")[0]}`
+              : `${client.get("name")[0]}${client.get("name")[1]}`
+          }
+          labelStyle={styles.label}
           style={styles.initials}
           color={colours.WHITE}
         />
@@ -42,9 +48,7 @@ export default function ClientItem({
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "white",
-    marginBottom: 10,
     paddingHorizontal: 10,
-    paddingVertical: 5,
     height: 75,
     display: "flex",
     flexDirection: "row",
@@ -72,6 +76,9 @@ const styles = StyleSheet.create({
   },
   initials: {
     backgroundColor: colours.ORANGE_WEB,
-    marginRight: 5,
+    marginRight: 10,
+  },
+  label: {
+    fontSize: 25,
   },
 });

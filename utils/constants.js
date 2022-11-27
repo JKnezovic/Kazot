@@ -10,3 +10,65 @@ export const filter = [
   { value: "all", label: "All" },
   { value: "created", label: "Created" },
 ];
+
+export const orderOptions = [
+  {
+    label: "View order",
+    value: "order_details",
+  },
+  {
+    label: "View client",
+    value: "client_details",
+  },
+  {
+    label: "Delete order",
+    value: "delete_order",
+  },
+];
+
+export const serviceStatuses = [
+  {
+    value: "Called",
+    label: "Called",
+  },
+  {
+    value: "Closed",
+    label: "Closed",
+  },
+  {
+    value: "Created",
+    label: "Created",
+  },
+  {
+    value: "Diagnosed",
+    label: "Diagnosed",
+  },
+  {
+    value: "NO SHOW",
+    label: "NO SHOW",
+  },
+  {
+    value: "Not Registered",
+    label: "Not Registered",
+  },
+  {
+    value: "Recieved",
+    label: "Recieved",
+  },
+  {
+    value: "Registered",
+    label: "Registered",
+  },
+  {
+    value: "Opened",
+    label: "Opened",
+  },
+  {
+    value: "Waiting for Parts",
+    label: "Waiting for Parts",
+  },
+  {
+    value: "Won't come",
+    label: "Won't come",
+  },
+];

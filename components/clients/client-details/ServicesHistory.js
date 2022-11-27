@@ -22,6 +22,8 @@ export default function ServicesHistory({ clientId }) {
   return (
     <View style={styles.container}>
       <List.Accordion
+        style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
+        titleStyle={{ color: "#14213D" }}
         title="Services History"
         left={(props) => <List.Icon {...props} icon="hammer-wrench" />}
         expanded={isExpanded}
@@ -38,6 +40,7 @@ export default function ServicesHistory({ clientId }) {
         ) : (
           services.map((service, key) => (
             <List.Item
+              onPress={() => navigateToOrder(service.id)}
               key={key}
               title={service.get("updatedAt").toLocaleString("en-GB", {
                 weekday: "long",
@@ -45,11 +48,7 @@ export default function ServicesHistory({ clientId }) {
                 month: "long",
                 day: "numeric",
               })}
-              right={(props) => (
-                <Pressable onPress={() => navigateToOrder(service.id)}>
-                  <List.Icon {...props} icon="open-in-new" />
-                </Pressable>
-              )}
+              right={(props) => <List.Icon {...props} icon="open-in-new" />}
             />
           ))
         )}
