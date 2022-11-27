@@ -8,12 +8,14 @@ import {
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Portal, Snackbar, ActivityIndicator } from "react-native-paper";
 import SearchBar from "./SearchBar";
-import Filter from "./Filter";
+import StatusFilter from "./StatusFilter";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
 import { moderateScale, isSmartPhoneBasedOnRatio } from "../../Scaling";
 import { colours } from "../../utils/constants";
+import TimePicker from "./TimePicker";
+import Filters from "./Filters";
 
 export default function OrderMainScreen() {
   const {
@@ -28,31 +30,33 @@ export default function OrderMainScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const tabBarHeight = useBottomTabBarHeight();
+  const [statusFilters, setStatusFilters] = useState([]);
+  const [dateFilter, setDateFilter] = useState(new Date());
+
   useEffect(() => {
     if (showLoader && areOrdersLoaded) setShowLoader(false);
   }, [areOrdersLoaded]);
 
   useEffect(() => {
     if (!areOrdersLoading && areOrdersLoaded && isRefreshing) {
-      console.log(areOrdersLoading, areOrdersLoaded);
       setIsRefreshing(false);
     }
   }, [orders, areOrdersLoading, areOrdersLoaded]);
 
   useEffect(() => {
     // fetch orders when user pulls list down
-    if (isRefreshing) getOrders();
+    if (isRefreshing) getOrders({ statusFilters, dateFilter });
   }, [isRefreshing]);
 
   useEffect(() => {
-    getOrders();
-  }, []);
+    getOrders({ statusFilters, dateFilter });
+  }, [statusFilters, dateFilter]);
 
   useEffect(() => {
     if (!isLoading && isLoaded) {
       setIsSnackbarVisible(true);
       reset();
-      getOrders();
+      getOrders({ statusFilters, dateFilter });
     }
   }, [isLoading, isLoaded]);
 
@@ -88,7 +92,9 @@ export default function OrderMainScreen() {
             initialOrders={orders}
             setOrders={setFilteredOrders}
           />
-          <Filter orders={filteredOrders} setOrders={setFilteredOrders} />
+          <Filters
+            {...{ statusFilters, setStatusFilters, dateFilter, setDateFilter }}
+          />
         </View>
         {showLoader ? (
           <View style={styles.activityIndicator}>
@@ -99,7 +105,7 @@ export default function OrderMainScreen() {
             orders={filteredOrders}
             deleteOrder={deleteOrder}
             {...{ isRefreshing, setIsRefreshing }}
-            getOrders={getOrders}
+            getOrders={() => getOrders({ statusFilters, dateFilter })}
           />
         )}
       </View>
@@ -122,7 +128,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "blue",
     height: moderateScale(50),
   },
   activityIndicator: {
