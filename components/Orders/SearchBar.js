@@ -39,7 +39,8 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
           .get("vehicle_fkey")
           ?.get("model")
           .toLowerCase()
-          .includes(searchQueryLower)
+          .includes(searchQueryLower) ||
+        order.get("type").toLowerCase().includes(searchQueryLower)
     );
     setOrders(filtered);
   };

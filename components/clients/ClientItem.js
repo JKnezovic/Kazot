@@ -12,6 +12,7 @@ export default function ClientItem({
 }) {
   const screenData = useScreenDimensions();
   const navigation = useNavigation();
+  const { isLandscape } = useScreenDimensions();
   const openClientDetails = () => {
     if (screenData.isLandscape)
       setSelectedClient((prevClient) => {

@@ -5,22 +5,10 @@ import { moderateScale } from "../../Scaling";
 import { colours, orderOptions } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
+import OrderMenu from "./order/OrderMenu";
 
-const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
   const navigation = useNavigation();
-
-  const handleMenu = (action) => {
-    setIsMenuOpen(false);
-    if (action === "delete_order") {
-      modal.setIsModalOpen(true);
-      setSelectedOrderId(order.id);
-    } else if (action === "order_details") {
-      navigation.navigate("orderDetails", { serviceId: order.id });
-    } else if (action === "client_details") {
-      navigation.navigate("Client Details", order.get("client_fkey"));
-    }
-  };
 
   return (
     <Pressable
@@ -30,7 +18,12 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
       }
     >
       <View style={styles.container}>
-        <View style={styles.header}>
+        <View
+          style={[
+            styles.header,
+            order.get("is_highlighted") && styles.highlightedBg,
+          ]}
+        >
           <Text style={styles.text}>{order.get("service_id")}</Text>
           <Text style={styles.text}>
             {DateToDDMMYY(order.get("createdAt"))}
@@ -75,24 +68,13 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId }) => {
             </View>
           </View>
 
-          <Menu
-            visible={isMenuOpen}
-            onDismiss={() => setIsMenuOpen(false)}
-            anchor={
-              <IconButton
-                icon="dots-vertical"
-                onPress={() => setIsMenuOpen(true)}
-              />
-            }
-          >
-            {orderOptions.map((option, key) => (
-              <Menu.Item
-                key={key}
-                onPress={() => handleMenu(option.value)}
-                title={option.label}
-              />
-            ))}
-          </Menu>
+          <OrderMenu
+            order={order}
+            clientId={order.get("client_fkey")}
+            modal={modal}
+            setSelectedOrderId={setSelectedOrderId}
+            getOrders={getOrders}
+          />
         </View>
       </View>
     </Pressable>
@@ -117,6 +99,9 @@ const styles = StyleSheet.create({
     marginBottom: moderateScale(10),
     borderRadius: 10,
     overflow: "hidden",
+  },
+  highlightedBg: {
+    backgroundColor: colours.ANTIQUE_RUBY,
   },
   header: {
     backgroundColor: colours.OXFORD_BLUE,

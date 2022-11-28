@@ -6,7 +6,7 @@ const useGetOrders = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const getOrders = async () => {
+  const getOrders = async ({ statusFilters = [], dateFilter = null }) => {
     // get orders
     setIsLoading(true);
     setIsLoaded(false);
@@ -14,6 +14,14 @@ const useGetOrders = () => {
 
     parseOrders.include("client_fkey");
     parseOrders.include("vehicle_fkey");
+    statusFilters.forEach((filter) => parseOrders.equalTo("status", filter));
+    if (dateFilter) {
+      parseOrders.greaterThanOrEqualTo("createdAt", dateFilter);
+      var datePlusOne = new Date(dateFilter);
+      datePlusOne.setDate(datePlusOne.getDate() + 1);
+      datePlusOne.setHours(0, 0, 0, 0);
+      parseOrders.lessThan("createdAt", datePlusOne);
+    }
     try {
       let joinedResults = await parseOrders.find();
       setOrders(joinedResults);
