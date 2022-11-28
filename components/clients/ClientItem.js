@@ -1,18 +1,15 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 import { colours } from "../../utils/constants";
-import useScreenDimensions from "../../useScreenDimensions";
 
 export default function ClientItem({
   client = {},
   selected = false,
   setSelectedClient,
+  navigation,
+  screenData,
 }) {
-  const screenData = useScreenDimensions();
-  const navigation = useNavigation();
-  const { isLandscape } = useScreenDimensions();
   const openClientDetails = () => {
     if (screenData.isLandscape)
       setSelectedClient((prevClient) => {
@@ -29,7 +26,7 @@ export default function ClientItem({
         <Avatar.Text
           size={60}
           label={
-            client.get("surname")[0]
+            client.get("surname")
               ? `${client.get("name")[0]}${client.get("surname")[0]}`
               : `${client.get("name")[0]}${client.get("name")[1]}`
           }

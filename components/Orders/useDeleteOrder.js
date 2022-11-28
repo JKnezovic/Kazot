@@ -11,7 +11,6 @@ const useDeleteOrder = () => {
     let deleteOrder = new Parse.Object("Services");
     deleteOrder.set("objectId", orderId);
     try {
-      console.log(orderId);
       await deleteOrder.destroy();
       setIsLoading(false);
       setIsLoaded(true);

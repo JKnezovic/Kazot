@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ClientItem from "./ClientItem";
 import ClientDetails from "./client-details/ClientDetails";
+import { FlashList } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/native";
+import useScreenDimensions from "../../useScreenDimensions";
 
 export default function ClientsList({
   clients = [],
@@ -9,24 +12,29 @@ export default function ClientsList({
   setIsRefreshing,
 }) {
   const [selectedClient, setSelectedClient] = useState(null);
+  const screenData = useScreenDimensions();
+  const navigation = useNavigation();
   useEffect(() => {
     setIsRefreshing(false), [clients];
   });
+  const renderItem = ({ item }) => (
+    <ClientItem
+      client={item}
+      setSelectedClient={setSelectedClient}
+      selected={item.id === selectedClient?.id}
+      navigation={navigation}
+      screenData={screenData}
+    />
+  );
   return (
     <View style={[{ height: "100%" }, selectedClient && styles.landscapeView]}>
-      <FlatList
+      <FlashList
         data={clients}
-        renderItem={({ item }) => (
-          <ClientItem
-            client={item}
-            setSelectedClient={setSelectedClient}
-            selected={item.id === selectedClient?.id}
-          />
-        )}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id}
         onRefresh={() => setIsRefreshing(true)}
         refreshing={isRefreshing}
-        style={[selectedClient && styles.firstChild, styles.list]}
+        estimatedItemSize={75}
       />
       {selectedClient && (
         <View style={selectedClient && styles.secondChild}>
