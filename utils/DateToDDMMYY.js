@@ -1,6 +1,7 @@
 const DateToDDMMYY = (Date) => {
-  let date, month, year;
+  if (!Date) return null;
 
+  let date, month, year;
   date = Date.getDate();
   month = Date.getMonth() + 1;
   year = Date.getFullYear();

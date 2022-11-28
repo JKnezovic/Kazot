@@ -1,30 +1,50 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, FlatList, View, Text } from "react-native";
 import { moderateScale } from "../../Scaling";
-import { colours } from "../../utils/constants";
 import Order from "./Order";
 import DeleteOrderModal from "./DeleteOrderModal";
 
-const OrdersList = ({ orders = [], deleteOrder }) => {
+const OrdersList = ({
+  orders = [],
+  deleteOrder,
+  isRefreshing = false,
+  setIsRefreshing,
+  getOrders,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
+  const renderListItem = ({ item }) => (
+    <Order
+      modal={{ isModalOpen, setIsModalOpen }}
+      order={item}
+      {...{ setSelectedOrderId, getOrders }}
+    />
+  );
+
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <DeleteOrderModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         deleteId={selectedOrderId}
         deleteOrder={deleteOrder}
       />
-      {orders.map((order, key) => (
-        <Order
-          modal={{ isModalOpen, setIsModalOpen }}
-          {...{ key, order, setSelectedOrderId }}
+      {orders.length > 0 ? (
+        <FlatList
+          data={orders}
+          renderItem={renderListItem}
+          keyExtractor={(item) => item.id}
+          onRefresh={() => setIsRefreshing(true)}
+          refreshing={isRefreshing}
+          style={styles.list}
         />
-      ))}
-      <View style={{ height: moderateScale(20) }} />
-    </ScrollView>
+      ) : (
+        <View style={styles.noOrders}>
+          <Text style={styles.noOrdersText}>Ø No orders found</Text>
+        </View>
+      )}
+    </View>
   );
 };
 
@@ -32,9 +52,22 @@ export default OrdersList;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colours.PLATINUM,
     height: "100%",
+  },
+  list: {
     paddingHorizontal: moderateScale(10),
     paddingTop: moderateScale(10),
+  },
+  noOrders: {
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  noOrdersText: {
+    fontSize: moderateScale(30),
+    color: "grey",
+    fontWeight: "300",
+    fontStyle: "italic",
   },
 });
