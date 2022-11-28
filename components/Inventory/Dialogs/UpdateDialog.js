@@ -57,7 +57,6 @@ const UpdateDialog = ({
   };
 
   const handleSelect = (x) => {
-    console.log(x);
     setItem(x);
     if (!isPurchase) {
       setMSQ(x.MSQ.toString());

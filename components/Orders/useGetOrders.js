@@ -11,7 +11,7 @@ const useGetOrders = () => {
     setIsLoading(true);
     setIsLoaded(false);
     let parseOrders = new Parse.Query("Services");
-
+    parseOrders.limit(999999);
     parseOrders.include("client_fkey");
     parseOrders.include("vehicle_fkey");
     try {

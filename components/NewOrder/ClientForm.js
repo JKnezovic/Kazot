@@ -35,6 +35,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
 
   const getClients = async function () {
     const parseQuery = new Parse.Query("Clients");
+    parseQuery.limit(999999);
     try {
       let clients = await parseQuery.find();
       setAllClients(clients);

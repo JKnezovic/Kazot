@@ -11,6 +11,7 @@ const useGetClients = () => {
     setIsLoaded(false);
     let parseClients = new Parse.Query("Clients");
     parseClients.ascending("name");
+    parseClients.limit(999999);
     let queryResult = await parseClients.find();
     setClients(transformClients(queryResult, query));
     setIsLoading(false);

@@ -52,6 +52,7 @@ const InventoryMainScreen = () => {
   const getAllParts = async () => {
     const serviceQuery = new Parse.Query("Inventory");
     serviceQuery.ascending("name");
+    serviceQuery.limit(999999);
     try {
       let Parts = await serviceQuery.find();
       setAllParts(Parts);
