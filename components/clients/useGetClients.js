@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Parse from "parse/react-native.js";
+import clientsTransformer from "./clientsTransformer";
 
 const useGetClients = () => {
   const [clients, setClients] = useState([]);
@@ -13,19 +14,21 @@ const useGetClients = () => {
     parseClients.ascending("name");
     parseClients.limit(999999);
     let queryResult = await parseClients.find();
-    setClients(transformClients(queryResult, query));
+    setClients(
+      applyFilters(clientsTransformer({ clients: queryResult }), query)
+    );
     setIsLoading(false);
     setIsLoaded(true);
   };
 
-  const transformClients = (clients, query = "") => {
+  const applyFilters = (clients, query = "") => {
     let transformedClients = clients;
     try {
       if (query.length)
         transformedClients = transformedClients.filter(
           (client) =>
-            client.get("name").toLowerCase().includes(query.toLowerCase()) ||
-            client.get("surname").toLowerCase().includes(query.toLowerCase())
+            client.name.toLowerCase().includes(query.toLowerCase()) ||
+            client.surname.toLowerCase().includes(query.toLowerCase())
         );
     } catch (e) {
       console.log("Error has occured");

@@ -42,10 +42,10 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     if (client) {
       setOrderState((prevState) => ({
         ...prevState,
-        name: client.get("name"),
-        surname: client.get("surname"),
-        contact: client.get("contact"),
-        email: client.get("email"),
+        name: client.name,
+        surname: client.surname,
+        contact: client.contact,
+        email: client.email,
       }));
     }
   }, [client]);
@@ -117,7 +117,10 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     let Vehicle = new Parse.Object("Vehicles");
     Vehicle.set("model", orderState.model);
     Vehicle.set("serial_number", orderState.serialNumber);
-    Vehicle.set("client_fkey", client);
+    Vehicle.set(
+      "client_fkey",
+      new Parse.Object("Clients", { id: client.clientId })
+    );
 
     try {
       let vehicle = await Vehicle.save();
@@ -136,7 +139,10 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     Service.set("type", orderState.serviceType);
     Service.set("service_id", service_id);
     Service.set("status", "Created");
-    Service.set("client_fkey", client);
+    Service.set(
+      "client_fkey",
+      new Parse.Object("Clients", { id: client.clientId })
+    );
     Service.set("vehicle_fkey", vehicle);
 
     try {
@@ -151,7 +157,10 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
   const IsNewVehicleForClient = async (client) => {
     try {
       let query1 = new Parse.Query("Vehicles");
-      query1.equalTo("client_fkey", client);
+      query1.equalTo(
+        "client_fkey",
+        new Parse.Object("Clients", { id: client.clientId })
+      );
       let query2 = new Parse.Query("Vehicles");
       query2.equalTo("serial_number", orderState.serialNumber);
       let query = new Parse.Query("Vehicles");
@@ -170,7 +179,7 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     setActivityIndicator(true);
 
     //If existing client was not selected create new client
-    if (orderState.client && orderState.client.get("name") === orderState.name)
+    if (orderState.client && orderState.client.name === orderState.name)
       client = orderState.client;
     else client = await SaveNewClient();
     if (client === false) {

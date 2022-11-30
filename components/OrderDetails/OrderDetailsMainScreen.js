@@ -15,10 +15,10 @@ import {
   Dialog,
   DataTable,
 } from "react-native-paper";
-import DropDownPicker from "react-native-dropdown-picker";
 import { colours } from "../../utils/constants";
 import useScreenDimensions from "../../useScreenDimensions";
 import { serviceStatuses } from "../../utils/constants";
+import serviceOrderTransformer from "../clients/client-details/serviceOrderTransformer";
 
 const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [service, setService] = useState(null);
@@ -35,7 +35,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: service?.get("service_id"),
+      title: service?.serviceId,
       headerRight: () => (
         <Button
           mode="outlined"
@@ -43,7 +43,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
           style={{ borderColor: colours.ORANGE_WEB, marginLeft: 10 }}
           onPress={() => setVisible(true)}
         >
-          {service?.get("status")}
+          {service?.status}
         </Button>
       ),
       headerTitleAlign: "center",
@@ -62,7 +62,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     serviceQuery.equalTo("objectId", serviceId);
     try {
       let Service = await serviceQuery.first();
-      setService(Service);
+      setService(serviceOrderTransformer({ serviceOrder: Service }));
       setActivityIndicator(false);
       return true;
     } catch (error) {
@@ -81,7 +81,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     StatusHistory.set("user_name", currentUser.get("username"));
 
     let serviceQuery = new Parse.Object("Services");
-    serviceQuery.set("objectId", service.id);
+    serviceQuery.set("objectId", service.serviceId);
     serviceQuery.set("status", value);
 
     try {

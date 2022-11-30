@@ -28,10 +28,10 @@ const DropdownSelect = ({
   const updateForm = (client) => {
     setVisible(false);
     let object = {
-      name: client.get("name"),
-      surname: client.get("surname"),
-      email: client.get("email"),
-      contact: client.get("contact"),
+      name: client.name,
+      surname: client.surname,
+      email: client.email,
+      contact: client.contact,
       client: client,
     };
     setOrderState((prevState) => ({ ...prevState, ...object }));
@@ -46,9 +46,9 @@ const DropdownSelect = ({
     if (text.length > 0) {
       var result = clients.filter(
         (x) =>
-          x.get("name").toLowerCase().startsWith(text.toLowerCase()) ||
-          x.get("surname").toLowerCase().startsWith(text.toLowerCase()) ||
-          x.get("contact").toLowerCase().startsWith(text.toLowerCase())
+          x.name.toLowerCase().startsWith(text.toLowerCase()) ||
+          x.surname.toLowerCase().startsWith(text.toLowerCase()) ||
+          x.contact.toLowerCase().startsWith(text.toLowerCase())
       );
       if (result.length > 0) {
         setSelectList(result);
@@ -61,9 +61,7 @@ const DropdownSelect = ({
     <Fragment key={x.id}>
       <List.Item
         onPress={() => updateForm(x)}
-        title={
-          x.get("name") + " " + x.get("surname") + "   " + x.get("contact")
-        }
+        title={x.name + " " + x.surname + "   " + x.contact}
       />
       {/* Remove divider from last item */}
       {i !== selectList.length - 1 && <Divider bold={true} />}

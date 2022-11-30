@@ -74,7 +74,7 @@ const DropDownCell = ({
           open={openST}
           value={valueST}
           items={serviceTypes}
-          placeholder={service?.get("type")}
+          placeholder={service?.type}
           onChangeValue={(text) => onSave(text)}
           setItems={setServiceTypes}
           setValue={setValueST}

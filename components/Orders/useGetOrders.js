@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import Parse from "parse/react-native.js";
+import serviceOrdersTransformer from "./serviceOrdersTransformer";
 
 const useGetOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -24,9 +25,9 @@ const useGetOrders = () => {
     }
     try {
       let joinedResults = await parseOrders.find();
-      setOrders(joinedResults);
+      setOrders(serviceOrdersTransformer({ data: joinedResults }));
     } catch (error) {
-      console.log("Something went wrong.");
+      console.log("Something went wrong.", error);
     }
 
     setIsLoading(false);

@@ -16,6 +16,7 @@ import UpdateDialog from "./Dialogs/UpdateDialog";
 import ItemViewDetails from "./Dialogs/ItemViewDetails";
 import Parse from "parse/react-native.js";
 import Searchbar from "./Searchbar";
+import partsTransformer from "./partsTransformer";
 
 const numberOfItemsPerPageList = [5, 10, 20];
 const defaultItem = {
@@ -50,26 +51,23 @@ const InventoryMainScreen = () => {
   const [sortColumn, setSortColumn] = useState("name");
 
   const getAllParts = async () => {
-    const serviceQuery = new Parse.Query("Inventory");
-    serviceQuery.ascending("name");
-    serviceQuery.limit(999999);
+    const inventoryQuery = new Parse.Query("Inventory");
+    inventoryQuery.ascending("name");
+    inventoryQuery.limit(999999);
     try {
-      let Parts = await serviceQuery.find();
-      setAllParts(Parts);
+      let parts = await inventoryQuery.find();
+      setAllParts(partsTransformer({ parts }));
       setActivityIndicator(false);
-      return true;
     } catch (error) {
       console.log("Error!", error.message);
       setActivityIndicator(false);
       setSnackbar(true, "Oops, something went wrong!");
-
-      return false;
     }
   };
 
   const DeleteInventoryItem = async () => {
     let Inventory = new Parse.Object("Inventory");
-    Inventory.set("objectId", viewItem.id);
+    Inventory.set("objectId", viewItem.partId);
 
     try {
       await Inventory.destroy();
@@ -77,11 +75,9 @@ const InventoryMainScreen = () => {
       setShowAction(false);
       setSnackbar(true, "Deleted successfully");
       getAllParts();
-      return true;
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");
       console.log(error);
-      return false;
     }
   };
 
@@ -168,9 +164,9 @@ const InventoryMainScreen = () => {
 
   const tableRows = partsFiltered
     .sort((a, b) =>
-      a.get(sortColumn) > b.get(sortColumn)
+      a[sortColumn] > b[sortColumn]
         ? 1 * sortDirection
-        : b.get(sortColumn) > a.get(sortColumn)
+        : b[sortColumn] > a[sortColumn]
         ? -1 * sortDirection
         : 0
     )
@@ -181,19 +177,19 @@ const InventoryMainScreen = () => {
     .map((item) => (
       <DataTable.Row
         onPress={() => prepareDialogView(item)}
-        key={item.id}
+        key={item.partId}
         style={
-          item.get("stock") <= item.get("MSQ") && {
+          item.stock <= item.MSQ && {
             backgroundColor: "rgba(255, 0, 0, 0.2);",
           }
         }
       >
         <View style={styles.customCell}>
-          <Text numberOfLines={5}>{item.get("name")}</Text>
+          <Text numberOfLines={5}>{item.name}</Text>
         </View>
-        <DataTable.Cell numeric>{item.get("stock")}</DataTable.Cell>
-        <DataTable.Cell numeric>{item.get("MSQ")}</DataTable.Cell>
-        <DataTable.Cell numeric>{item.get("inventory_stock")}</DataTable.Cell>
+        <DataTable.Cell numeric>{item.stock}</DataTable.Cell>
+        <DataTable.Cell numeric>{item.MSQ}</DataTable.Cell>
+        <DataTable.Cell numeric>{item.inventoryStock}</DataTable.Cell>
       </DataTable.Row>
     ));
 
@@ -240,8 +236,8 @@ const InventoryMainScreen = () => {
               MSQ
             </DataTable.Title>
             <DataTable.Title
-              sortDirection={renderSortIcon("inventory_stock")}
-              onPress={() => handleSortColumn("inventory_stock")}
+              sortDirection={renderSortIcon("inventoryStock")}
+              onPress={() => handleSortColumn("inventoryStock")}
               numeric
             >
               Inventory

@@ -19,14 +19,14 @@ const VehicleIssue = ({ service, open, getService }) => {
     >
       <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
         <DropDownCell
-          value={service?.get("type")}
+          value={service?.type}
           title={"Service Type:"}
           name={"type"}
           service={service}
           getService={getService}
         />
         <EditableCell
-          value={service?.get("vehicle_fkey")?.get("serial_number")}
+          value={service?.vehicleSerialNumber}
           title={"Vehicle S/N:"}
           name={"serial_number"}
           service={service}
@@ -34,14 +34,14 @@ const VehicleIssue = ({ service, open, getService }) => {
         />
 
         <EditableCell
-          value={service?.get("vehicle_fkey")?.get("model")}
+          value={service?.vehicleModel}
           title={"Vehicle Model:"}
           name={"model"}
           service={service}
           getService={getService}
         />
         <EditableCell
-          value={service?.get("issue")}
+          value={service?.issue}
           title={"Issue:"}
           numberOfLines={5}
           name={"issue"}
@@ -49,7 +49,7 @@ const VehicleIssue = ({ service, open, getService }) => {
           getService={getService}
         />
         <EditableCell
-          value={service?.get("notes")}
+          value={service?.notes}
           title={"Notes:"}
           numberOfLines={5}
           name={"notes"}

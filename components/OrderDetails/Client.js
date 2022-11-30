@@ -9,12 +9,10 @@ const Client = ({ service, open }) => {
   const navigation = useNavigation();
   const handlePress = () => setExpanded(!expanded);
   const goToCall = async () => {
-    await Linking.openURL(
-      `tel://${service?.get("client_fkey").get("contact")}`
-    );
+    await Linking.openURL(`tel://${service?.clientContact}`);
   };
   const goToEmail = async () => {
-    await Linking.openURL(`mailto:${service?.get("client_fkey").get("email")}`);
+    await Linking.openURL(`mailto:${service?.clientEmail}`);
   };
   return (
     <List.Accordion
@@ -31,22 +29,16 @@ const Client = ({ service, open }) => {
         <DataTable.Row>
           <DataTable.Cell>{"Name:"}</DataTable.Cell>
           <DataTable.Cell>
-            {service?.get("client_fkey").get("name") +
-              " " +
-              service?.get("client_fkey").get("surname")}
+            {service?.clientName + " " + service?.clientSurname}
           </DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row onPress={goToCall}>
           <DataTable.Cell>{"Contact:"}</DataTable.Cell>
-          <DataTable.Cell>
-            {service?.get("client_fkey").get("contact")}
-          </DataTable.Cell>
+          <DataTable.Cell>{service?.clientContact}</DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row onPress={goToEmail}>
           <DataTable.Cell>{"Email:"}</DataTable.Cell>
-          <DataTable.Cell>
-            {service?.get("client_fkey").get("email")}
-          </DataTable.Cell>
+          <DataTable.Cell>{service?.clientEmail}</DataTable.Cell>
         </DataTable.Row>
       </DataTable>
       <Button
@@ -59,9 +51,7 @@ const Client = ({ service, open }) => {
           paddingLeft: 0,
           marginVertical: 15,
         }}
-        onPress={() =>
-          navigation.navigate("Client Details", service?.get("client_fkey"))
-        }
+        onPress={() => navigation.navigate("Client Details", service?.clientId)}
       >
         {"View client"}
       </Button>

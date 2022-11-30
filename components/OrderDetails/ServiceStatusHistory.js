@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { List, DataTable } from "react-native-paper";
 import Parse from "parse/react-native.js";
-import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const ServiceStatusHistory = ({ service, open }) => {
   const [expanded, setExpanded] = useState(open);
@@ -29,8 +28,8 @@ const ServiceStatusHistory = ({ service, open }) => {
 
   const tableRows = orderStatuses.map((item) => (
     <DataTable.Row key={item.id}>
-      <DataTable.Cell>{item.get("status")}</DataTable.Cell>
-      <DataTable.Cell>{DateToDDMMYY(item.get("createdAt"))}</DataTable.Cell>
+      <DataTable.Cell>{item.status}</DataTable.Cell>
+      <DataTable.Cell>{item.createdAt}</DataTable.Cell>
       <DataTable.Cell>{item.get("user_name")}</DataTable.Cell>
     </DataTable.Row>
   ));

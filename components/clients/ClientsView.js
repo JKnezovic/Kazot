@@ -38,8 +38,8 @@ export default function ClientsView() {
     //filter array of clients by name or surname
     return clients.filter(
       (client) =>
-        client.get("name").toLowerCase().includes(query.toLowerCase()) ||
-        client.get("surname").toLowerCase().includes(query.toLowerCase())
+        client.name.toLowerCase().includes(query.toLowerCase()) ||
+        client.surname.toLowerCase().includes(query.toLowerCase())
     );
   };
 

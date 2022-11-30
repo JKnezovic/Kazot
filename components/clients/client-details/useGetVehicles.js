@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Parse from "parse/react-native.js";
+import vehiclesTransformer from "./vehiclesTransformer";
 
 const useGetVehicles = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -14,8 +15,14 @@ const useGetVehicles = () => {
       "client_fkey",
       new Parse.Object("Clients", { id: clientId })
     );
-    let queryResult = await parseVehicles.findAll();
-    setVehicles(queryResult);
+
+    try {
+      let queryResult = await parseVehicles.findAll();
+      setVehicles(vehiclesTransformer(queryResult));
+    } catch (e) {
+      console.log("Something went wrong.");
+    }
+
     setIsLoading(false);
     setIsLoaded(true);
   };

@@ -34,8 +34,11 @@ const EditableCell = ({
     Service.set("objectId", service.id);
 
     Vehicle.set(name, text);
-    if (service.get("client_fkey"))
-      Vehicle.set("client_fkey", service.get("client_fkey"));
+    if (service.clientId)
+      Vehicle.set(
+        "client_fkey",
+        new Parse.Object("Clients", { id: client.clientId })
+      );
 
     try {
       let vehicle = await Vehicle.save();

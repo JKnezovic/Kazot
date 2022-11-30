@@ -6,16 +6,10 @@ import { colours } from "../../utils/constants";
 export default function ClientItem({
   client = {},
   selected = false,
-  setSelectedClient,
   navigation,
-  screenData,
 }) {
   const openClientDetails = () => {
-    if (screenData.isLandscape)
-      setSelectedClient((prevClient) => {
-        return prevClient?.id === client.id ? null : client;
-      });
-    else navigation.navigate("Client Details", client);
+    navigation.navigate("Client Details", { clientId: client.clientId });
   };
   return (
     <View>
@@ -25,17 +19,13 @@ export default function ClientItem({
       >
         <Avatar.Text
           size={60}
-          label={
-            client.get("surname")
-              ? `${client.get("name")[0]}${client.get("surname")[0]}`
-              : `${client.get("name")[0]}${client.get("name")[1]}`
-          }
+          label={client.initials}
           labelStyle={styles.label}
           style={styles.initials}
           color={colours.WHITE}
         />
         <Text style={styles.text}>
-          {client.get("name")} {client.get("surname")}
+          {client.name} {client.surname}
         </Text>
       </Pressable>
     </View>

@@ -2,7 +2,7 @@ import React from "react";
 import ClientDetails from "./ClientDetails";
 
 export default function ClientDetailsView({ route }) {
-  const client = route.params;
+  const { clientId } = route.params;
 
-  return <ClientDetails client={client} />;
+  return <ClientDetails id={clientId} />;
 }

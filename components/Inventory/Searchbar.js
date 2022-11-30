@@ -15,7 +15,7 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
     const filtered = orders.filter((order) =>
-      order?.get("name").toLowerCase().includes(searchQueryLower)
+      order?.name.toLowerCase().includes(searchQueryLower)
     );
     setOrders(filtered);
   };

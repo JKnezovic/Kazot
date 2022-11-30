@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View } from "react-native";
 import useGetServicesForClient from "./useGetServicesForClient";
 import { List } from "react-native-paper";
 import { colours } from "../../../utils/constants";
@@ -40,14 +40,9 @@ export default function ServicesHistory({ clientId }) {
         ) : (
           services.map((service, key) => (
             <List.Item
-              onPress={() => navigateToOrder(service.id)}
+              onPress={() => navigateToOrder(service.serviceOrderId)}
               key={key}
-              title={service.get("updatedAt").toLocaleString("en-GB", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              title={service.createdAt}
               right={(props) => <List.Icon {...props} icon="open-in-new" />}
             />
           ))

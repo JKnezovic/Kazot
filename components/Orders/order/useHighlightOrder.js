@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import Parse from "parse";
 
 export default function useHighlightOrder() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,8 +10,9 @@ export default function useHighlightOrder() {
 
     // send post request
     try {
-      order.set("is_highlighted", !order.get("is_highlighted"));
-      await order.save();
+      let updateOrder = new Parse.Object({ id: order.serviceOrderId });
+      updateOrder.set("is_highlighted", !order.isHighlighted);
+      await updateOrder.save();
     } catch (e) {
       console.log("Something went wrong.");
     }

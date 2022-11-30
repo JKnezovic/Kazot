@@ -7,7 +7,7 @@ import useHighlightOrder from "./useHighlightOrder";
 
 const OrderMenu = ({
   order = {},
-  clientId = null,
+  client = null,
   getOrders,
   modal = {},
   setSelectedOrderId,
@@ -28,7 +28,7 @@ const OrderMenu = ({
         navigation.navigate("orderDetails", { serviceId: order.id });
         return;
       case "client_details":
-        navigation.navigate("Client Details", clientId);
+        navigation.navigate("Client Details", client);
         return;
       case "highlight":
         highlightOrder({ order });
@@ -56,7 +56,7 @@ const OrderMenu = ({
           />
         }
       >
-        {getOrderOptions(order.get("is_highlighted")).map((option, key) => (
+        {getOrderOptions(order.isHighlighted).map((option, key) => (
           <Menu.Item
             key={key}
             onPress={() => handleMenu(option.value)}

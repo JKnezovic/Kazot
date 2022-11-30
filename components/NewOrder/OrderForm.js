@@ -23,7 +23,10 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
     let query = new Parse.Query("Vehicles");
 
     try {
-      query.equalTo("client_fkey", orderState.client);
+      query.equalTo(
+        "client_fkey",
+        new Parse.Object("Clients", { id: orderState.clientId })
+      );
       let queryResult = await query.find();
       let resultJSON = JSON.parse(JSON.stringify(queryResult));
       setVehicles(resultJSON);
