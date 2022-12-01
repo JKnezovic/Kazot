@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: colours.WHITE,
     borderRadius: 5,
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: 100,
   },
   row: {
     display: "flex",

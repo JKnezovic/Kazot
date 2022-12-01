@@ -16,6 +16,7 @@ export default function serviceOrderTransformer({
     clientName: serviceOrder.get("client_fkey")?.get("name") || "",
     clientSurname: serviceOrder.get("client_fkey").get("surname") || "",
     clientContact: serviceOrder.get("client_fkey").get("contact") || "",
+    clientEmail: serviceOrder.get("client_fkey").get("email") || "",
     vehicleModel:
       serviceOrder.get("vehicle_fkey") &&
       (serviceOrder.get("vehicle_fkey").get("model") || ""),

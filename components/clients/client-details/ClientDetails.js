@@ -32,42 +32,44 @@ const ClientDetails = ({ id = null }) => {
       <ActivityIndicator />
     </View>
   ) : (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.heading}>
-        <Avatar.Text
-          size={120}
-          label={client.initials}
-          style={styles.initials}
-          labelStyle={styles.label}
-          color={colours.WHITE}
-        />
-        <Text style={[styles.title]}>
-          {client.name} {client.surname}
-        </Text>
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.heading}>
+          <Avatar.Text
+            size={120}
+            label={client.initials}
+            style={styles.initials}
+            labelStyle={styles.label}
+            color={colours.WHITE}
+          />
+          <Text style={[styles.title]}>
+            {client.name} {client.surname}
+          </Text>
 
-        <View style={[styles.row, styles.contact]}>
-          <View style={[styles.row, styles.contactWrap]}>
-            <Ionicons name="call" size={20} color={colours.OXFORD_BLUE} />
-            <Text onPress={goToCall} style={styles.contactText}>
-              {client.contact}
-            </Text>
-          </View>
-          {client.email && (
+          <View style={[styles.row, styles.contact]}>
             <View style={[styles.row, styles.contactWrap]}>
-              <MaterialIcons
-                name="email"
-                size={20}
-                color={colours.OXFORD_BLUE}
-              />
-              <Text onPress={goToEmail} style={styles.contactText}>
-                {client.email}
+              <Ionicons name="call" size={20} color={colours.OXFORD_BLUE} />
+              <Text onPress={goToCall} style={styles.contactText}>
+                {client.contact}
               </Text>
             </View>
-          )}
+            {client.email && (
+              <View style={[styles.row, styles.contactWrap]}>
+                <MaterialIcons
+                  name="email"
+                  size={20}
+                  color={colours.OXFORD_BLUE}
+                />
+                <Text onPress={goToEmail} style={styles.contactText}>
+                  {client.email}
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
-      <Vehicles clientId={id} />
-      <ServicesHistory clientId={id} />
+        <Vehicles clientId={id} />
+        <ServicesHistory clientId={id} />
+      </ScrollView>
       <FAB
         icon="plus"
         label={"New Order"}
@@ -76,15 +78,12 @@ const ClientDetails = ({ id = null }) => {
         style={styles.FAB}
         onPress={() => navigation.navigate("New Order", { client: client })}
       />
-    </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
     alignItems: "center",
     padding: 10,
     backgroundColor: colours.PLATINUM,

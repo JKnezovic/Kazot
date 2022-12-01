@@ -32,7 +32,6 @@ const DropdownSelect = ({
       surname: client.surname,
       email: client.email,
       contact: client.contact,
-      client: client,
     };
     setOrderState((prevState) => ({ ...prevState, ...object }));
   };
