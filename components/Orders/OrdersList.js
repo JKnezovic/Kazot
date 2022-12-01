@@ -3,7 +3,6 @@ import { StyleSheet, FlatList, View, Text } from "react-native";
 import { moderateScale } from "../../Scaling";
 import Order from "./Order";
 import DeleteOrderModal from "./DeleteOrderModal";
-import { FlashList } from "@shopify/flash-list";
 
 const OrdersList = ({
   orders = [],
@@ -32,14 +31,13 @@ const OrdersList = ({
         deleteOrder={deleteOrder}
       />
       {orders.length > 0 ? (
-        <FlashList
+        <FlatList
           data={orders}
           renderItem={renderListItem}
           keyExtractor={(item) => item.serviceOrderId}
           onRefresh={() => setIsRefreshing(true)}
           refreshing={isRefreshing}
           style={styles.list}
-          estimatedItemSize={75}
         />
       ) : (
         <View style={styles.noOrders}>
