@@ -30,7 +30,10 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
   const getServiceHistory = async () => {
     const serviceQuery = new Parse.Query("ServicesHistory");
     serviceQuery.descending("createdAt");
-    serviceQuery.equalTo("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    serviceQuery.equalTo("service_fkey", serviceObject);
     try {
       let ServiceHistory = await serviceQuery.find();
       setServiceHistory(ServiceHistory);
@@ -44,7 +47,10 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
   const SaveNewServiceHistory = async () => {
     const currentUser = await Parse.User.currentAsync();
     let ServiceHistory = new Parse.Object("ServicesHistory");
-    ServiceHistory.set("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    ServiceHistory.set("service_fkey", serviceObject);
     ServiceHistory.set("user_fkey", currentUser);
     ServiceHistory.set("user_name", currentUser.get("username"));
     ServiceHistory.set("service_description", serviceDescription);

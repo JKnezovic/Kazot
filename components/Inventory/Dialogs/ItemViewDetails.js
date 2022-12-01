@@ -32,7 +32,7 @@ const ItemViewDetails = ({
         <DeleteDialog
           doDelete={doDelete}
           setIsDelete={setIsDelete}
-          item={item.get("name")}
+          item={item.name}
         />
       ) : (
         <>
@@ -42,37 +42,37 @@ const ItemViewDetails = ({
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Name:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{item?.get("name")}</Text>
+                  <Text>{item?.name}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Stock:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{item?.get("stock")}</Text>
+                  <Text>{item?.name}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Purchased at:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{DateToDDMMYY(item?.get("last_purchase"))}</Text>
+                  <Text>{item?.lastPurchase}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Inventory:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{item?.get("inventory_stock")}</Text>
+                  <Text>{item?.inventoryStock}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Last Inventory:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{DateToDDMMYY(item?.get("last_inventory_check"))}</Text>
+                  <Text>{item?.lastInventoryCheck}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"MSQ:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{item?.get("MSQ")}</Text>
+                  <Text>{item?.MSQ}</Text>
                 </View>
               </DataTable.Row>
             </DataTable>

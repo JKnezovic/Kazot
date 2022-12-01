@@ -8,7 +8,7 @@ import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const TimePicker = ({ dateFilter = new Date(), setDateFilter }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [touched, setIsTouched] = useState(false);
 
   useEffect(() => {

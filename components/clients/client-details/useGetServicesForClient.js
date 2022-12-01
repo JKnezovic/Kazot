@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Parse from "parse/react-native.js";
-
+import serviceOrdersTransformer from "./serviceOrdersTransformer";
 const useGetServicesForClient = () => {
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState([false]);
@@ -15,7 +15,7 @@ const useGetServicesForClient = () => {
       new Parse.Object("Clients", { id: clientId })
     );
     let queryResult = await parseServices.findAll();
-    setServices(queryResult);
+    setServices(serviceOrdersTransformer({ serviceOrders: queryResult }));
     setIsLoading(false);
     setIsLoaded(true);
   };

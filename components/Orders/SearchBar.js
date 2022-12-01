@@ -16,31 +16,13 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
     const searchQueryLower = searchQuery.toLowerCase();
     const filtered = orders.filter(
       (order) =>
-        order
-          .get("client_fkey")
-          ?.get("name")
-          .toLowerCase()
-          .includes(searchQueryLower) ||
-        order
-          .get("client_fkey")
-          ?.get("surname")
-          .toLowerCase()
-          .includes(searchQueryLower) ||
-        order
-          .get("client_fkey")
-          ?.get("contact")
-          .toLowerCase()
-          .includes(searchQueryLower) ||
-        order.get("issue").toLowerCase().includes(searchQueryLower) ||
-        String(order.get("service_id"))
-          .toLowerCase()
-          .includes(searchQueryLower) ||
-        order
-          .get("vehicle_fkey")
-          ?.get("model")
-          .toLowerCase()
-          .includes(searchQueryLower) ||
-        order.get("type").toLowerCase().includes(searchQueryLower)
+        order.clientName.toLowerCase().includes(searchQueryLower) ||
+        order.clientSurname.toLowerCase().includes(searchQueryLower) ||
+        order.clientContact.toLowerCase().includes(searchQueryLower) ||
+        order.issue.toLowerCase().includes(searchQueryLower) ||
+        String(order.serviceId).toLowerCase().includes(searchQueryLower) ||
+        order.vehicleModel.toLowerCase().includes(searchQueryLower) ||
+        order.type.toLowerCase().includes(searchQueryLower)
     );
     setOrders(filtered);
   };

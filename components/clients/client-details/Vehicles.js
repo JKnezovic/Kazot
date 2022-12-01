@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import useGetVehicles from "./useGetVehicles";
 import { Portal, Snackbar, List } from "react-native-paper";
 import { colours } from "../../../utils/constants";
@@ -75,8 +75,8 @@ export default function Vehicles({ clientId }) {
           vehicles.map((vehicle, key) => (
             <List.Item
               key={key}
-              title={`Model: ${vehicle.get("model")}`}
-              description={`S/N: ${vehicle.get("serial_number")}`}
+              title={`Model: ${vehicle.model}`}
+              description={`S/N: ${vehicle.serialNumber}`}
               right={(props) => (
                 <Pressable onPress={() => deleteWithId(vehicle.id)}>
                   <List.Icon {...props} icon="delete-outline" />

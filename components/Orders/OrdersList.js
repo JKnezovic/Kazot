@@ -34,7 +34,7 @@ const OrdersList = ({
         <FlatList
           data={orders}
           renderItem={renderListItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.serviceOrderId}
           onRefresh={() => setIsRefreshing(true)}
           refreshing={isRefreshing}
           style={styles.list}

@@ -16,15 +16,22 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
   useEffect(() => {
     FadeIn();
     getServiceTypes();
-    if (orderState.client) getVehiclesForClient();
+    getVehiclesForClient();
   }, []);
 
   const getVehiclesForClient = async () => {
-    let query = new Parse.Query("Vehicles");
+    let clientQuery = new Parse.Query("Clients");
+    clientQuery.equalTo("name", orderState.name);
+    clientQuery.equalTo("contact", orderState.contact);
+    let vehicleQuery = new Parse.Query("Vehicles");
 
     try {
-      query.equalTo("client_fkey", orderState.client);
-      let queryResult = await query.find();
+      let clientResult = await clientQuery.find();
+      if (clientResult.length === 0) {
+        return;
+      }
+      vehicleQuery.equalTo("client_fkey", clientResult[0]);
+      let queryResult = await vehicleQuery.find();
       let resultJSON = JSON.parse(JSON.stringify(queryResult));
       setVehicles(resultJSON);
       return true;
@@ -79,7 +86,7 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
           setValue={setValueST}
           setOpen={setOpenST}
         ></DropDownPicker>
-        {orderState.client ? (
+        {vehicles.length ? (
           <DropDownPicker
             schema={{
               label: "serial_number",

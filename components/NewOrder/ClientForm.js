@@ -8,6 +8,7 @@ import { moderateScale } from "../../Scaling";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { FAB } from "react-native-paper";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
+import clientsTransformer from "../clients/clientsTransformer";
 
 const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
     parseQuery.limit(999999);
     try {
       let clients = await parseQuery.find();
-      setAllClients(clients);
+      setAllClients(clientsTransformer({ clients }));
       return true;
     } catch (error) {
       Alert.alert("Error!", error.message);

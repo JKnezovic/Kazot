@@ -7,6 +7,7 @@ import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AntDesign } from "@expo/vector-icons";
 import NumericValues from "./NumericValues";
+import partsTransformer from "../partsTransformer";
 
 const UpdateDialog = ({
   visible,
@@ -67,13 +68,10 @@ const UpdateDialog = ({
   const getAllParts = async () => {
     const serviceQuery = new Parse.Query("Inventory");
     try {
-      let Parts = await serviceQuery.findAll();
-      let resultJSON = JSON.parse(JSON.stringify(Parts));
-      setAllParts(resultJSON);
-      return true;
+      let parts = await serviceQuery.findAll();
+      setAllParts(partsTransformer({ parts }));
     } catch (error) {
       console.log("Error!", error.message);
-      return false;
     }
   };
 

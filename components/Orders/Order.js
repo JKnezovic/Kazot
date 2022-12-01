@@ -14,32 +14,27 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
     <Pressable
       style={styles.shadowWrapper}
       onPress={() =>
-        navigation.navigate("orderDetails", { serviceId: order.id })
+        navigation.navigate("orderDetails", { serviceId: order.serviceOrderId })
       }
     >
       <View style={styles.container}>
         <View
-          style={[
-            styles.header,
-            order.get("is_highlighted") && styles.highlightedBg,
-          ]}
+          style={[styles.header, order.isHighlighted && styles.highlightedBg]}
         >
-          <Text style={styles.text}>{order.get("service_id")}</Text>
-          <Text style={styles.text}>
-            {DateToDDMMYY(order.get("createdAt"))}
-          </Text>
+          <Text style={styles.text}>{order.serviceOrderId}</Text>
+          <Text style={styles.text}>{DateToDDMMYY(order.createdAt)}</Text>
         </View>
         <View style={styles.content}>
           <View style={styles.details}>
             <View style={styles.client}>
               <Text>
-                <Text>Name:</Text> {order.get("client_fkey")?.get("name")}
+                <Text>Name:</Text> {order.clientName}
               </Text>
               <Text>
-                <Text>Surname:</Text> {order.get("client_fkey")?.get("surname")}
+                <Text>Surname:</Text> {order.clientSurname}
               </Text>
               <Text>
-                <Text>Contact:</Text> {order.get("client_fkey")?.get("contact")}
+                <Text>Contact:</Text> {order.clientContact}
               </Text>
               <Text>
                 <Text>Status:</Text>
@@ -48,13 +43,13 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
             <View style={styles.divider} />
             <View style={styles.order}>
               <Text numberOfLines={1} style={{ flex: 1 }}>
-                <Text>Type:</Text> {order.get("type")}
+                <Text>Type:</Text> {order.type}
               </Text>
               <Text>
-                <Text>Model:</Text> {order.get("vehicle_fkey")?.get("model")}
+                <Text>Model:</Text> {order.vehicleModel}
               </Text>
               <Text>
-                <Text>Issue:</Text> {order.get("issue")}
+                <Text>Issue:</Text> {order.issue}
               </Text>
               <Text
                 style={{
@@ -63,14 +58,14 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
                   color: colours.OXFORD_BLUE,
                 }}
               >
-                {order.get("status")}
+                {order.status}
               </Text>
             </View>
           </View>
 
           <OrderMenu
             order={order}
-            clientId={order.get("client_fkey")}
+            client={order.client}
             modal={modal}
             setSelectedOrderId={setSelectedOrderId}
             getOrders={getOrders}

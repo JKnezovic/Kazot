@@ -21,7 +21,6 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     contact: "",
     email: "",
     date: new Date(),
-    client: null,
     serviceType: "",
     serialNumber: "",
     model: "",
@@ -42,10 +41,10 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     if (client) {
       setOrderState((prevState) => ({
         ...prevState,
-        name: client.get("name"),
-        surname: client.get("surname"),
-        contact: client.get("contact"),
-        email: client.get("email"),
+        name: client.name,
+        surname: client.surname,
+        contact: client.contact,
+        email: client.email,
       }));
     }
   }, [client]);
@@ -73,11 +72,11 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     }
   };
 
-  const UploadAttachments = async (serviceOrder, service_id) => {
+  const UploadAttachments = async (serviceOrder) => {
     // 1. Create a file
     images.forEach(async (image, i) => {
       const { base64 } = image;
-      const filename = service_id + "_" + i;
+      const filename = serviceOrder.get("service_id") + "_" + i;
       const parseFile = new Parse.File(filename, { base64 });
       // 2. Save the file
       try {
@@ -96,104 +95,23 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     });
   };
 
-  const SaveNewClient = async () => {
-    let Client = new Parse.Object("Clients");
-    Client.set("name", orderState.name);
-    Client.set("surname", orderState.surname);
-    Client.set("email", orderState.email);
-    Client.set("contact", orderState.contact);
-
-    try {
-      let client = await Client.save();
-      console.log("Success!", "Client created!");
-      return client;
-    } catch (error) {
-      // Error can be caused by lack of Internet connection
-      return false;
-    }
-  };
-
-  const SaveNewVehicle = async (client) => {
-    let Vehicle = new Parse.Object("Vehicles");
-    Vehicle.set("model", orderState.model);
-    Vehicle.set("serial_number", orderState.serialNumber);
-    Vehicle.set("client_fkey", client);
-
-    try {
-      let vehicle = await Vehicle.save();
-      console.log("Success!", "Vehicle created!");
-      return vehicle;
-    } catch (error) {
-      // Error can be caused by lack of Internet connection
-      return false;
-    }
-  };
-
-  const SaveServiceOrder = async (client, vehicle, service_id) => {
-    let Service = new Parse.Object("Services");
-    Service.set("issue", orderState.problem);
-    Service.set("notes", orderState.notes);
-    Service.set("type", orderState.serviceType);
-    Service.set("service_id", service_id);
-    Service.set("status", "Created");
-    Service.set("client_fkey", client);
-    Service.set("vehicle_fkey", vehicle);
-
-    try {
-      var serviceOrder = await Service.save();
-      return serviceOrder;
-    } catch (error) {
-      // Error can be caused by lack of Internet connection
-      return false;
-    }
-  };
-
-  const IsNewVehicleForClient = async (client) => {
-    try {
-      let query1 = new Parse.Query("Vehicles");
-      query1.equalTo("client_fkey", client);
-      let query2 = new Parse.Query("Vehicles");
-      query2.equalTo("serial_number", orderState.serialNumber);
-      let query = new Parse.Query("Vehicles");
-      query._andQuery([query1, query2]);
-      let queryResult = await query.find();
-      return queryResult;
-    } catch (error) {
-      setSnackbar(true, "Oops, something went wrong with vehicle");
-      return false;
-    }
+  const createNewOrder = async () => {
+    const params = {
+      orderState: orderState,
+    };
+    return await Parse.Cloud.run("createNewOrder", params)
+      .then(async (resultObject) => {
+        return resultObject.result;
+      })
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
   };
 
   const finish = async () => {
-    var client;
-    var vehicle;
-    setActivityIndicator(true);
+    var serviceOrder = await createNewOrder();
 
-    //If existing client was not selected create new client
-    if (orderState.client && orderState.client.get("name") === orderState.name)
-      client = orderState.client;
-    else client = await SaveNewClient();
-    if (client === false) {
-      setSnackbar(true, "Failed to add Client");
-      setActivityIndicator(false);
-      return;
-    }
-    //If serial number exist check if vehicle already exist for user, if not create a new one
-    if (orderState.serialNumber) {
-      var isNew = await IsNewVehicleForClient(orderState.client);
-      if (isNew.length === 0) {
-        vehicle = await SaveNewVehicle(client);
-        if (vehicle === false) {
-          setSnackbar(true, "Failed to add Vehicle");
-          setActivityIndicator(false);
-          return;
-        }
-      } else vehicle = isNew[0];
-    } else vehicle = null;
-
-    var service_id = await ServiceIDParser();
-    //Create service order with client and vehicle foreign key
-    var serviceOrder = await SaveServiceOrder(client, vehicle, service_id);
     if (serviceOrder === false) {
       setSnackbar(true, "Failed to create service order");
       setActivityIndicator(false);
@@ -202,11 +120,13 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
 
     await SaveNewStatusHistory(serviceOrder);
     //Upoladimages if they exist
-    if (images.length > 0) await UploadAttachments(serviceOrder, service_id);
+    if (images.length > 0) await UploadAttachments(serviceOrder);
 
     resetState();
     setActivityIndicator(false);
-    navigation.navigate("orderDetails", { serviceId: serviceOrder.id });
+    navigation.navigate("orderDetails", {
+      serviceId: serviceOrder.id,
+    });
   };
 
   const SaveNewStatusHistory = async (service) => {
@@ -226,33 +146,6 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     }
   };
 
-  const ServiceIDParser = async () => {
-    let Service = new Parse.Query("Services");
-    Service.descending("createdAt");
-    Service.limit(1);
-
-    try {
-      var result = await Service.find();
-      let string_id = result[0]
-        .get("service_id")
-        .split("SO-")
-        .pop()
-        .split("-")[0];
-      let number = parseInt(string_id) + 1;
-
-      let service_id =
-        "SO-" +
-        "0".repeat(6 - number.toString().length) +
-        number.toString() +
-        "-" +
-        orderState.date.getFullYear().toString().slice(-2);
-      return service_id;
-    } catch (error) {
-      // Error can be caused by lack of Internet connection
-      return false;
-    }
-  };
-
   const resetState = () => {
     setOrderState({
       name: "",
@@ -260,7 +153,6 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
       contact: "",
       email: "",
       date: new Date(),
-      client: null,
       serviceType: "",
       serialNumber: "",
       model: "",
