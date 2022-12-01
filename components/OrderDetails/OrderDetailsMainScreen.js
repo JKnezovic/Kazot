@@ -90,7 +90,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     try {
       let statusHistory = await StatusHistory.save();
       let serviceUpdate = await serviceQuery.save();
-      setService(serviceUpdate);
+      setService(serviceOrderTransformer({ serviceOrder: serviceUpdate }));
       setSnackbar(true, "Saved successfully");
       return true;
     } catch (error) {

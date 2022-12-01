@@ -22,10 +22,12 @@ const EditableCell = ({
 
   const onSave = () => {
     setEdit(false);
-    if (name === "model" || name === "serial_number") {
-      if (service.vehicleId) UpdateVehicle();
-      else SaveNewVehicle();
-    } else if (name === "issue" || name === "notes") UpdateService();
+    if (value !== text) {
+      if (name === "model" || name === "serial_number") {
+        if (service.vehicleId) UpdateVehicle();
+        else SaveNewVehicle();
+      } else if (name === "issue" || name === "notes") UpdateService();
+    }
   };
 
   const SaveNewVehicle = async () => {
@@ -108,6 +110,7 @@ const EditableCell = ({
           <TextInput
             style={{ flex: 1, backgroundColor: "FFFFFF" }}
             label={title}
+            autoFocus={true}
             numberOfLines={numberOfLines}
             value={text}
             multiline={true}

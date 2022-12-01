@@ -2,12 +2,11 @@ import { Dialog, Portal, Button, DataTable } from "react-native-paper";
 import { colours } from "../../../utils/constants";
 import { moderateScale } from "../../../Scaling";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AntDesign } from "@expo/vector-icons";
 import NumericValues from "./NumericValues";
-import partsTransformer from "../partsTransformer";
 
 const UpdateDialog = ({
   visible,
@@ -15,18 +14,17 @@ const UpdateDialog = ({
   title,
   setSnackbar,
   isPurchase,
+  setLoading,
+  parts,
+  getAllParts,
 }) => {
-  const [allParts, setAllParts] = useState([]);
+  const [allParts, setAllParts] = useState(parts);
   const [valuePU, setValuePU] = useState("");
   const [openPU, setOpenPU] = useState(false);
   const [number, setNumber] = useState("0");
   const [MSQ, setMSQ] = useState("0");
   const [item, setItem] = useState("");
   const [array, setArray] = useState([]);
-
-  useEffect(() => {
-    getAllParts();
-  }, []);
 
   const addToArray = () => {
     setArray([
@@ -54,31 +52,22 @@ const UpdateDialog = ({
   };
 
   const removeItem = (id) => {
-    setArray(array.filter((x) => x.product.objectId != id));
+    setArray(array.filter((x) => x.product.partId != id));
   };
 
   const handleSelect = (x) => {
     setItem(x);
     if (!isPurchase) {
       setMSQ(x.MSQ.toString());
-      setNumber(x.inventory_stock.toString());
-    }
-  };
-
-  const getAllParts = async () => {
-    const serviceQuery = new Parse.Query("Inventory");
-    try {
-      let parts = await serviceQuery.findAll();
-      setAllParts(partsTransformer({ parts }));
-    } catch (error) {
-      console.log("Error!", error.message);
+      setNumber(x.inventoryStock.toString());
     }
   };
 
   const updateInventory = async () => {
+    setLoading(true);
     array.map(async (x) => {
       let updateQuery = new Parse.Object("Inventory");
-      updateQuery.set("objectId", x.product.objectId);
+      updateQuery.set("objectId", x.product.partId);
       if (isPurchase) {
         updateQuery.set("stock", parseInt(x.product.stock) + x.amount);
         updateQuery.set("last_purchase", new Date());
@@ -89,10 +78,13 @@ const UpdateDialog = ({
       }
       try {
         let result = await updateQuery.save();
+        setLoading(false);
+        getAllParts();
         cleanOnCancel();
         return true;
       } catch (error) {
         setSnackbar(true, "Oops, something went wrong");
+        setLoading(false);
         console.log(error);
         return false;
       }
@@ -120,7 +112,7 @@ const UpdateDialog = ({
   };
 
   const tableRows = array.map((x) => (
-    <DataTable.Row key={x.product.objectId}>
+    <DataTable.Row key={x.product.partId}>
       <View style={styles.customCell}>
         <Text numberOfLines={5}>{x.name}</Text>
       </View>
@@ -132,7 +124,7 @@ const UpdateDialog = ({
           name="close"
           size={24}
           color={colours.ANTIQUE_RUBY}
-          onPress={() => removeItem(x.product.objectId)}
+          onPress={() => removeItem(x.product.partId)}
         />
       </DataTable.Cell>
     </DataTable.Row>
@@ -190,6 +182,7 @@ const UpdateDialog = ({
           </View>
           <Button
             mode="elevated"
+            disabled={valuePU === "" || number < 0 ? true : false}
             textColor="grey"
             buttonColor={colours.WHITE}
             onPress={() => addToArray()}

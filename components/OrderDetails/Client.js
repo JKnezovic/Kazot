@@ -12,7 +12,8 @@ const Client = ({ service, open }) => {
     await Linking.openURL(`tel://${service?.clientContact}`);
   };
   const goToEmail = async () => {
-    await Linking.openURL(`mailto:${service?.clientEmail}`);
+    if (service?.clientEmail)
+      await Linking.openURL(`mailto:${service?.clientEmail}`);
   };
   return (
     <List.Accordion

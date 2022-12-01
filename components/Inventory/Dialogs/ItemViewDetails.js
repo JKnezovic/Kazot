@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 import { colours } from "../../../utils/constants";
 import { moderateScale } from "../../../Scaling";
 import { StyleSheet } from "react-native";
-import DateToDDMMYY from "../../../utils/DateToDDMMYY";
 import { useState } from "react";
 import DeleteDialog from "./DeleteDialog";
 
@@ -48,7 +47,7 @@ const ItemViewDetails = ({
               <DataTable.Row style={styles.row}>
                 <DataTable.Cell>{"Stock:"}</DataTable.Cell>
                 <View style={styles.cell}>
-                  <Text>{item?.name}</Text>
+                  <Text>{item?.stock}</Text>
                 </View>
               </DataTable.Row>
               <DataTable.Row style={styles.row}>

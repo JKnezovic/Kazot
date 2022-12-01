@@ -8,16 +8,16 @@ import {
   Text,
   Pressable,
 } from "react-native";
+import IsLoading from "./IsLoading";
 import { useNavigation } from "@react-navigation/native";
 import FABGroup from "./FABGroup";
-import { Feather } from "@expo/vector-icons";
 import AddNewDialog from "./Dialogs/AddNewDialog";
 import UpdateDialog from "./Dialogs/UpdateDialog";
 import ItemViewDetails from "./Dialogs/ItemViewDetails";
 import Parse from "parse/react-native.js";
 import Searchbar from "./Searchbar";
 import partsTransformer from "./partsTransformer";
-
+import { AntDesign } from "@expo/vector-icons";
 const numberOfItemsPerPageList = [5, 10, 20];
 const defaultItem = {
   MSQ: 0,
@@ -49,8 +49,10 @@ const InventoryMainScreen = () => {
   const [viewDialogVisible, setViewDialogVisible] = useState(false);
   const [sortDirection, setSortDirection] = useState(1);
   const [sortColumn, setSortColumn] = useState("name");
+  const [loading, setLoading] = useState(false);
 
   const getAllParts = async () => {
+    setActivityIndicator(true);
     const inventoryQuery = new Parse.Query("Inventory");
     inventoryQuery.ascending("name");
     inventoryQuery.limit(999999);
@@ -66,22 +68,26 @@ const InventoryMainScreen = () => {
   };
 
   const DeleteInventoryItem = async () => {
+    setLoading(true);
     let Inventory = new Parse.Object("Inventory");
     Inventory.set("objectId", viewItem.partId);
 
     try {
       await Inventory.destroy();
-      setVisible(false);
+      //setVisible(true);
       setShowAction(false);
       setSnackbar(true, "Deleted successfully");
       getAllParts();
+      setLoading(false);
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");
+      setLoading(false);
       console.log(error);
     }
   };
 
   const SaveInventoryItem = async () => {
+    setLoading(true);
     let Inventory = new Parse.Object("Inventory");
     Inventory.set("stock", parseInt(newItem.stock));
     Inventory.set("MSQ", parseInt(newItem.MSQ));
@@ -95,9 +101,11 @@ const InventoryMainScreen = () => {
       setVisible(false);
       setSnackbar(true, "Saved successfully");
       getAllParts();
+      setLoading(false);
       return true;
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");
+      setLoading(false);
       console.log(error);
       return false;
     }
@@ -151,12 +159,8 @@ const InventoryMainScreen = () => {
   }, [numberOfItemsPerPage]);
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Feather name="search" size={24} style={styles.search} />
-      ),
-    });
-  }, [navigation]);
+    setPage(0);
+  }, [partsFiltered]);
 
   useEffect(() => {
     setPartsFiltered(allParts);
@@ -215,19 +219,25 @@ const InventoryMainScreen = () => {
         <DataTable style={{ marginBottom: 80 }}>
           <DataTable.Header>
             <Pressable
-              style={styles.customCell}
+              style={[styles.customCell, styles.iconContainer]}
               sortDirection={renderSortIcon("name")}
               onPress={() => handleSortColumn("name")}
             >
-              <Text>Name</Text>
+              <Text>{"Name   "}</Text>
+              {renderSortIcon("name") === "descending" ? (
+                <AntDesign name="arrowdown" size={15} color="black" />
+              ) : renderSortIcon("name") === "ascending" ? (
+                <AntDesign name="arrowup" size={15} color="black" />
+              ) : null}
             </Pressable>
             <DataTable.Title
-              sortDirection={renderSortIcon("stock")}
-              onPress={() => handleSortColumn("stock")}
+              sortDirection={renderSortIcon("inventoryStock")}
+              onPress={() => handleSortColumn("inventoryStock")}
               numeric
             >
-              Stock
+              Inventory
             </DataTable.Title>
+
             <DataTable.Title
               sortDirection={renderSortIcon("MSQ")}
               onPress={() => handleSortColumn("MSQ")}
@@ -236,19 +246,21 @@ const InventoryMainScreen = () => {
               MSQ
             </DataTable.Title>
             <DataTable.Title
-              sortDirection={renderSortIcon("inventoryStock")}
-              onPress={() => handleSortColumn("inventoryStock")}
+              sortDirection={renderSortIcon("stock")}
+              onPress={() => handleSortColumn("stock")}
               numeric
             >
-              Inventory
+              Stock
             </DataTable.Title>
           </DataTable.Header>
           {tableRows}
           <DataTable.Pagination
             page={page}
-            numberOfPages={Math.ceil(allParts.length / numberOfItemsPerPage)}
+            numberOfPages={Math.ceil(
+              partsFiltered.length / numberOfItemsPerPage
+            )}
             onPageChange={(page) => setPage(page)}
-            label={`${from + 1}-${to} of ${allParts.length}`}
+            label={`${from + 1}-${to} of ${partsFiltered.length}`}
             showFastPaginationControls
             numberOfItemsPerPageList={numberOfItemsPerPageList}
             numberOfItemsPerPage={numberOfItemsPerPage}
@@ -275,6 +287,9 @@ const InventoryMainScreen = () => {
         title={title}
         setSnackbar={setSnackbar}
         isPurchase={isPurchase}
+        setLoading={setLoading}
+        parts={allParts}
+        getAllParts={getAllParts}
       />
       <ItemViewDetails
         visible={viewDialogVisible}
@@ -295,6 +310,7 @@ const InventoryMainScreen = () => {
       >
         {snackbarMessage}
       </Snackbar>
+      <IsLoading loading={loading} />
     </>
   );
 };
@@ -307,6 +323,12 @@ const styles = StyleSheet.create({
   },
   search: {
     marginRight: 15,
+  },
+  iconContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   customCell: {
     width: "40%",

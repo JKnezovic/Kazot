@@ -22,8 +22,13 @@ const DropDownCell = ({
     getServiceTypes();
   }, []);
 
+  useEffect(() => {
+    if (!openST) setEdit(false);
+  }, [openST]);
+
   const handlePress = () => {
     setEdit(true);
+    setOpenST(true);
   };
 
   const getServiceTypes = async function () {

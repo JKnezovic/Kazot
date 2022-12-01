@@ -25,11 +25,13 @@ export default function MainScreen(props) {
     >
       <Tab.Screen
         name="Orders"
+        unmountOnBlur={true}
         component={OrderMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="tools" size={size} color={color} />
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -43,29 +45,24 @@ export default function MainScreen(props) {
       />
       <Tab.Screen
         name="Clients"
+        unmountOnBlur={true}
         component={ClientsMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" size={size} color={color} />
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
         name="Inventory"
+        unmountOnBlur={true}
         component={InventoryMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="barcode" size={size} color={color} />
           ),
-          headerRight: () => (
-            <Button
-              mode="outlined"
-              textColor={colours.ORANGE_WEB}
-              style={{ borderColor: colours.ORANGE_WEB, marginRight: 5 }}
-            >
-              {"Add new"}
-            </Button>
-          ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen

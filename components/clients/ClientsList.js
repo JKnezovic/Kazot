@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import ClientItem from "./ClientItem";
 import { FlashList } from "@shopify/flash-list";
