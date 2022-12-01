@@ -89,7 +89,10 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
 
   const getPartsUsed = async () => {
     const serviceQuery = new Parse.Query("PartsUsed");
-    serviceQuery.equalTo("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    serviceQuery.equalTo("service_fkey", serviceObject);
     try {
       let PartsUsed = await serviceQuery.find();
       setPartsUsed(PartsUsed);
@@ -102,7 +105,10 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
 
   const SavePartsUsed = async () => {
     let PartsUsed = new Parse.Object("PartsUsed");
-    PartsUsed.set("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    PartsUsed.set("service_fkey", serviceObject);
     PartsUsed.set("quantity_spent", parseInt(number));
     PartsUsed.set("part_name", valuePU);
     PartsUsed.set("parts_fkey");

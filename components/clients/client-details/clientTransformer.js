@@ -7,8 +7,16 @@ export default function clientTransformer({ client = new Parse.Object() }) {
     surname: client.get("surname") || "",
     contact: client.get("contact") || "",
     email: client.get("email") || "",
-    initials: client.get("surname")
-      ? `${client.get("name")[0]}${client.get("surname")[0]}`
-      : `${client.get("name")[0]}${client.get("name")[1]}`,
+    initials: getInitials(client),
   };
 }
+
+const getInitials = (client) => {
+  // it's sometimes possible both
+  // name and surname are undefined
+  if (!client.get("name") && !client.get("surname")) return `??`;
+  else if (client.get("name") && client.get("surname"))
+    return `${client.get("name")[0]}${client.get("surname")[0]}`;
+  else if (client.get("name") && !client.get("surname"))
+    return `${client.get("name")[0]}${client.get("name")[1]}`;
+};

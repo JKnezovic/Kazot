@@ -18,10 +18,10 @@ import {
 import { colours } from "../../utils/constants";
 import useScreenDimensions from "../../useScreenDimensions";
 import { serviceStatuses } from "../../utils/constants";
-import serviceOrderTransformer from "../clients/client-details/serviceOrderTransformer";
+import serviceOrderTransformer from "../Orders/serviceOrderTransformer";
 
 const OrderDetailsMainScreen = ({ route, navigation }) => {
-  const [service, setService] = useState(null);
+  const [service, setService] = useState({});
   const { serviceId } = route.params;
   const [activityIndicator, setActivityIndicator] = useState(true);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -43,7 +43,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
           style={{ borderColor: colours.ORANGE_WEB, marginLeft: 10 }}
           onPress={() => setVisible(true)}
         >
-          {service?.status}
+          {service.status}
         </Button>
       ),
       headerTitleAlign: "center",
@@ -66,7 +66,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       setActivityIndicator(false);
       return true;
     } catch (error) {
-      console.log("Error!", error.message);
+      console.log("Error !", error.message);
       setSnackbar(true, "Oops, something went wrong!");
       return false;
     }
@@ -77,11 +77,14 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     const currentUser = await Parse.User.currentAsync();
     let StatusHistory = new Parse.Object("OrderStatusHistory");
     StatusHistory.set("status", value);
-    StatusHistory.set("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    StatusHistory.set("service_fkey", serviceObject);
     StatusHistory.set("user_name", currentUser.get("username"));
 
     let serviceQuery = new Parse.Object("Services");
-    serviceQuery.set("objectId", service.serviceId);
+    serviceQuery.set("objectId", service.serviceOrderId);
     serviceQuery.set("status", value);
 
     try {

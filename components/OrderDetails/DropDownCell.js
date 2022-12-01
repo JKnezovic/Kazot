@@ -10,12 +10,12 @@ const DropDownCell = ({
   numberOfLines = 1,
   name,
   service,
-  setSnackbar,
+  //  setSnackbar,
   getService,
 }) => {
   const [edit, setEdit] = useState(false);
   const [openST, setOpenST] = useState(false);
-  const [valueST, setValueST] = useState(service.get("type"));
+  const [valueST, setValueST] = useState(service.type);
   const [serviceTypes, setServiceTypes] = useState([]);
 
   useEffect(() => {
@@ -47,14 +47,14 @@ const DropDownCell = ({
 
   const UpdateService = async (text) => {
     let Service = new Parse.Object("Services");
-    Service.set("objectId", service.id);
+    Service.set("objectId", service.serviceOrderId);
     Service.set(name, text);
     try {
       let services = await Service.save();
       getService();
       return true;
     } catch (error) {
-      setSnackbar(true, "Oops, something went wrong");
+      // setSnackbar(true, "Oops, something went wrong");
       console.log(error);
       return false;
     }

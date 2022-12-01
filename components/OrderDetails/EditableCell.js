@@ -23,7 +23,7 @@ const EditableCell = ({
   const onSave = () => {
     setEdit(false);
     if (name === "model" || name === "serial_number") {
-      if (service.get("vehicle_fkey")) UpdateVehicle();
+      if (service.vehicleId) UpdateVehicle();
       else SaveNewVehicle();
     } else if (name === "issue" || name === "notes") UpdateService();
   };
@@ -31,13 +31,13 @@ const EditableCell = ({
   const SaveNewVehicle = async () => {
     let Vehicle = new Parse.Object("Vehicles");
     let Service = new Parse.Object("Services");
-    Service.set("objectId", service.id);
+    Service.set("objectId", service.serviceOrderId);
 
     Vehicle.set(name, text);
     if (service.clientId)
       Vehicle.set(
         "client_fkey",
-        new Parse.Object("Clients", { id: client.clientId })
+        new Parse.Object("Clients", { id: service.clientId })
       );
 
     try {
@@ -62,7 +62,7 @@ const EditableCell = ({
 
   const UpdateVehicle = async () => {
     let Vehicle = new Parse.Object("Vehicles");
-    Vehicle.set("objectId", service.get("vehicle_fkey").id);
+    Vehicle.set("objectId", service.vehicleId);
     Vehicle.set(name, text);
     try {
       let vehicle = await Vehicle.save();
@@ -78,7 +78,7 @@ const EditableCell = ({
 
   const UpdateService = async () => {
     let Service = new Parse.Object("Services");
-    Service.set("objectId", service.id);
+    Service.set("objectId", service.serviceOrderId);
     Service.set(name, text);
     try {
       let services = await Service.save();

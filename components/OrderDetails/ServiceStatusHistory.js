@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { List, DataTable } from "react-native-paper";
 import Parse from "parse/react-native.js";
+import statusHistoryTransformer from "./statusHistoryTransformer";
 
-const ServiceStatusHistory = ({ service, open }) => {
+const ServiceStatusHistory = ({ service = {}, open }) => {
   const [expanded, setExpanded] = useState(open);
   const [orderStatuses, setOrderStatuses] = useState([]);
 
@@ -15,10 +16,15 @@ const ServiceStatusHistory = ({ service, open }) => {
   const getStatusHistory = async () => {
     const serviceQuery = new Parse.Query("OrderStatusHistory");
     serviceQuery.descending("createdAt");
-    serviceQuery.equalTo("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    serviceQuery.equalTo("service_fkey", serviceObject);
     try {
       let ServiceHistory = await serviceQuery.find();
-      setOrderStatuses(ServiceHistory);
+      setOrderStatuses(
+        statusHistoryTransformer({ statusHistory: ServiceHistory })
+      );
       return true;
     } catch (error) {
       console.log("Error!", error.message);
@@ -27,10 +33,10 @@ const ServiceStatusHistory = ({ service, open }) => {
   };
 
   const tableRows = orderStatuses.map((item) => (
-    <DataTable.Row key={item.id}>
+    <DataTable.Row key={item.statusHistoryId}>
       <DataTable.Cell>{item.status}</DataTable.Cell>
       <DataTable.Cell>{item.createdAt}</DataTable.Cell>
-      <DataTable.Cell>{item.get("user_name")}</DataTable.Cell>
+      <DataTable.Cell>{item.username}</DataTable.Cell>
     </DataTable.Row>
   ));
 

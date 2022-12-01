@@ -51,7 +51,9 @@ const Client = ({ service, open }) => {
           paddingLeft: 0,
           marginVertical: 15,
         }}
-        onPress={() => navigation.navigate("Client Details", service?.clientId)}
+        onPress={() =>
+          navigation.navigate("Client Details", { clientId: service.clientId })
+        }
       >
         {"View client"}
       </Button>

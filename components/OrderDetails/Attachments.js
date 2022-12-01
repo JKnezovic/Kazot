@@ -22,7 +22,10 @@ const Attachments = ({ service, setSnackbar, open }) => {
 
   const getAttachments = async () => {
     const attachmentQuery = new Parse.Query("Attachments");
-    attachmentQuery.equalTo("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: service.serviceOrderId,
+    });
+    attachmentQuery.equalTo("service_fkey", serviceObject);
     try {
       let Attachments = await attachmentQuery.find();
       setAttachments(Attachments);
@@ -70,7 +73,10 @@ const Attachments = ({ service, setSnackbar, open }) => {
         const Attachments = Parse.Object.extend("Attachments");
         const attachments = new Attachments();
         attachments.set("attachment", responseFile);
-        attachments.set("service_fkey", service);
+        const serviceObject = new Parse.Object("Services", {
+          id: service.serviceOrderId,
+        });
+        attachments.set("service_fkey", serviceObject);
         await attachments.save();
         setSnackbar(true, "Images saved");
         getAttachments();

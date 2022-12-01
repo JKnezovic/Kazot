@@ -58,7 +58,7 @@ const DropdownSelect = ({
   };
 
   const items = selectList.map((x, i) => (
-    <Fragment key={x.id}>
+    <Fragment key={x.clientId}>
       <List.Item
         onPress={() => updateForm(x)}
         title={x.name + " " + x.surname + "   " + x.contact}

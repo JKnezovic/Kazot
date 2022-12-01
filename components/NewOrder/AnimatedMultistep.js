@@ -85,7 +85,11 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
         const Attachments = Parse.Object.extend("Attachments");
         const attachments = new Attachments();
         attachments.set("attachment", responseFile);
-        attachments.set("service_fkey", serviceOrder);
+        const serviceObject = Parse.Object.extend("Services", {
+          id: serviceOrder.id,
+        });
+
+        attachments.set("service_fkey", serviceObject);
         await attachments.save();
       } catch (error) {
         setSnackbar(
@@ -139,11 +143,16 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
     Service.set("type", orderState.serviceType);
     Service.set("service_id", service_id);
     Service.set("status", "Created");
+    console.log(client.clientId);
     Service.set(
       "client_fkey",
       new Parse.Object("Clients", { id: client.clientId })
     );
-    Service.set("vehicle_fkey", vehicle);
+    console.log(vehicle.id);
+    Service.set(
+      "vehicle_fkey",
+      new Parse.Object("Vehicles", { id: vehicle.id })
+    );
 
     try {
       var serviceOrder = await Service.save();
@@ -215,14 +224,19 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
 
     resetState();
     setActivityIndicator(false);
-    navigation.navigate("orderDetails", { serviceId: serviceOrder.id });
+    navigation.navigate("orderDetails", {
+      serviceId: serviceOrder.id,
+    });
   };
 
   const SaveNewStatusHistory = async (service) => {
     const currentUser = await Parse.User.currentAsync();
     let StatusHistory = new Parse.Object("OrderStatusHistory");
     StatusHistory.set("status", "Created");
-    StatusHistory.set("service_fkey", service);
+    const serviceObject = new Parse.Object("Services", {
+      id: serviceOrder.id,
+    });
+    StatusHistory.set("service_fkey", serviceObject);
     StatusHistory.set("user_name", currentUser.get("username"));
 
     try {
