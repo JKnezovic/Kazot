@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import {
   Button,
@@ -6,7 +6,6 @@ import {
   Modal,
   Portal,
   Text,
-  FAB,
   IconButton,
 } from "react-native-paper";
 import { colours } from "../../utils/constants";
@@ -54,14 +53,13 @@ const StatusFilter = ({ statusFilters = [], setStatusFilters }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <IconButton
         icon="tune"
-        style={styles.filterButton}
-        contentStyle={{ height: "100%" }}
         onPress={() => setIsModalOpen(true)}
-        containerColor={colours.ORANGE_WEB}
-        iconColor={colours.WHITE}
+        containerColor={colours.WHITE}
+        iconColor={colours.ORANGE_WEB}
+        size={27}
       />
       <Portal>
         <Modal
@@ -141,16 +139,6 @@ const StatusFilter = ({ statusFilters = [], setStatusFilters }) => {
 export default StatusFilter;
 
 const styles = StyleSheet.create({
-  container: {
-    width: "50%",
-    backgroundColor: "blue",
-  },
-  filterButton: {
-    borderRadius: 0,
-    margin: 0,
-    height: "100%",
-    width: "100%",
-  },
   modalContainerStyle: {
     backgroundColor: colours.WHITE,
     margin: 20,

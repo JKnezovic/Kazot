@@ -5,7 +5,8 @@ export default function serviceOrderTransformer({
 }) {
   return {
     serviceOrderId: serviceOrder.id,
-    createdAt: serviceOrder.get("createdAt") || false,
+    createdAt: serviceOrder.get("createdAt") || "",
+    serviceDate: serviceOrder.get("service_date") || "",
     status: serviceOrder.get("status") || "",
     issue: serviceOrder.get("issue") || "",
     type: serviceOrder.get("type") || "",
@@ -14,9 +15,9 @@ export default function serviceOrderTransformer({
     serviceId: serviceOrder.get("service_id") || "",
     clientId: serviceOrder.get("client_fkey")?.id || null,
     clientName: serviceOrder.get("client_fkey")?.get("name") || "",
-    clientSurname: serviceOrder.get("client_fkey").get("surname") || "",
-    clientContact: serviceOrder.get("client_fkey").get("contact") || "",
-    clientEmail: serviceOrder.get("client_fkey").get("email") || "",
+    clientSurname: serviceOrder.get("client_fkey")?.get("surname") || "",
+    clientContact: serviceOrder.get("client_fkey")?.get("contact") || "",
+    clientEmail: serviceOrder.get("client_fkey")?.get("email") || "",
     vehicleModel:
       serviceOrder.get("vehicle_fkey") &&
       (serviceOrder.get("vehicle_fkey").get("model") || ""),

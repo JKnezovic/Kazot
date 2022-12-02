@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import React from "react";
+import { View, StyleSheet, Platform } from "react-native";
 import StatusFilter from "./StatusFilter";
 import TimePicker from "./TimePicker";
 import { moderateScale } from "../../Scaling";
+import TimePickerAndroid from "./TimePickerAndroid";
 
 export default function Filters({
   statusFilters,
@@ -13,7 +14,11 @@ export default function Filters({
   return (
     <View style={styles.row}>
       <StatusFilter {...{ statusFilters, setStatusFilters }} />
-      <TimePicker {...{ dateFilter, setDateFilter }} />
+      {Platform.OS === "ios" ? (
+        <TimePicker {...{ dateFilter, setDateFilter }} />
+      ) : (
+        <TimePickerAndroid {...{ dateFilter, setDateFilter }} />
+      )}
     </View>
   );
 }
@@ -23,6 +28,5 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     height: moderateScale(50),
-    maxWidth: "30%",
   },
 });

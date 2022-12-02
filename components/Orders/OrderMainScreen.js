@@ -8,16 +8,14 @@ import {
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Portal, Snackbar, ActivityIndicator } from "react-native-paper";
 import SearchBar from "./SearchBar";
-import StatusFilter from "./StatusFilter";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
 import { moderateScale, isSmartPhoneBasedOnRatio } from "../../Scaling";
 import { colours } from "../../utils/constants";
-import TimePicker from "./TimePicker";
 import Filters from "./Filters";
 
-export default function OrderMainScreen() {
+export default function OrderMainScreen({ navigation }) {
   const {
     getOrders,
     orders,
@@ -64,6 +62,16 @@ export default function OrderMainScreen() {
     setFilteredOrders(orders);
   }, [orders]);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Filters
+          {...{ statusFilters, setStatusFilters, dateFilter, setDateFilter }}
+        />
+      ),
+    });
+  }, [navigation]);
+
   return (
     <TouchableWithoutFeedback
       style={[styles.container]}
@@ -92,11 +100,8 @@ export default function OrderMainScreen() {
             initialOrders={orders}
             setOrders={setFilteredOrders}
           />
-          <Filters
-            {...{ statusFilters, setStatusFilters, dateFilter, setDateFilter }}
-          />
         </View>
-        {showLoader ? (
+        {areOrdersLoading ? (
           <View style={styles.activityIndicator}>
             <ActivityIndicator />
           </View>

@@ -46,15 +46,13 @@ const TimePicker = ({ dateFilter = new Date(), setDateFilter }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <IconButton
         icon="calendar"
-        mode="contained"
-        style={styles.filterButton}
-        contentStyle={{ height: "100%" }}
+        size={27}
         onPress={() => setIsPickerOpen(true)}
-        containerColor={colours.ORANGE_WEB}
-        iconColor={colours.WHITE}
+        containerColor={colours.WHITE}
+        iconColor={colours.ORANGE_WEB}
       />
 
       {isPickerOpen && (
@@ -120,9 +118,6 @@ const TimePicker = ({ dateFilter = new Date(), setDateFilter }) => {
 export default TimePicker;
 
 const styles = StyleSheet.create({
-  container: {
-    width: "50%",
-  },
   title: {
     fontSize: moderateScale(20),
     marginBottom: moderateScale(5),
@@ -130,14 +125,6 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: moderateScale(15),
-  },
-  filterButton: {
-    borderRadius: 0,
-    margin: 0,
-    height: "100%",
-    width: "100%",
-    borderLeftColor: colours.PLATINUM,
-    borderLeftWidth: 1,
   },
   datePickerView: {
     paddingVertical: moderateScale(10),
