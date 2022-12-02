@@ -7,7 +7,6 @@ import useHighlightOrder from "./useHighlightOrder";
 
 const OrderMenu = ({
   order = {},
-  client = null,
   getOrders,
   modal = {},
   setSelectedOrderId,
@@ -22,13 +21,15 @@ const OrderMenu = ({
     switch (action) {
       case "delete_order":
         modal.setIsModalOpen(true);
-        setSelectedOrderId(order.id);
+        setSelectedOrderId(order.serviceOrderId);
         return;
       case "order_details":
-        navigation.navigate("orderDetails", { serviceId: order.id });
+        navigation.navigate("orderDetails", {
+          serviceId: order.serviceOrderId,
+        });
         return;
       case "client_details":
-        navigation.navigate("Client Details", client);
+        navigation.navigate("Client Details", { clientId: order.clientId });
         return;
       case "highlight":
         highlightOrder({ order });

@@ -3,14 +3,14 @@ import { Searchbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { colours } from "../../utils/constants";
 
-const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
+const SearchBar = ({ filteredOrders = [], orders = [], setFilteredOrders }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (searchQuery?.length) {
       filterOrders();
-    } else setOrders(initialOrders);
-  }, [searchQuery]);
+    } else setFilteredOrders(orders);
+  }, [searchQuery, orders]);
 
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
@@ -24,7 +24,7 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
         order.vehicleModel.toLowerCase().includes(searchQueryLower) ||
         order.type.toLowerCase().includes(searchQueryLower)
     );
-    setOrders(filtered);
+    setFilteredOrders(filtered);
   };
 
   return (

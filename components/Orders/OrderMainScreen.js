@@ -59,10 +59,6 @@ export default function OrderMainScreen({ navigation }) {
   }, [isLoading, isLoaded]);
 
   useEffect(() => {
-    setFilteredOrders(orders);
-  }, [orders]);
-
-  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Filters
@@ -80,9 +76,8 @@ export default function OrderMainScreen({ navigation }) {
       <View
         style={[
           {
-            paddingBottom:
-              tabBarHeight +
-              moderateScale(isSmartPhoneBasedOnRatio() ? 40 : 70),
+            paddingBottom: tabBarHeight,
+            height: "100%",
           },
         ]}
       >
@@ -96,9 +91,9 @@ export default function OrderMainScreen({ navigation }) {
         </Portal>
         <View style={styles.header}>
           <SearchBar
-            orders={filteredOrders}
-            initialOrders={orders}
-            setOrders={setFilteredOrders}
+            filteredOders={filteredOrders}
+            orders={orders}
+            setFilteredOrders={setFilteredOrders}
           />
         </View>
         {areOrdersLoading ? (

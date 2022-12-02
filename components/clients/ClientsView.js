@@ -36,10 +36,10 @@ export default function ClientsView() {
 
   const searchForClients = () => {
     //filter array of clients by name or surname
-    return clients.filter(
-      (client) =>
-        client.name.toLowerCase().includes(query.toLowerCase()) ||
-        client.surname.toLowerCase().includes(query.toLowerCase())
+    return clients.filter((client) =>
+      `${client.name.toLowerCase()} ${client.surname.toLowerCase()}`.includes(
+        query.toLowerCase()
+      )
     );
   };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Parse from "parse";
+import Parse from "parse/react-native.js";
 
 export default function useHighlightOrder() {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,11 +10,12 @@ export default function useHighlightOrder() {
 
     // send post request
     try {
-      let updateOrder = new Parse.Object({ id: order.serviceOrderId });
-      updateOrder.set("is_highlighted", !order.isHighlighted);
-      await updateOrder.save();
+      const updatedOrder = new Parse.Object("Services");
+      updatedOrder.set("objectId", order.serviceOrderId);
+      updatedOrder.set("is_highlighted", !order.isHighlighted);
+      await updatedOrder.save();
     } catch (e) {
-      console.log("Something went wrong.");
+      console.log("Something went wrong.", e);
     }
 
     setIsLoading(false);

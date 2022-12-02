@@ -15,8 +15,6 @@ const TimePickerAndroid = ({ dateFilter = new Date(), setDateFilter }) => {
       setIsPickerOpen(false);
     }
     if (event.type === "set") {
-      date.setHours(0, 0, 0, 0);
-      console.log(date);
       setSelectedDate(date);
       setDateFilter(date);
       setIsPickerOpen(false);
