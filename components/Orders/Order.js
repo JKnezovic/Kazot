@@ -22,7 +22,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
           style={[styles.header, order.isHighlighted && styles.highlightedBg]}
         >
           <Text style={styles.text}>{order.serviceOrderId}</Text>
-          <Text style={styles.text}>{DateToDDMMYY(order.createdAt)}</Text>
+          <Text style={styles.text}>{DateToDDMMYY(order.serviceDate)}</Text>
         </View>
         <View style={styles.content}>
           <View style={styles.details}>

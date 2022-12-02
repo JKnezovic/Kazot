@@ -17,11 +17,11 @@ const useGetOrders = () => {
     parseOrders.include("vehicle_fkey");
     statusFilters.forEach((filter) => parseOrders.equalTo("status", filter));
     if (dateFilter) {
-      parseOrders.greaterThanOrEqualTo("createdAt", dateFilter);
+      parseOrders.greaterThanOrEqualTo("service_date", dateFilter);
       var datePlusOne = new Date(dateFilter);
       datePlusOne.setDate(datePlusOne.getDate() + 1);
       datePlusOne.setHours(0, 0, 0, 0);
-      parseOrders.lessThan("createdAt", datePlusOne);
+      parseOrders.lessThan("service_date", datePlusOne);
     }
     try {
       let joinedResults = await parseOrders.find();

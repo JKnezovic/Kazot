@@ -96,7 +96,7 @@ export default function OrderMainScreen() {
             {...{ statusFilters, setStatusFilters, dateFilter, setDateFilter }}
           />
         </View>
-        {showLoader ? (
+        {areOrdersLoading ? (
           <View style={styles.activityIndicator}>
             <ActivityIndicator />
           </View>
