@@ -34,9 +34,6 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
         onChangeText={setSearchQuery}
         value={searchQuery}
         style={styles.input}
-        mode="outlined"
-        outlineColor={colours.OXFORD_BLUE}
-        activeOutlineColor={colours.ORANGE_WEB}
         iconColor={colours.OXFORD_BLUE}
       />
     </View>
@@ -61,10 +58,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: colours.WHITE,
-    borderBottomWidth: 1,
-    borderBottomColor: colours.OXFORD_BLUE,
-    minWidth: "70%",
-    borderRadius: 0,
-    height: "100%",
+    minWidth: "100%",
   },
 });

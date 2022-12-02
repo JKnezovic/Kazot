@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import StatusFilter from "./StatusFilter";
 import TimePicker from "./TimePicker";
@@ -28,6 +28,5 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     height: moderateScale(50),
-    maxWidth: "30%",
   },
 });

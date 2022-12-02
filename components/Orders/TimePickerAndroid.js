@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { StyleSheet, View, Text, Platform } from "react-native";
-import { Button, Portal, Modal, IconButton } from "react-native-paper";
+import { View } from "react-native";
+import { IconButton } from "react-native-paper";
 import { colours } from "../../utils/constants";
-import { moderateScale } from "../../Scaling";
-import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const TimePickerAndroid = ({ dateFilter = new Date(), setDateFilter }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -30,15 +28,13 @@ const TimePickerAndroid = ({ dateFilter = new Date(), setDateFilter }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <IconButton
         icon="calendar"
-        mode="contained"
-        style={styles.filterButton}
-        contentStyle={{ height: "100%" }}
+        size={27}
         onPress={() => setIsPickerOpen(true)}
-        containerColor={colours.ORANGE_WEB}
-        iconColor={colours.WHITE}
+        containerColor={colours.WHITE}
+        iconColor={colours.ORANGE_WEB}
       />
 
       {isPickerOpen && (
@@ -56,18 +52,3 @@ const TimePickerAndroid = ({ dateFilter = new Date(), setDateFilter }) => {
 };
 
 export default TimePickerAndroid;
-
-const styles = StyleSheet.create({
-  container: {
-    width: "50%",
-  },
-
-  filterButton: {
-    borderRadius: 0,
-    margin: 0,
-    height: "100%",
-    width: "100%",
-    borderLeftColor: colours.PLATINUM,
-    borderLeftWidth: 1,
-  },
-});
