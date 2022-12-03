@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View, ScrollView } from "react-native";
 import {
   Button,
   Checkbox,
@@ -74,27 +74,13 @@ const StatusFilter = ({ statusFilters = [], setStatusFilters }) => {
 
           <View style={styles.body}>
             <View style={styles.row}>
-              <Pressable
-                style={styles.title}
-                onPress={() => setIsByOrderStatusOpen(!isByOrderStatusOpen)}
-              >
-                <Text variant="titleMedium">By order status</Text>
-                <IconButton
-                  icon="menu-down"
-                  iconColor={
-                    isByOrderStatusOpen
-                      ? colours.ORANGE_WEB
-                      : colours.OXFORD_BLUE
-                  }
-                />
-              </Pressable>
-              {isByOrderStatusOpen && isListChecked() && (
+              <Text variant="titleMedium">By order status</Text>
+              {isListChecked() && (
                 <IconButton icon="close" onPress={clearByOrderStatus} />
               )}
             </View>
-
-            {isByOrderStatusOpen &&
-              serviceStatuses.map((element, key) => (
+            <ScrollView>
+              {serviceStatuses.map((element, key) => (
                 <Pressable
                   key={`${key}_${
                     selectedTypes[element.value] ? "checked" : "unchecked"
@@ -110,6 +96,7 @@ const StatusFilter = ({ statusFilters = [], setStatusFilters }) => {
                   <Text variant="labelMedium">{element.label}</Text>
                 </Pressable>
               ))}
+            </ScrollView>
           </View>
           <View style={styles.buttonContainer}>
             <Button
@@ -156,6 +143,7 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 5,
+    borderColor: colours.ORANGE_WEB,
   },
   buttonContainer: {
     display: "flex",

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import ClientItem from "./ClientItem";
 import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from "@react-navigation/native";
 import useScreenDimensions from "../../useScreenDimensions";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function ClientsList({
   clients = [],
@@ -12,6 +13,8 @@ export default function ClientsList({
 }) {
   const screenData = useScreenDimensions();
   const navigation = useNavigation();
+  const tabBarHeight = useBottomTabBarHeight();
+
   useEffect(() => {
     setIsRefreshing(false), [clients];
   });
@@ -19,7 +22,7 @@ export default function ClientsList({
     <ClientItem client={item} navigation={navigation} screenData={screenData} />
   );
   return (
-    <View style={[{ height: "100%" }]}>
+    <View style={[{ height: "100%", paddingBottom: tabBarHeight }]}>
       <FlashList
         data={clients}
         renderItem={renderItem}
@@ -31,14 +34,3 @@ export default function ClientsList({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  firstChild: { flex: 3 },
-  secondChild: { flex: 1 },
-  list: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    paddingBottom: 100,
-    marginBottom: 70,
-  },
-});

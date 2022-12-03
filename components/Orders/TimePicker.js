@@ -37,7 +37,6 @@ const TimePicker = ({ dateFilter = new Date(), setDateFilter }) => {
   };
 
   const setDate = (event, date) => {
-    date.setHours(0, 0, 0, 0);
     setSelectedDate(date);
   };
   const clearDate = () => {

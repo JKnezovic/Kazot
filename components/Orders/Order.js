@@ -21,7 +21,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
         <View
           style={[styles.header, order.isHighlighted && styles.highlightedBg]}
         >
-          <Text style={styles.text}>{order.serviceOrderId}</Text>
+          <Text style={styles.text}>{order.serviceId}</Text>
           <Text style={styles.text}>{DateToDDMMYY(order.serviceDate)}</Text>
         </View>
         <View style={styles.content}>
@@ -48,7 +48,7 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
               <Text>
                 <Text>Model:</Text> {order.vehicleModel}
               </Text>
-              <Text>
+              <Text numberOfLines={1}>
                 <Text>Issue:</Text> {order.issue}
               </Text>
               <Text

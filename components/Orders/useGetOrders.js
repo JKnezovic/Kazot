@@ -17,6 +17,7 @@ const useGetOrders = () => {
     parseOrders.include("vehicle_fkey");
     statusFilters.forEach((filter) => parseOrders.equalTo("status", filter));
     if (dateFilter) {
+      dateFilter.setHours(0, 0, 0, 0);
       parseOrders.greaterThanOrEqualTo("service_date", dateFilter);
       var datePlusOne = new Date(dateFilter);
       datePlusOne.setDate(datePlusOne.getDate() + 1);

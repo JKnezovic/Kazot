@@ -12,11 +12,24 @@ const useDeleteOrder = () => {
     deleteOrder.set("objectId", orderId);
     try {
       await deleteOrder.destroy();
+      removeImages(orderId);
       setIsLoading(false);
       setIsLoaded(true);
     } catch (e) {
       setIsLoading(false);
       setIsLoaded(true);
+    }
+  };
+
+  const removeImages = async (orderId) => {
+    try {
+      const params = { serviceOrderId: orderId };
+      const result = await Parse.Cloud.run(
+        "deleteImagesForServiceOrder",
+        params
+      );
+    } catch (error) {
+      console.log(error, "delet");
     }
   };
 

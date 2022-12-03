@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Modal, Portal, Button, Divider } from "react-native-paper";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { colours } from "../../utils/constants";
+import { moderateScale } from "../../Scaling";
 
 export default function DeleteOrderModal({
   isOpen,
@@ -52,6 +53,7 @@ export default function DeleteOrderModal({
 const styles = StyleSheet.create({
   containerStyle: {
     margin: 20,
+    borderRadius: moderateScale(20),
     backgroundColor: "white",
   },
   footer: {
