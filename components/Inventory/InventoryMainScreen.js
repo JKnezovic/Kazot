@@ -191,9 +191,9 @@ const InventoryMainScreen = () => {
         <View style={styles.customCell}>
           <Text numberOfLines={5}>{item.name}</Text>
         </View>
-        <DataTable.Cell numeric>{item.stock}</DataTable.Cell>
-        <DataTable.Cell numeric>{item.MSQ}</DataTable.Cell>
         <DataTable.Cell numeric>{item.inventoryStock}</DataTable.Cell>
+        <DataTable.Cell numeric>{item.MSQ}</DataTable.Cell>
+        <DataTable.Cell numeric>{item.stock}</DataTable.Cell>
       </DataTable.Row>
     ));
 
