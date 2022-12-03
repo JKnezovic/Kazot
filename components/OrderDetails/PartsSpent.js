@@ -15,7 +15,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { moderateScale } from "../../Scaling";
 import { colours } from "../../utils/constants";
 
-const PartsSpent = ({ service, setSnackbar, open }) => {
+const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
   const [expanded, setExpanded] = useState(open);
   const [allParts, setAllParts] = useState([]);
   const [partsUsed, setPartsUsed] = useState([]);
@@ -35,6 +35,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
   }, []);
 
   const DeletePartsUsed = async () => {
+    setLoading(true);
     let PartsUsed = new Parse.Object("PartsUsed");
     PartsUsed.set("objectId", updateItem.objectId);
 
@@ -50,6 +51,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");
       console.log(error);
+      setLoading(false);
       return false;
     }
   };
@@ -66,9 +68,11 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       updateQuery.set("objectId", queryResult.id);
       updateQuery.set("stock", queryResult.get("stock") + difference);
       let result = await updateQuery.save();
+      setLoading(false);
       return true;
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");
+      setLoading(false);
       console.log(error);
       return false;
     }
@@ -104,6 +108,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
   };
 
   const SavePartsUsed = async () => {
+    setLoading(true);
     let PartsUsed = new Parse.Object("PartsUsed");
     const serviceObject = new Parse.Object("Services", {
       id: service.serviceOrderId,
@@ -123,6 +128,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       getPartsUsed();
       return true;
     } catch (error) {
+      setLoading(false);
       setSnackbar(true, "Oops, something went wrong");
       console.log(error);
       return false;
@@ -130,6 +136,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
   };
 
   const UpdatePartsUsed = async () => {
+    setLoading(true);
     let PartsUsed = new Parse.Object("PartsUsed");
     PartsUsed.set("objectId", updateItem.objectId);
     PartsUsed.set("quantity_spent", parseInt(number));
@@ -143,6 +150,7 @@ const PartsSpent = ({ service, setSnackbar, open }) => {
       getPartsUsed();
       return true;
     } catch (error) {
+      setLoading(false);
       setSnackbar(true, "Oops, something went wrong");
       console.log(error);
       return false;

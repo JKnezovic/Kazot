@@ -1,7 +1,20 @@
-const DateToDDMMYY = (Date) => {
+const DateToDDMMYY = (Date, monthFormat = "text") => {
   if (!Date) return null;
-
-  let date, month, year;
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let date, month, year, monthText;
   date = Date.getDate();
   month = Date.getMonth() + 1;
   year = Date.getFullYear();
@@ -10,7 +23,10 @@ const DateToDDMMYY = (Date) => {
 
   month = month.toString().padStart(2, "0");
 
-  return `${date}/${month}/${year}`;
+  if (monthFormat === "text") {
+    monthText = months[Date.getMonth()];
+    return `${date} ${monthText} ${year}`;
+  } else return `${date}/${month}/${year}`;
 };
 
 export default DateToDDMMYY;

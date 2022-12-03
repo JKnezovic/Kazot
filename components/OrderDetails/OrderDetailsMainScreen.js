@@ -19,6 +19,7 @@ import { colours } from "../../utils/constants";
 import useScreenDimensions from "../../useScreenDimensions";
 import { serviceStatuses } from "../../utils/constants";
 import serviceOrderTransformer from "../Orders/serviceOrderTransformer";
+import IsLoading from "../Inventory/IsLoading";
 
 const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [service, setService] = useState({});
@@ -28,6 +29,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [visible, setVisible] = useState(false);
   const screenData = useScreenDimensions();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getService();
@@ -73,6 +75,7 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   };
 
   const SaveNewStatusHistory = async (value) => {
+    setLoading(true);
     setVisible(false);
     const currentUser = await Parse.User.currentAsync();
     let StatusHistory = new Parse.Object("OrderStatusHistory");
@@ -91,10 +94,12 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       let statusHistory = await StatusHistory.save();
       let serviceUpdate = await serviceQuery.save();
       setService(serviceOrderTransformer({ serviceOrder: serviceUpdate }));
+      setLoading(false);
       setSnackbar(true, "Saved successfully");
       return true;
     } catch (error) {
       setSnackbar(true, "Oops, something went wrong");
+      setLoading(false);
       console.log(error);
       return false;
     }
@@ -144,22 +149,26 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
               service={service}
               setSnackbar={setSnackbar}
               open={screenData.isLandscape && true}
+              setLoading={setLoading}
             />
             <Divider bold={true} />
             <PartsSpent
               service={service}
               setSnackbar={setSnackbar}
               open={screenData.isLandscape && true}
+              setLoading={setLoading}
             />
             <Divider bold={true} />
             <Attachments
               service={service}
               setSnackbar={setSnackbar}
               open={screenData.isLandscape && true}
+              setLoading={setLoading}
             />
           </View>
         </View>
       </ScrollView>
+      <IsLoading loading={loading} />
       <Snackbar
         visible={visibleSnackbar}
         onDismiss={() => setVisibleSnackbar(false)}

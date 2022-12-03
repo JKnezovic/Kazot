@@ -43,11 +43,10 @@ const DropdownSelect = ({
 
   const openMenu = (text) => {
     if (text.length > 0) {
-      var result = clients.filter(
-        (x) =>
-          x.name.toLowerCase().startsWith(text.toLowerCase()) ||
-          x.surname.toLowerCase().startsWith(text.toLowerCase()) ||
-          x.contact.toLowerCase().startsWith(text.toLowerCase())
+      var result = clients.filter((x) =>
+        `${x.name.toLowerCase()} ${x.surname.toLowerCase()} ${x.contact.toLowerCase()}`.includes(
+          text.toLowerCase()
+        )
       );
       if (result.length > 0) {
         setSelectList(result);

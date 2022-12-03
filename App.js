@@ -35,10 +35,13 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(false);
 
   const setUser = async () => {
     const currentUser = await Parse.User.currentAsync();
+    let resultJSON = JSON.parse(JSON.stringify(currentUser));
     setIsSignedIn(currentUser ? true : false);
+    setCurrentUser(resultJSON);
   };
 
   async function changeScreenOrientation() {
@@ -63,7 +66,13 @@ const App = () => {
           ) : (
             <>
               <Stack.Screen name="Main" options={{ headerShown: false }}>
-                {(props) => <MainScreen {...props} setUser={setUser} />}
+                {(props) => (
+                  <MainScreen
+                    {...props}
+                    setUser={setUser}
+                    currentUser={currentUser}
+                  />
+                )}
               </Stack.Screen>
               <Stack.Screen name="NewOrder" component={NewOrderMainScreen} />
             </>

@@ -13,7 +13,7 @@ import { colours } from "../../utils/constants";
 import Parse from "parse/react-native.js";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
-const ServicesDone = ({ service, setSnackbar, open }) => {
+const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
   const [expanded, setExpanded] = useState(open);
   const [visible, setVisible] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
@@ -45,6 +45,7 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
   };
 
   const SaveNewServiceHistory = async () => {
+    setLoading(true);
     const currentUser = await Parse.User.currentAsync();
     let ServiceHistory = new Parse.Object("ServicesHistory");
     const serviceObject = new Parse.Object("Services", {
@@ -60,9 +61,11 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
       setVisible(false);
       setServiceDescription("");
       setSnackbar(true, "Saved successfully");
+      setLoading(false);
       getServiceHistory();
       return true;
     } catch (error) {
+      setLoading(false);
       setSnackbar(true, "Oops, something went wrong");
       return false;
     }
@@ -74,15 +77,18 @@ const ServicesDone = ({ service, setSnackbar, open }) => {
   };
 
   const deleteServiceHistory = async () => {
+    setLoading(true);
     const serviceQuery = new Parse.Object("ServicesHistory");
     serviceQuery.set("objectId", deleteItem?.id);
     try {
       await serviceQuery.destroy();
       setVisibleDelete(false);
+      setLoading(false);
       getServiceHistory();
       return true;
     } catch (error) {
       console.log("Error!", error.message);
+      setLoading(false);
       return false;
     }
   };

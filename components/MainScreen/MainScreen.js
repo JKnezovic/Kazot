@@ -1,21 +1,16 @@
-import {
-  createBottomTabNavigator,
-  useBottomTabBarHeight,
-} from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import UserProfile from "../UserProfile/UserProfile";
 import OrderMainScreen from "../Orders/OrderMainScreen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import InventoryMainScreen from "../Inventory/InventoryMainScreen";
 import NewOrderMainScreen from "../NewOrder/NewOrderMainScreen";
 import ClientsMainScreen from "../clients/ClientsView";
-import { Button } from "react-native-paper";
-import { colours } from "../../utils/constants";
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen(props) {
+export default function MainScreen({ setUser, currentUser }) {
   return (
     <Tab.Navigator
       initialRouteName="Orders"
@@ -39,7 +34,7 @@ export default function MainScreen(props) {
         component={NewOrderMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="plus" size={size} color={color} />
+            <Entypo name="new-message" size={size} color={color} />
           ),
         }}
       />
@@ -49,22 +44,28 @@ export default function MainScreen(props) {
         component={ClientsMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people-outline" size={size} color={color} />
+            <MaterialCommunityIcons
+              name="contacts-outline"
+              size={size}
+              color={color}
+            />
           ),
           unmountOnBlur: true,
         }}
       />
-      <Tab.Screen
-        name="Inventory"
-        unmountOnBlur={true}
-        component={InventoryMainScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="barcode" size={size} color={color} />
-          ),
-          unmountOnBlur: true,
-        }}
-      />
+      {currentUser?.role === "admin" && (
+        <Tab.Screen
+          name="Inventory"
+          unmountOnBlur={true}
+          component={InventoryMainScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <AntDesign name="barcode" size={size} color={color} />
+            ),
+            unmountOnBlur: true,
+          }}
+        />
+      )}
       <Tab.Screen
         name="Profile"
         options={{
@@ -73,7 +74,7 @@ export default function MainScreen(props) {
           ),
         }}
       >
-        {() => <UserProfile setUser={props.setUser} />}
+        {() => <UserProfile setUser={setUser} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

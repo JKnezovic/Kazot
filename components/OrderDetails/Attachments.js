@@ -8,7 +8,7 @@ import Parse from "parse/react-native.js";
 import { colours } from "../../utils/constants";
 import ImageViewer from "react-native-image-zoom-viewer";
 
-const Attachments = ({ service, setSnackbar, open }) => {
+const Attachments = ({ service, setSnackbar, open, setLoading }) => {
   const [expanded, setExpanded] = useState(open);
   const [attachments, setAttachments] = useState([]);
   const [visible, setIsVisible] = useState(false);
@@ -43,14 +43,17 @@ const Attachments = ({ service, setSnackbar, open }) => {
   };
 
   const removeImage = async () => {
+    setLoading(true);
     try {
       const image_id = deleteItem;
       const params = { image_id };
       const result = await Parse.Cloud.run("deleteGalleryPicture", params);
       setVisibleDelete(false);
       setSnackbar(true, "Image deleted");
+      setLoading(false);
       getAttachments();
     } catch (error) {
+      setLoading(false);
       setSnackbar(true, "Delete Error: " + error);
       console.log(error);
     }
@@ -62,27 +65,34 @@ const Attachments = ({ service, setSnackbar, open }) => {
   };
 
   const UploadAttachments = async (images) => {
+    setLoading(true);
     // 1. Create a file
-    images.forEach(async (image, i) => {
-      const { base64 } = image;
-      const filename = "testing" + i;
-      const parseFile = new Parse.File(filename, { base64 });
-      // 2. Save the file
-      try {
-        const responseFile = await parseFile.save();
-        const Attachments = Parse.Object.extend("Attachments");
-        const attachments = new Attachments();
-        attachments.set("attachment", responseFile);
-        const serviceObject = new Parse.Object("Services", {
-          id: service.serviceOrderId,
-        });
-        attachments.set("service_fkey", serviceObject);
-        await attachments.save();
-        setSnackbar(true, "Images saved");
-        getAttachments();
-      } catch (error) {
-        setSnackbar(true, "Oops, something went wrong!");
-      }
+    var bar = new Promise((resolve, reject) => {
+      images.forEach(async (image, index, array) => {
+        const { base64 } = image;
+        const filename = "testing" + index;
+        const parseFile = new Parse.File(filename, { base64 });
+        // 2. Save the file
+        try {
+          const responseFile = await parseFile.save();
+          const Attachments = Parse.Object.extend("Attachments");
+          const attachments = new Attachments();
+          attachments.set("attachment", responseFile);
+          const serviceObject = new Parse.Object("Services", {
+            id: service.serviceOrderId,
+          });
+          attachments.set("service_fkey", serviceObject);
+          await attachments.save();
+          if (index === array.length - 1) resolve();
+        } catch (error) {
+          setSnackbar(true, "Oops, something went wrong!");
+        }
+      });
+    });
+    bar.then(() => {
+      setSnackbar(true, "Images saved");
+      getAttachments();
+      setLoading(false);
     });
   };
 
