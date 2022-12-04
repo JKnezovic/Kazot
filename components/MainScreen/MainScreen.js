@@ -34,7 +34,7 @@ export default function MainScreen({ setUser, currentUser }) {
         component={NewOrderMainScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Entypo name="new-message" size={size} color={color} />
+            <AntDesign name="plus" size={size} color={color} />
           ),
         }}
       />

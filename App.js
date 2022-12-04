@@ -11,6 +11,7 @@ import ClientDetailsView from "./components/clients/client-details/ClientDetails
 import * as ScreenOrientation from "expo-screen-orientation";
 import { isSmartPhoneBasedOnRatio } from "./Scaling";
 import { APPLICATION_ID, JAVASCRIPT_KEY } from "./auth_keys.js";
+import { StatusBar } from "expo-status-bar";
 
 import {
   MD3LightTheme,
@@ -95,6 +96,7 @@ const App = () => {
             }}
           ></Stack.Screen>
         </Stack.Navigator>
+        <StatusBar style="dark" />
       </PaperProvider>
     </NavigationContainer>
   );

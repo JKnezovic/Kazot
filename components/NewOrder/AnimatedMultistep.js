@@ -74,24 +74,27 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
 
   const UploadAttachments = async (serviceOrder) => {
     // 1. Create a file
-    images.forEach(async (image, i) => {
-      const { base64 } = image;
-      const filename = serviceOrder.get("service_id") + "_" + i;
-      const parseFile = new Parse.File(filename, { base64 });
-      // 2. Save the file
-      try {
-        const responseFile = await parseFile.save();
-        const Attachments = Parse.Object.extend("Attachments");
-        const attachments = new Attachments();
-        attachments.set("attachment", responseFile);
-        attachments.set("service_fkey", serviceOrder);
-        await attachments.save();
-      } catch (error) {
-        setSnackbar(
-          true,
-          "The file either could not be read, or could not be saved to Back4app."
-        );
-      }
+    var bar = new Promise((resolve, reject) => {
+      images.forEach(async (image, index, array) => {
+        const { base64 } = image;
+        const filename = serviceOrder.get("service_id") + "_" + index;
+        const parseFile = new Parse.File(filename, { base64 });
+        // 2. Save the file
+        try {
+          const responseFile = await parseFile.save();
+          const Attachments = Parse.Object.extend("Attachments");
+          const attachments = new Attachments();
+          attachments.set("attachment", responseFile);
+          attachments.set("service_fkey", serviceOrder);
+          await attachments.save();
+          if (index === array.length - 1) resolve();
+        } catch (error) {
+          setSnackbar(
+            true,
+            "Opps, something went wrong when uploading images."
+          );
+        }
+      });
     });
   };
 
@@ -110,6 +113,7 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
   };
 
   const finish = async () => {
+    setActivityIndicator(true);
     var serviceOrder = await createNewOrder();
 
     if (serviceOrder === false) {
