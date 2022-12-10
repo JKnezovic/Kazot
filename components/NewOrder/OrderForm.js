@@ -8,7 +8,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
   const [serviceTypes, setServiceTypes] = useState([]);
   const [openST, setOpenST] = useState(false);
-  const [valueST, setValueST] = useState(orderState.serviceType);
+  const [valueST, setValueST] = useState(orderState.model);
   const [vehicles, setVehicles] = useState([]);
   const [openVehicle, setOpenVehicle] = useState(false);
   const [valueVehicle, setValueVehicle] = useState(null);
@@ -89,11 +89,10 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
         {vehicles.length ? (
           <DropDownPicker
             schema={{
-              label: "serial_number",
-              value: "serial_number",
+              label: "model",
+              value: "model",
             }}
             listMode="MODAL"
-            //listMode="SCROLLVIEW"
             closeOnBackPressed={true}
             itemSeparator={true}
             open={openVehicle}
@@ -105,9 +104,9 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
             items={vehicles}
             placeholder="Select Vehicle"
             onSelectItem={(item) => {
-              handleChange("model", item.model);
+              handleChange("serialNumber", item.serial_number);
             }}
-            onChangeValue={(text) => handleChange("serialNumber", text)}
+            onChangeValue={(text) => handleChange("model", text)}
             setItems={setVehicles}
             setValue={setValueVehicle}
             setOpen={setOpenVehicle}
@@ -115,22 +114,22 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
         ) : (
           <TextInput
             mode="outlined"
-            activeOutlineColor="#fca311"
-            onChangeText={(text) => handleChange("serialNumber", text)}
-            value={orderState.serialNumber}
-            label={"Vehicle S/N"}
             style={Styles.form_input}
             autoCapitalize={"none"}
+            activeOutlineColor="#fca311"
+            onChangeText={(text) => handleChange("model", text)}
+            value={orderState.model}
+            label={"Vehicle Model"}
           />
         )}
         <TextInput
           mode="outlined"
+          activeOutlineColor="#fca311"
+          onChangeText={(text) => handleChange("serialNumber", text)}
+          value={orderState.serialNumber}
+          label={"Vehicle S/N"}
           style={Styles.form_input}
           autoCapitalize={"none"}
-          activeOutlineColor="#fca311"
-          onChangeText={(text) => handleChange("model", text)}
-          value={orderState.model}
-          label={"Vehicle Model"}
         />
         <TextInput
           mode="outlined"

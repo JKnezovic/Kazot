@@ -18,7 +18,7 @@ import Parse from "parse/react-native.js";
 import Searchbar from "./Searchbar";
 import partsTransformer from "./partsTransformer";
 import { AntDesign } from "@expo/vector-icons";
-const numberOfItemsPerPageList = [5, 10, 20];
+const numberOfItemsPerPageList = [5, 10, 20, "Show All"];
 const defaultItem = {
   MSQ: 0,
   stock: 0,
@@ -28,7 +28,7 @@ const defaultItem = {
 
 const InventoryMainScreen = () => {
   const [page, setPage] = useState(0);
-  const [numberOfItemsPerPage, onItemsPerPageChange] = useState(
+  const [numberOfItemsPerPage, setNumberOfItemsPerPage] = useState(
     numberOfItemsPerPageList[0]
   );
   const from = page * numberOfItemsPerPage;
@@ -50,6 +50,11 @@ const InventoryMainScreen = () => {
   const [sortDirection, setSortDirection] = useState(1);
   const [sortColumn, setSortColumn] = useState("name");
   const [loading, setLoading] = useState(false);
+
+  const onItemsPerPageChange = (num) => {
+    if (num === "Show All") setNumberOfItemsPerPage(allParts.length);
+    else setNumberOfItemsPerPage(num);
+  };
 
   const getAllParts = async () => {
     setActivityIndicator(true);
