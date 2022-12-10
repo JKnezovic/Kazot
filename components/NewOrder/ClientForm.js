@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, ScrollView } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { ScrollView, TouchableWithoutFeedback } from "react-native";
 import { TextInput } from "react-native-paper";
 import Styles from "./Styles";
 import DropdownSelect from "./DropdownSelect";
@@ -13,6 +13,10 @@ import clientsTransformer from "../clients/clientsTransformer";
 const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
   const [open, setOpen] = useState(false);
   const [allClients, setAllClients] = useState([]);
+  const [openMenu, setOpenMenu] = useState(false);
+  const ref_input2 = useRef();
+  const ref_input3 = useRef();
+  const ref_input4 = useRef();
 
   useEffect(() => {
     FadeIn();
@@ -48,25 +52,38 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
   };
 
   return (
-    <KeyboardAvoidingView>
-      <ScrollView>
+    <TouchableWithoutFeedback
+      onPress={() => setOpenMenu(false)}
+      style={{ flex: 1 }}
+    >
+      <ScrollView keyboardShouldPersistTaps="handled">
         <DropdownSelect
+          reference={null}
+          refInput={ref_input2}
           value={orderState.name}
           label={"Name"}
           handleChange={handleChange}
           clients={allClients}
           name={"name"}
           setOrderState={setOrderState}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
         />
         <DropdownSelect
+          reference={ref_input2}
+          refInput={ref_input3}
           value={orderState.surname}
           label={"Surname"}
           handleChange={handleChange}
           clients={allClients}
           name={"surname"}
           setOrderState={setOrderState}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
         />
         <DropdownSelect
+          reference={ref_input3}
+          refInput={ref_input4}
           value={orderState.contact}
           label={"Contact Number"}
           handleChange={handleChange}
@@ -74,6 +91,8 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           name={"contact"}
           setOrderState={setOrderState}
           keyboardType={"number-pad"}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
         />
         <TextInput
           mode="outlined"
@@ -84,6 +103,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           autoCapitalize={"none"}
           onChangeText={(text) => handleChange("email", text)}
           keyboardType={"email-address"}
+          ref={ref_input4}
         />
         <FAB
           icon="calendar"
@@ -108,7 +128,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           />
         )}
       </ScrollView>
-    </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
