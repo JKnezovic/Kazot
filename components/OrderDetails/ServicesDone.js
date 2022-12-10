@@ -1,31 +1,31 @@
 import { useState, useEffect } from "react";
-import {
-  List,
-  Button,
-  TextInput,
-  Dialog,
-  Portal,
-  Paragraph,
-} from "react-native-paper";
+import { List } from "react-native-paper";
 import { Text, View, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { colours } from "../../utils/constants";
 import Parse from "parse/react-native.js";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
+import ServicesDialogWrapper from "./ServicesDialogWrapper";
 
 const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
   const [expanded, setExpanded] = useState(open);
   const [visible, setVisible] = useState(false);
-  const [visibleDelete, setVisibleDelete] = useState(false);
   const [serviceDescription, setServiceDescription] = useState("");
   const [serviceHistory, setServiceHistory] = useState([]);
-  const [deleteItem, setDeleteItem] = useState(null);
+  const [updateId, setUpdateId] = useState("");
+  const [isDelete, setIsDelete] = useState(false);
 
   const handlePress = () => setExpanded(!expanded);
 
   useEffect(() => {
     getServiceHistory();
   }, []);
+
+  const prepareDialog = (service_description = "", itemID = "") => {
+    setServiceDescription(service_description);
+    setUpdateId(itemID);
+    setVisible(true);
+  };
 
   const getServiceHistory = async () => {
     const serviceQuery = new Parse.Query("ServicesHistory");
@@ -44,7 +44,7 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
     }
   };
 
-  const SaveNewServiceHistory = async () => {
+  const SaveNewServiceHistory = async (service_description) => {
     setLoading(true);
     const currentUser = await Parse.User.currentAsync();
     let ServiceHistory = new Parse.Object("ServicesHistory");
@@ -54,7 +54,7 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
     ServiceHistory.set("service_fkey", serviceObject);
     ServiceHistory.set("user_fkey", currentUser);
     ServiceHistory.set("user_name", currentUser.get("username"));
-    ServiceHistory.set("service_description", serviceDescription);
+    ServiceHistory.set("service_description", service_description);
 
     try {
       let serviceHistory = await ServiceHistory.save();
@@ -71,18 +71,38 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
     }
   };
 
-  const deleteSetup = (item) => {
-    setVisibleDelete(true);
-    setDeleteItem(item);
+  const UpdateServiceHistory = async (service_description) => {
+    setLoading(true);
+    let ServiceHistory = new Parse.Object("ServicesHistory");
+    ServiceHistory.set("objectId", updateId);
+    ServiceHistory.set("service_description", service_description);
+
+    try {
+      let serviceHistory = await ServiceHistory.save();
+      setVisible(false);
+      setServiceDescription("");
+      setUpdateId("");
+      setSnackbar(true, "Saved successfully");
+      setLoading(false);
+      getServiceHistory();
+      return true;
+    } catch (error) {
+      setLoading(false);
+      setSnackbar(true, "Oops, something went wrong");
+      return false;
+    }
   };
 
   const deleteServiceHistory = async () => {
     setLoading(true);
     const serviceQuery = new Parse.Object("ServicesHistory");
-    serviceQuery.set("objectId", deleteItem?.id);
+    serviceQuery.set("objectId", updateId);
     try {
       await serviceQuery.destroy();
-      setVisibleDelete(false);
+      setVisible(false);
+      setServiceDescription("");
+      setUpdateId("");
+      setIsDelete(false);
       setLoading(false);
       getServiceHistory();
       return true;
@@ -95,48 +115,42 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
 
   const listItems = serviceHistory.map((item, key) => (
     <List.Item
+      onPress={() => prepareDialog(item.get("service_description"), item.id)}
       key={key}
       right={() => (
         <View style={{ justifyContent: "center" }}>
           <AntDesign
             style={{ alignSelf: "center", paddingHorizontal: 10 }}
-            name="delete"
+            name="edit"
             size={20}
-            color="red"
-            onPress={() => deleteSetup(item)}
+            color={colours.ORANGE_WEB}
           />
         </View>
       )}
       description={() => (
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: "100%",
-            paddingHorizontal: 10,
-          }}
-        >
+        <View style={styles.description}>
           <Text style={{ color: "grey" }}>
             {DateToDDMMYY(item.get("createdAt"))}
           </Text>
-          <Text style={{ color: "gray" }}>{item.get("user_name")}</Text>
+          <Text style={{ color: "gray", marginRight: 15 }}>
+            {item.get("user_name")}
+          </Text>
         </View>
       )}
       titleStyle={{ paddingHorizontal: 10 }}
-      descriptionStyle={{ paddingHorizontal: 10 }}
+      style={{ paddingLeft: 8 }}
       title={item.get("service_description")}
-      titleNumberOfLines={3}
+      titleNumberOfLines={15}
     />
   ));
 
   return (
     <View>
       <List.Accordion
-        style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
+        style={styles.accordion}
         titleStyle={{ color: "#14213D" }}
         title={"Services Done"}
-        left={(props) => <List.Icon {...props} icon="wrench" color="#fca311" />}
+        left={(props) => <List.Icon icon="wrench" color="#fca311" />}
         expanded={expanded}
         onPress={handlePress}
       >
@@ -148,7 +162,7 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
                 name="pluscircleo"
                 size={24}
                 color="green"
-                onPress={() => setVisible(true)}
+                onPress={() => prepareDialog()}
               />
             </View>
           )}
@@ -158,68 +172,16 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
 
         {listItems}
       </List.Accordion>
-      <Portal>
-        <Dialog
-          style={{ backgroundColor: "#FFFFFF" }}
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-        >
-          <Dialog.Title>Service description</Dialog.Title>
-          <Dialog.Content>
-            <TextInput
-              mode="outlined"
-              activeOutlineColor="#fca311"
-              onChangeText={(text) => setServiceDescription(text)}
-              value={serviceDescription}
-              style={{ backgroundColor: "#FFFFFF" }}
-              multiline
-              numberOfLines={4}
-            />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              textColor={colours.OXFORD_BLUE}
-              onPress={() => setVisible(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              textColor={colours.ORANGE_WEB}
-              disabled={serviceDescription ? false : true}
-              onPress={() => SaveNewServiceHistory()}
-            >
-              Save
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
-        <Dialog
-          style={{ backgroundColor: "#FFFFFF" }}
-          visible={visibleDelete}
-          onDismiss={() => setVisibleDelete(false)}
-        >
-          <Dialog.Content>
-            <Paragraph style={{ fontWeight: "bold", fontSize: 15 }}>
-              Are you sure you want to delete this item:
-            </Paragraph>
-            <Paragraph>{deleteItem?.get("service_description")}</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              textColor={colours.OXFORD_BLUE}
-              onPress={() => setVisibleDelete(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              textColor={colours.ANTIQUE_RUBY}
-              onPress={() => deleteServiceHistory()}
-            >
-              Delete
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <ServicesDialogWrapper
+        visible={visible}
+        setVisible={setVisible}
+        serviceDescription={serviceDescription}
+        SaveNewServiceHistory={SaveNewServiceHistory}
+        UpdateServiceHistory={UpdateServiceHistory}
+        deleteServiceHistory={deleteServiceHistory}
+        setIsDelete={setIsDelete}
+        isDelete={isDelete}
+      />
     </View>
   );
 };
@@ -228,6 +190,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  description: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+  },
+  accordion: {
+    backgroundColor: "rgba(229, 229, 229, 0.4)",
   },
 });
 
