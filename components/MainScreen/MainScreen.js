@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import InventoryMainScreen from "../Inventory/InventoryMainScreen";
 import NewOrderMainScreen from "../NewOrder/NewOrderMainScreen";
 import ClientsMainScreen from "../clients/ClientsView";
+import { moderateScale } from "../../Scaling";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +17,9 @@ export default function MainScreen({ setUser, currentUser }) {
       initialRouteName="Orders"
       screenOptions={{
         tabBarActiveTintColor: "#fca311",
+        tabBarStyle: {
+          height: moderateScale(79),
+        },
       }}
     >
       <Tab.Screen

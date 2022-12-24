@@ -5,13 +5,13 @@ import {
   View,
   Keyboard,
 } from "react-native";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+// import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Portal, Snackbar, ActivityIndicator } from "react-native-paper";
 import SearchBar from "./SearchBar";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
-import { moderateScale, isSmartPhoneBasedOnRatio } from "../../Scaling";
+import { moderateScale } from "../../Scaling";
 import { colours } from "../../utils/constants";
 import Filters from "./Filters";
 
@@ -27,9 +27,17 @@ export default function OrderMainScreen({ navigation }) {
   const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
-  const tabBarHeight = useBottomTabBarHeight();
-  const [statusFilters, setStatusFilters] = useState([]);
-  const [dateFilter, setDateFilter] = useState(new Date());
+  // const tabBarHeight = useBottomTabBarHeight();
+  const [statusFilters, setStatusFilters] = useState();
+  const [dateFilter, setDateFilter] = useState(null);
+
+  // rerender on back
+  useEffect(() => {
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      getOrders({ statusFilters, dateFilter });
+    });
+    return willFocusSubscription;
+  }, [navigation]);
 
   useEffect(() => {
     if (showLoader && areOrdersLoaded) setShowLoader(false);
@@ -66,7 +74,7 @@ export default function OrderMainScreen({ navigation }) {
         />
       ),
     });
-  }, [navigation]);
+  }, [navigation, statusFilters, dateFilter]);
 
   return (
     <TouchableWithoutFeedback
@@ -76,8 +84,8 @@ export default function OrderMainScreen({ navigation }) {
       <View
         style={[
           {
-            paddingBottom: tabBarHeight,
             height: "100%",
+            paddingBottom: moderateScale(50),
           },
         ]}
       >

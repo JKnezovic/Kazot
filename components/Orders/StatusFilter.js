@@ -12,17 +12,30 @@ import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import { serviceStatuses } from "../../utils/constants";
 
-const StatusFilter = ({ statusFilters = [], setStatusFilters }) => {
+const StatusFilter = ({
+  statusFilters = [
+    "Called",
+    "Created",
+    "Diagnosed",
+    "NO SHOW",
+    "Not Registered",
+    "Received",
+    "Registered",
+    "Waiting for Parts",
+    "Won't come",
+    "Opened",
+  ],
+  setStatusFilters,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState();
   const [selectedTypes, setSelectedTypes] = useState({});
-  const [isByOrderStatusOpen, setIsByOrderStatusOpen] = useState(false);
 
   useEffect(() => {
-    if (!isModalOpen) {
+    if (isModalOpen) {
       setSelectedTypes((prevState) => {
         let temp = { ...prevState };
         statusFilters.forEach((statusFilter) => (temp[statusFilter] = true));
-        return temp || null;
+        return temp || {};
       });
     }
   }, [isModalOpen]);
@@ -31,7 +44,6 @@ const StatusFilter = ({ statusFilters = [], setStatusFilters }) => {
     setStatusFilters(getFilters());
     setIsModalOpen(false);
   };
-
   const getFilters = () => {
     return Object.keys(selectedTypes).filter((key) => selectedTypes[key]);
   };

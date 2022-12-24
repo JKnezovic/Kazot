@@ -4,9 +4,9 @@ import { View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { colours } from "../../utils/constants";
 
-const TimePickerAndroid = ({ dateFilter = new Date(), setDateFilter }) => {
+const TimePickerAndroid = ({ dateFilter = null, setDateFilter }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const handlePicker = (event, date) => {
     if (event.type === "neutralButtonPressed") {
