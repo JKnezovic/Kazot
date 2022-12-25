@@ -4,6 +4,7 @@ import StatusFilter from "./StatusFilter";
 import TimePicker from "./TimePicker";
 import { moderateScale } from "../../Scaling";
 import TimePickerAndroid from "./TimePickerAndroid";
+import ResetFilters from "./ResetFilters";
 
 export default function Filters({
   statusFilters,
@@ -19,6 +20,7 @@ export default function Filters({
       ) : (
         <TimePickerAndroid {...{ dateFilter, setDateFilter }} />
       )}
+      <ResetFilters {...{ setStatusFilters, setDateFilter }} />
     </View>
   );
 }
