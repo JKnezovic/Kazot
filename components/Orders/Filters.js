@@ -11,16 +11,22 @@ export default function Filters({
   setStatusFilters,
   dateFilter,
   setDateFilter,
+  setSelectedDate,
+  selectedDate,
 }) {
   return (
     <View style={styles.row}>
       <StatusFilter {...{ statusFilters, setStatusFilters }} />
       {Platform.OS === "ios" ? (
-        <TimePicker {...{ dateFilter, setDateFilter }} />
+        <TimePicker
+          {...{ dateFilter, setDateFilter, setSelectedDate, selectedDate }}
+        />
       ) : (
-        <TimePickerAndroid {...{ dateFilter, setDateFilter }} />
+        <TimePickerAndroid
+          {...{ dateFilter, setDateFilter, setSelectedDate, selectedDate }}
+        />
       )}
-      <ResetFilters {...{ setStatusFilters, setDateFilter }} />
+      <ResetFilters {...{ setStatusFilters, setDateFilter, setSelectedDate }} />
     </View>
   );
 }

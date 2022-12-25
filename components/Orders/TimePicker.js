@@ -6,9 +6,13 @@ import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
-const TimePicker = ({ dateFilter = null, setDateFilter }) => {
+const TimePicker = ({
+  dateFilter = null,
+  setDateFilter,
+  setSelectedDate,
+  selectedDate,
+}) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [touched, setIsTouched] = useState(false);
 
   useEffect(() => {

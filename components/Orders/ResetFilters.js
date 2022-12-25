@@ -3,10 +3,22 @@ import { StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
 import { colours } from "../../utils/constants";
 
-const ResetFilters = ({ setDateFilter, setStatusFilters }) => {
+const ResetFilters = ({ setDateFilter, setStatusFilters, setSelectedDate }) => {
   const clearFilters = () => {
     setDateFilter(null);
-    setStatusFilters();
+    setSelectedDate(null);
+    setStatusFilters([
+      "Called",
+      "Created",
+      "Diagnosed",
+      "NO SHOW",
+      "Not Registered",
+      "Received",
+      "Registered",
+      "Waiting for Parts",
+      "Won't come",
+      "Opened",
+    ]);
   };
 
   return (

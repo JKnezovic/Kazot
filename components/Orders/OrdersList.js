@@ -40,6 +40,8 @@ const OrdersList = ({
           refreshing={isRefreshing}
           estimatedItemSize={125}
           contentContainerStyle={styles.list}
+          ListFooterComponent={() => <View></View>}
+          ListFooterComponentStyle={styles.footer}
         />
       ) : (
         <View style={styles.noOrders}>
@@ -71,5 +73,9 @@ const styles = StyleSheet.create({
     color: "grey",
     fontWeight: "300",
     fontStyle: "italic",
+  },
+  footer: {
+    height: 50,
+    width: "100%",
   },
 });

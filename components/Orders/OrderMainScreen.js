@@ -41,6 +41,7 @@ export default function OrderMainScreen({ navigation }) {
     "Opened",
   ]);
   const [dateFilter, setDateFilter] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   // rerender on back
   useEffect(() => {
@@ -81,7 +82,14 @@ export default function OrderMainScreen({ navigation }) {
     navigation.setOptions({
       headerRight: () => (
         <Filters
-          {...{ statusFilters, setStatusFilters, dateFilter, setDateFilter }}
+          {...{
+            statusFilters,
+            setStatusFilters,
+            dateFilter,
+            setDateFilter,
+            setSelectedDate,
+            selectedDate,
+          }}
         />
       ),
     });
