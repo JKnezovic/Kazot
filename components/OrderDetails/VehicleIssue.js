@@ -2,6 +2,8 @@ import { useState } from "react";
 import { List, DataTable } from "react-native-paper";
 import EditableCell from "./EditableCell";
 import DropDownCell from "./DropDownCell";
+import { View, Text } from "react-native";
+import DateToDDMMYY from "../../utils/DateToDDMMYY";
 
 const VehicleIssue = ({ service, open, getService }) => {
   const [expanded, setExpanded] = useState(open);
@@ -18,6 +20,19 @@ const VehicleIssue = ({ service, open, getService }) => {
       onPress={handlePress}
     >
       <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
+        <DataTable.Row>
+          <DataTable.Cell>{"Date"}</DataTable.Cell>
+          <View
+            style={{
+              width: "50%",
+              marginVertical: 8,
+              justifyContent: "center",
+            }}
+          >
+            <Text>{DateToDDMMYY(service.serviceDate)}</Text>
+          </View>
+        </DataTable.Row>
+
         <DropDownCell
           value={service?.type}
           title={"Service Type:"}

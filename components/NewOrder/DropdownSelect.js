@@ -1,8 +1,9 @@
-import { useEffect, useState, Fragment } from "react";
-import { View } from "react-native";
-import { Menu, Divider, TextInput, List } from "react-native-paper";
+import { useEffect, useState } from "react";
+import { Pressable, View, Text, Keyboard, StyleSheet } from "react-native";
+import { Divider, TextInput } from "react-native-paper";
 import Styles from "./Styles";
 import { moderateScale } from "../../Scaling";
+import { FlashList } from "@shopify/flash-list";
 
 const DropdownSelect = ({
   label,
@@ -12,9 +13,13 @@ const DropdownSelect = ({
   name,
   setOrderState,
   keyboardType,
+  refInput,
+  reference,
+  isOpenMenu,
+  setOpenMenu,
 }) => {
   const [visible, setVisible] = useState(false);
-  const [selectList, setSelectList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
   const [debouncedTerm, setDebouncedTerm] = useState(value);
 
   // update value after 250 mili seconds from the last update of 'debouncedTerm'
@@ -23,9 +28,14 @@ const DropdownSelect = ({
     return () => clearTimeout(timer);
   }, [debouncedTerm]);
 
+  useEffect(() => {
+    if (!isOpenMenu) setVisible(false);
+  }, [isOpenMenu]);
+
   const closeMenu = () => setVisible(false);
   //sta ako je prazan neki od vrijednosti??
   const updateForm = (client) => {
+    Keyboard.dismiss();
     setVisible(false);
     let object = {
       name: client.name,
@@ -42,54 +52,82 @@ const DropdownSelect = ({
   };
 
   const openMenu = (text) => {
-    if (text.length > 0) {
+    if (text.length >= 3) {
       var result = clients.filter((x) =>
         `${x.name.toLowerCase()} ${x.surname.toLowerCase()} ${x.contact.toLowerCase()}`.includes(
           text.toLowerCase()
         )
       );
       if (result.length > 0) {
-        setSelectList(result);
+        setFilterList(result);
         setVisible(true);
+        setOpenMenu(true);
       } else setVisible(false);
     } else setVisible(false);
   };
 
-  const items = selectList.map((x, i) => (
-    <Fragment key={x.clientId}>
-      <List.Item
-        onPress={() => updateForm(x)}
-        title={x.name + " " + x.surname + "   " + x.contact}
-      />
-      {/* Remove divider from last item */}
-      {i !== selectList.length - 1 && <Divider bold={true} />}
-    </Fragment>
-  ));
+  const onSubmitEditing = () => {
+    refInput.current.focus();
+    setVisible(false);
+  };
+
+  const renderItem = ({ item }) => (
+    <Pressable
+      onPress={() => updateForm(item)}
+      style={{ justifyContent: "center", height: 40 }}
+    >
+      <Text style={{ marginLeft: 15 }}>
+        {item.name + " " + item.surname + "   " + item.contact}
+      </Text>
+    </Pressable>
+  );
+
   return (
-    <View style={{ width: moderateScale(300), alignSelf: "center" }}>
-      <Menu
-        style={{
-          paddingTop: 60,
-          width: moderateScale(300),
-        }}
-        visible={visible}
-        onDismiss={closeMenu}
-        anchor={
-          <TextInput
-            mode="outlined"
-            label={label}
-            style={Styles.form_input}
-            value={value}
-            activeOutlineColor="#fca311"
-            onChangeText={(text) => handeChange(text)}
-            keyboardType={keyboardType}
+    <View
+      style={{
+        width: moderateScale(300),
+        alignSelf: "center",
+      }}
+    >
+      <TextInput
+        mode="outlined"
+        label={label}
+        style={Styles.form_input}
+        value={value}
+        activeOutlineColor="#fca311"
+        onChangeText={(text) => handeChange(text)}
+        keyboardType={keyboardType}
+        ref={reference}
+        onSubmitEditing={() => onSubmitEditing()}
+      />
+      {visible ? (
+        <View style={styles.container}>
+          <FlashList
+            data={filterList}
+            renderItem={renderItem}
+            estimatedItemSize={40}
+            ItemSeparatorComponent={() => <Divider bold={true} />}
+            keyboardShouldPersistTaps={"handled"}
+            nestedScrollEnabled={true}
           />
-        }
-      >
-        {items}
-      </Menu>
+        </View>
+      ) : null}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: 130,
+    flexGrow: 1,
+    backgroundColor: "white",
+    marginTop: -18,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: "gray",
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  },
+});
 
 export default DropdownSelect;

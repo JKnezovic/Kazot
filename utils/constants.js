@@ -48,8 +48,8 @@ export const serviceStatuses = [
     label: "Not Registered",
   },
   {
-    value: "Recieved",
-    label: "Recieved",
+    value: "Received",
+    label: "Received",
   },
   {
     value: "Registered",
@@ -67,4 +67,11 @@ export const serviceStatuses = [
     value: "Won't come",
     label: "Won't come",
   },
+];
+
+export const initialServiceOrderStatusFilters = [
+  "Opened",
+  "Created",
+  "Reservation",
+  "Calendly",
 ];

@@ -4,6 +4,7 @@ import ClientItem from "./ClientItem";
 import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from "@react-navigation/native";
 import useScreenDimensions from "../../useScreenDimensions";
+import { moderateScale } from "../../Scaling";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function ClientsList({
@@ -22,7 +23,7 @@ export default function ClientsList({
     <ClientItem client={item} navigation={navigation} screenData={screenData} />
   );
   return (
-    <View style={[{ height: "100%", paddingBottom: tabBarHeight }]}>
+    <View style={[{ height: "100%", paddingBottom: tabBarHeight - 30 }]}>
       <FlashList
         data={clients}
         renderItem={renderItem}

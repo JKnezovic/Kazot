@@ -29,7 +29,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       aspect: [4, 3],
-      quality: 0.5,
+      quality: 0.4,
       allowsMultipleSelection: true,
       base64: true,
     });
@@ -51,7 +51,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
-        quality: 0.5,
+        quality: 0.4,
         base64: true,
       });
       if (!result.cancelled) {

@@ -2,13 +2,13 @@
   "expo": {
     "name": "kazot",
     "slug": "kazot",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FBA310"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,11 +23,12 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FBA310"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
+      "versionCode":3,
       "package": "com.eondevelopers.kazot"
     },
     "web": {

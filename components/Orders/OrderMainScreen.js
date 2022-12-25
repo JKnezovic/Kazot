@@ -11,7 +11,7 @@ import SearchBar from "./SearchBar";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
-import { moderateScale, isSmartPhoneBasedOnRatio } from "../../Scaling";
+import { moderateScale } from "../../Scaling";
 import { colours } from "../../utils/constants";
 import Filters from "./Filters";
 
@@ -28,8 +28,28 @@ export default function OrderMainScreen({ navigation }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const tabBarHeight = useBottomTabBarHeight();
-  const [statusFilters, setStatusFilters] = useState([]);
-  const [dateFilter, setDateFilter] = useState(new Date());
+  const [statusFilters, setStatusFilters] = useState([
+    "Called",
+    "Created",
+    "Diagnosed",
+    "NO SHOW",
+    "Not Registered",
+    "Received",
+    "Registered",
+    "Waiting for Parts",
+    "Won't come",
+    "Opened",
+  ]);
+  const [dateFilter, setDateFilter] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  // rerender on back
+  useEffect(() => {
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      getOrders({ statusFilters, dateFilter });
+    });
+    return willFocusSubscription;
+  }, [navigation]);
 
   useEffect(() => {
     if (showLoader && areOrdersLoaded) setShowLoader(false);
@@ -62,11 +82,18 @@ export default function OrderMainScreen({ navigation }) {
     navigation.setOptions({
       headerRight: () => (
         <Filters
-          {...{ statusFilters, setStatusFilters, dateFilter, setDateFilter }}
+          {...{
+            statusFilters,
+            setStatusFilters,
+            dateFilter,
+            setDateFilter,
+            setSelectedDate,
+            selectedDate,
+          }}
         />
       ),
     });
-  }, [navigation]);
+  }, [navigation, statusFilters, dateFilter]);
 
   return (
     <TouchableWithoutFeedback
@@ -76,8 +103,8 @@ export default function OrderMainScreen({ navigation }) {
       <View
         style={[
           {
-            paddingBottom: tabBarHeight,
             height: "100%",
+            paddingBottom: tabBarHeight - 30,
           },
         ]}
       >
