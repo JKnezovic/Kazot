@@ -24,8 +24,7 @@ const useGetOrders = () => {
         // trazi s filterima
         statusFilters.forEach((filter) => {
           let query = new Parse.Query("Services");
-          query.include("client_fkey");
-          query.include("vehicle_fkey");
+
           query.equalTo("status", filter);
           if (dateFilter) {
             dateFilter.setHours(0, 0, 0, 0);
@@ -38,6 +37,8 @@ const useGetOrders = () => {
           queryArray.push(query);
         });
         joinedResults = await Parse.Query.or(...queryArray)
+          .include("client_fkey")
+          .include("vehicle_fkey")
           .ascending("service_date")
           .find();
       } else {
