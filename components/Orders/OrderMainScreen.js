@@ -5,7 +5,7 @@ import {
   View,
   Keyboard,
 } from "react-native";
-// import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Portal, Snackbar, ActivityIndicator } from "react-native-paper";
 import SearchBar from "./SearchBar";
 import useGetOrders from "./useGetOrders";
@@ -27,8 +27,19 @@ export default function OrderMainScreen({ navigation }) {
   const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
-  // const tabBarHeight = useBottomTabBarHeight();
-  const [statusFilters, setStatusFilters] = useState();
+  const tabBarHeight = useBottomTabBarHeight();
+  const [statusFilters, setStatusFilters] = useState([
+    "Called",
+    "Created",
+    "Diagnosed",
+    "NO SHOW",
+    "Not Registered",
+    "Received",
+    "Registered",
+    "Waiting for Parts",
+    "Won't come",
+    "Opened",
+  ]);
   const [dateFilter, setDateFilter] = useState(null);
 
   // rerender on back
@@ -85,7 +96,7 @@ export default function OrderMainScreen({ navigation }) {
         style={[
           {
             height: "100%",
-            paddingBottom: moderateScale(50),
+            paddingBottom: tabBarHeight - 30,
           },
         ]}
       >

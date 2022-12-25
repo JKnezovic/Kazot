@@ -17,9 +17,6 @@ export default function MainScreen({ setUser, currentUser }) {
       initialRouteName="Orders"
       screenOptions={{
         tabBarActiveTintColor: "#fca311",
-        tabBarStyle: {
-          height: moderateScale(79),
-        },
       }}
     >
       <Tab.Screen

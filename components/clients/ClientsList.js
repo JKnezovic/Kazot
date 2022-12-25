@@ -5,7 +5,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from "@react-navigation/native";
 import useScreenDimensions from "../../useScreenDimensions";
 import { moderateScale } from "../../Scaling";
-// import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function ClientsList({
   clients = [],
@@ -14,7 +14,7 @@ export default function ClientsList({
 }) {
   const screenData = useScreenDimensions();
   const navigation = useNavigation();
-  // const tabBarHeight = useBottomTabBarHeight();
+  const tabBarHeight = useBottomTabBarHeight();
 
   useEffect(() => {
     setIsRefreshing(false), [clients];
@@ -23,7 +23,7 @@ export default function ClientsList({
     <ClientItem client={item} navigation={navigation} screenData={screenData} />
   );
   return (
-    <View style={[{ height: "100%", paddingBottom: moderateScale(50) }]}>
+    <View style={[{ height: "100%", paddingBottom: tabBarHeight - 30 }]}>
       <FlashList
         data={clients}
         renderItem={renderItem}
