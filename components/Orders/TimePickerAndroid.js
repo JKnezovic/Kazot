@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { colours } from "../../utils/constants";
 
-const TimePickerAndroid = ({
-  dateFilter = null,
-  setDateFilter,
-  setSelectedDate,
-  selectedDate,
-}) => {
+const TimePickerAndroid = ({ dateFilter = null, setDateFilter }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    if (dateFilter === null) {
+      setSelectedDate(null);
+    }
+  }, [dateFilter]);
 
   const handlePicker = (event, date) => {
     if (event.type === "neutralButtonPressed") {
