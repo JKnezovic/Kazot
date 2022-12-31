@@ -17,17 +17,17 @@ const TimePickerAndroid = ({ dateFilter = null, setDateFilter }) => {
   const handlePicker = (event, date) => {
     if (event.type === "neutralButtonPressed") {
       setSelectedDate(null);
-      setDateFilter(null);
       setIsPickerOpen(false);
+      setDateFilter(null);
     }
     if (event.type === "set") {
       setSelectedDate(date);
-      setDateFilter(date);
       setIsPickerOpen(false);
+      setDateFilter(date);
     }
     if (event.type === "dismissed") {
-      setSelectedDate(dateFilter);
       setIsPickerOpen(false);
+      setSelectedDate(dateFilter);
     }
   };
 
