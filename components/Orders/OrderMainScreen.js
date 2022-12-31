@@ -48,7 +48,7 @@ export default function OrderMainScreen({ navigation }) {
       getOrders({ statusFilters, dateFilter });
     });
     return willFocusSubscription;
-  }, [navigation]);
+  }, [navigation, statusFilters, dateFilter]);
 
   useEffect(() => {
     if (showLoader && areOrdersLoaded) setShowLoader(false);

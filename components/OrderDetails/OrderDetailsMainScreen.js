@@ -80,19 +80,17 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
     const currentUser = await Parse.User.currentAsync();
     let StatusHistory = new Parse.Object("OrderStatusHistory");
     StatusHistory.set("status", value);
-    const serviceObject = new Parse.Object("Services", {
+    let serviceObject = new Parse.Object("Services", {
       id: service.serviceOrderId,
     });
     StatusHistory.set("service_fkey", serviceObject);
     StatusHistory.set("user_name", currentUser.get("username"));
 
-    let serviceQuery = new Parse.Object("Services");
-    serviceQuery.set("objectId", service.serviceOrderId);
-    serviceQuery.set("status", value);
+    serviceObject.set("status", value);
 
     try {
       let statusHistory = await StatusHistory.save();
-      let serviceUpdate = await serviceQuery.save();
+      let serviceUpdate = await serviceObject.save();
       setService(serviceOrderTransformer({ serviceOrder: serviceUpdate }));
       setLoading(false);
       setSnackbar(true, "Saved successfully");

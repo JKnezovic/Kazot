@@ -28,17 +28,10 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
           <View style={styles.details}>
             <View style={styles.client}>
               <Text>
-                <Text>Name:</Text> {order.clientName}
+                {order.clientName} {order.clientSurname}
               </Text>
-              <Text>
-                <Text>Surname:</Text> {order.clientSurname}
-              </Text>
-              <Text>
-                <Text>Contact:</Text> {order.clientContact}
-              </Text>
-              <Text>
-                <Text>Status:</Text>
-              </Text>
+              <Text>{order.clientContact}</Text>
+              <Text style={styles.status}>{order.status}</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.order}>
@@ -50,15 +43,6 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
               </Text>
               <Text numberOfLines={1}>
                 <Text>Issue:</Text> {order.issue}
-              </Text>
-              <Text
-                style={{
-                  textTransform: "uppercase",
-                  fontWeight: "bold",
-                  color: colours.OXFORD_BLUE,
-                }}
-              >
-                {order.status}
               </Text>
             </View>
           </View>
@@ -122,7 +106,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   client: {
-    minWidth: "40%",
+    minWidth: "43%",
   },
   order: {
     minWidth: "50%",
@@ -133,5 +117,10 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     height: "100%",
     marginHorizontal: moderateScale(7),
+  },
+  status: {
+    textTransform: "uppercase",
+    fontWeight: "bold",
+    color: colours.OXFORD_BLUE,
   },
 });
