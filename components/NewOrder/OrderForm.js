@@ -65,19 +65,19 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
     <KeyboardAvoidingView style={{ marginTop: 10 }}>
       <ScrollView>
         <DropDownPicker
+          textStyle={{ color: "rgba(28,27,31,1)", fontSize: 16 }}
+          style={{ borderRadius: 5, borderColor: "grey" }}
+          containerStyle={[Styles.form_input]}
           schema={{
             label: "name",
             value: "name",
           }}
           listMode="MODAL"
-          //listMode="SCROLLVIEW"
           closeOnBackPressed={true}
           itemSeparator={true}
           open={openST}
           searchable={true}
           value={valueST}
-          style={Styles.form_input}
-          dropDownContainerStyle={Styles.form_input}
           addCustomItem={true}
           items={serviceTypes}
           placeholder="Select Service Type"
@@ -88,6 +88,9 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
         ></DropDownPicker>
         {vehicles.length ? (
           <DropDownPicker
+            textStyle={{ color: "rgba(28,27,31,1)", fontSize: 16 }}
+            style={{ borderRadius: 5, borderColor: "grey" }}
+            containerStyle={[Styles.form_input]}
             schema={{
               label: "model",
               value: "model",
@@ -98,7 +101,6 @@ const OrderForm = ({ orderState, setOrderState, FadeIn }) => {
             open={openVehicle}
             searchable={true}
             value={valueVehicle}
-            style={Styles.form_input}
             dropDownContainerStyle={Styles.form_input}
             addCustomItem={true}
             items={vehicles}

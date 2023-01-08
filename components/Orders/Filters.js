@@ -30,5 +30,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     height: moderateScale(50),
+    alignItems: "center",
   },
 });

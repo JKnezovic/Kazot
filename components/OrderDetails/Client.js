@@ -30,16 +30,18 @@ const Client = ({ service, open }) => {
         <DataTable.Row>
           <DataTable.Cell>{"Name:"}</DataTable.Cell>
           <DataTable.Cell>
-            {service?.clientName + " " + service?.clientSurname}
+            {service?.clientName || service?.clientSurname
+              ? service?.clientName + " " + service?.clientSurname
+              : "-"}
           </DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row onPress={goToCall}>
           <DataTable.Cell>{"Contact:"}</DataTable.Cell>
-          <DataTable.Cell>{service?.clientContact}</DataTable.Cell>
+          <DataTable.Cell>{service?.clientContact || "-"}</DataTable.Cell>
         </DataTable.Row>
         <DataTable.Row onPress={goToEmail}>
           <DataTable.Cell>{"Email:"}</DataTable.Cell>
-          <DataTable.Cell>{service?.clientEmail}</DataTable.Cell>
+          <DataTable.Cell>{service?.clientEmail || "-"}</DataTable.Cell>
         </DataTable.Row>
       </DataTable>
       <Button
@@ -55,6 +57,7 @@ const Client = ({ service, open }) => {
         onPress={() =>
           navigation.navigate("Client Details", { clientId: service.clientId })
         }
+        disabled={!service.clientId}
       >
         {"View client"}
       </Button>
