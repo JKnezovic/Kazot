@@ -176,14 +176,14 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       </Snackbar>
       <Portal>
         <Dialog
-          style={{ backgroundColor: "#FFFFFF", height: "70%" }}
+          style={{ backgroundColor: "#FFFFFF" }}
           visible={visible}
           onDismiss={() => setVisible(false)}
         >
-          <Dialog.Title>Change order status:</Dialog.Title>
+          <Dialog.Title>Change Order Status</Dialog.Title>
           <Dialog.Content>
             <DataTable>
-              <ScrollView style={{ height: "90%" }}>{items}</ScrollView>
+              <ScrollView>{items}</ScrollView>
             </DataTable>
           </Dialog.Content>
         </Dialog>

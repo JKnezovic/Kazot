@@ -11,6 +11,7 @@ import {
 import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import { serviceStatuses } from "../../utils/constants";
+import { isSmartPhoneBasedOnRatio } from "../../Scaling";
 
 const StatusFilter = ({
   statusFilters = [
@@ -29,6 +30,7 @@ const StatusFilter = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState();
   const [selectedTypes, setSelectedTypes] = useState({});
+  const isTablet = !isSmartPhoneBasedOnRatio();
 
   useEffect(() => {
     if (isModalOpen) {
@@ -79,6 +81,11 @@ const StatusFilter = ({
           onDismiss={() => setIsModalOpen(false)}
           contentContainerStyle={styles.modalContainerStyle}
           key={JSON.stringify(selectedTypes)}
+          style={
+            isTablet && {
+              marginHorizontal: "20%",
+            }
+          }
         >
           <Text variant="titleLarge" style={styles.modalTitle}>
             Filter orders list
@@ -86,7 +93,7 @@ const StatusFilter = ({
 
           <View style={styles.body}>
             <View style={styles.row}>
-              <Text variant="titleMedium">By order status</Text>
+              <Text variant="titleMedium">By Order Status</Text>
               {isListChecked() && (
                 <IconButton icon="close" onPress={clearByOrderStatus} />
               )}
@@ -178,5 +185,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    height: 40,
   },
 });

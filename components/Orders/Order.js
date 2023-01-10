@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
-import { IconButton, Menu } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import { colours, orderOptions } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 import OrderMenu from "./order/OrderMenu";
 
-const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
+const Order = ({
+  order = {},
+  modal = {},
+  setSelectedOrderId,
+  getOrders,
+  isTablet = false,
+}) => {
   const navigation = useNavigation();
 
   return (
@@ -24,25 +29,50 @@ const Order = ({ order = {}, modal = {}, setSelectedOrderId, getOrders }) => {
           <Text style={styles.text}>{order.serviceId}</Text>
           <Text style={styles.text}>{DateToDDMMYY(order.serviceDate)}</Text>
         </View>
-        <View style={styles.content}>
+        <View
+          style={[
+            styles.content,
+            {
+              paddingVertical: moderateScale(isTablet ? 5 : 10),
+              paddingHorizontal: moderateScale(isTablet ? 5 : 10),
+            },
+          ]}
+        >
           <View style={styles.details}>
-            <View style={styles.client}>
-              <Text>
-                {order.clientName} {order.clientSurname}
-              </Text>
-              <Text>{order.clientContact}</Text>
+            <View>
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                {isTablet && (
+                  <View style={styles.contactTitles}>
+                    <Text style={isTablet && { marginBottom: 5 }}>Name:</Text>
+                    <Text style={isTablet && { marginBottom: 5 }}>
+                      Contact:
+                    </Text>
+                  </View>
+                )}
+                <View style={styles.client}>
+                  <Text style={isTablet && { marginBottom: 5 }}>
+                    {!order.clientName && !order.clientSurname
+                      ? `-`
+                      : `${order.clientName} ${order.clientSurname}`}
+                  </Text>
+                  <Text style={isTablet && { marginBottom: 5 }}>
+                    {order.clientContact || "-"}
+                  </Text>
+                </View>
+              </View>
               <Text style={styles.status}>{order.status}</Text>
             </View>
+
             <View style={styles.divider} />
             <View style={styles.order}>
-              <Text numberOfLines={1} style={{ flex: 1 }}>
-                <Text>Type:</Text> {order.type}
+              <Text numberOfLines={1} style={isTablet && { marginBottom: 5 }}>
+                <Text>Type:</Text> {order.type || "-"}
               </Text>
-              <Text>
-                <Text>Model:</Text> {order.vehicleModel}
+              <Text style={isTablet && { marginBottom: 5 }}>
+                <Text>Model:</Text> {order.vehicleModel || "-"}
               </Text>
               <Text numberOfLines={1}>
-                <Text>Issue:</Text> {order.issue}
+                <Text>Issue:</Text> {order.issue || "-"}
               </Text>
             </View>
           </View>
@@ -75,7 +105,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: colours.WHITE,
-    marginBottom: moderateScale(10),
+    marginBottom: 10,
     borderRadius: 10,
     overflow: "hidden",
   },
@@ -95,8 +125,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: moderateScale(10),
-    paddingHorizontal: moderateScale(10),
   },
   details: {
     display: "flex",
@@ -106,10 +134,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   client: {
-    minWidth: "43%",
+    minWidth: "50%",
+    maxWidth: "50%",
   },
   order: {
     minWidth: "50%",
+    maxWidth: "50%",
   },
   divider: {
     borderRight: "solid",
@@ -122,5 +152,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "bold",
     color: colours.OXFORD_BLUE,
+  },
+  contactTitles: {
+    marginRight: 5,
   },
 });

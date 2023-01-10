@@ -5,10 +5,11 @@ const Styles = StyleSheet.create({
   form_input: {
     alignSelf: "center",
     width: moderateScale(300),
-    //height: 44,
     marginBottom: 20,
     backgroundColor: "#FFFFFF",
-    //paddingHorizontal: 20,
+    color: "rgba(28,27,31,1)",
+    fontSize: 16,
+    borderColor: "blue",
   },
 });
 

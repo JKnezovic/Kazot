@@ -4,6 +4,7 @@ import { IconButton, Menu, Portal, Snackbar } from "react-native-paper";
 import getOrderOptions from "../../../utils/getOrderOptions";
 import { useNavigation } from "@react-navigation/native";
 import useHighlightOrder from "./useHighlightOrder";
+import { moderateScale } from "../../../Scaling";
 
 const OrderMenu = ({
   order = {},
@@ -54,6 +55,7 @@ const OrderMenu = ({
           <IconButton
             icon="dots-vertical"
             onPress={() => setIsMenuOpen(true)}
+            size={moderateScale(15)}
           />
         }
       >

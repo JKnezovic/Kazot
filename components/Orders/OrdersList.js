@@ -4,6 +4,7 @@ import { moderateScale } from "../../Scaling";
 import Order from "./Order";
 import DeleteOrderModal from "./DeleteOrderModal";
 import { FlashList } from "@shopify/flash-list";
+import { isSmartPhoneBasedOnRatio } from "../../Scaling";
 
 const OrdersList = ({
   orders = [],
@@ -14,12 +15,14 @@ const OrdersList = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const isTablet = !isSmartPhoneBasedOnRatio();
 
   const renderListItem = ({ item }) => (
     <Order
       modal={{ isModalOpen, setIsModalOpen }}
       order={item}
       {...{ setSelectedOrderId, getOrders }}
+      isTablet={isTablet}
     />
   );
 

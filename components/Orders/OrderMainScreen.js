@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    height: moderateScale(50),
   },
   activityIndicator: {
     alignItems: "center",

@@ -44,7 +44,6 @@ export default SearchBar;
 const styles = StyleSheet.create({
   container: {
     minHeight: 40,
-    paddingBottom: 5,
   },
   menuButton: {
     backgroundColor: colours.OXFORD_BLUE,

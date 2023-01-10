@@ -132,7 +132,7 @@ const EditableCell = ({
               justifyContent: "center",
             }}
           >
-            <Text numberOfLines={numberOfLines}>{value}</Text>
+            <Text numberOfLines={numberOfLines}>{value || "-"}</Text>
           </Pressable>
         </>
       )}

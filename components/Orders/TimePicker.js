@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { StyleSheet, View, Text } from "react-native";
-import { Button, Portal, Modal, IconButton } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Button, Portal, Modal, IconButton, Text } from "react-native-paper";
 import { colours } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
+import { isSmartPhoneBasedOnRatio } from "../../Scaling";
+
+/// Time picker for IOS
 
 const TimePicker = ({ dateFilter = null, setDateFilter }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [touched, setIsTouched] = useState(false);
+  const isTablet = !isSmartPhoneBasedOnRatio();
 
   useEffect(() => {
     if (isPickerOpen) setIsTouched(false);
@@ -65,12 +69,19 @@ const TimePicker = ({ dateFilter = null, setDateFilter }) => {
           <Modal
             visible={isPickerOpen}
             onDismiss={cancelModal}
-            style={styles.modal}
+            contentContainerStyle={styles.modalContainerStyle}
+            style={
+              isTablet && {
+                marginHorizontal: "20%",
+              }
+            }
           >
-            <Text style={styles.title}>Search by date</Text>
+            <Text variant="titleLarge" style={styles.title}>
+              Filter By Date
+            </Text>
             <View style={styles.row}>
-              <Text>
-                Currently selected date:{" "}
+              <Text variant="titleMedium">
+                Currently Selected Date:{" "}
                 {selectedDate ? DateToDDMMYY(selectedDate) : "All time"}
               </Text>
               {selectedDate && (
@@ -124,25 +135,27 @@ export default TimePicker;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: moderateScale(20),
-    marginBottom: moderateScale(5),
+    margin: 20,
     textAlign: "center",
-  },
-  subtitle: {
-    fontSize: moderateScale(15),
   },
   datePickerView: {
     paddingVertical: moderateScale(10),
   },
-  modal: {
-    borderRadius: 20,
-    height: moderateScale(10),
+  modalContainerStyle: {
     backgroundColor: colours.WHITE,
-    height: "70%",
-    marginHorizontal: 5,
-    padding: moderateScale(20),
+    margin: 20,
+    padding: 20,
+    borderRadius: moderateScale(20),
   },
-  footer: { display: "flex", flexDirection: "row", justifyContent: "flex-end" },
+  footer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    borderTopWidth: 1,
+    borderTopColor: colours.PLATINUM,
+    borderStyle: "solid",
+    paddingTop: 10,
+  },
   button: {
     marginRight: moderateScale(5),
     borderColor: colours.ORANGE_WEB,
