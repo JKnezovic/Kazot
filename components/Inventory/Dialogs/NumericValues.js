@@ -1,19 +1,14 @@
 import { IconButton, TextInput } from "react-native-paper";
 import { colours } from "../../../utils/constants";
-import { moderateScale } from "../../../Scaling";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-const NumericValues = ({
-  increment,
-  decrement,
-  title,
-  number,
-  setNumber,
-  isMSQ,
-}) => {
+const NumericValues = ({ increment, decrement, item, setValue, itemKey }) => {
+  const handleOnChange = (text) => {
+    setValue({ ...item, [itemKey]: text });
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={[styles.center, styles.flexy]}>{title}</Text>
       <View style={[styles.container, styles.flexy]}>
         <IconButton
           style={styles.center}
@@ -21,14 +16,14 @@ const NumericValues = ({
           mode="outlined"
           iconColor={colours.ORANGE_WEB}
           size={20}
-          onPress={() => decrement(isMSQ)}
+          onPress={() => decrement(itemKey, item[itemKey])}
         />
         <TextInput
           style={styles.textInput}
           activeUnderlineColor={colours.ORANGE_WEB}
           keyboardType="number-pad"
-          value={number}
-          onChangeText={(text) => setNumber(text)}
+          value={item[itemKey].toString()}
+          onChangeText={(text) => handleOnChange(text)}
         />
         <IconButton
           icon="plus"
@@ -36,7 +31,7 @@ const NumericValues = ({
           mode="outlined"
           iconColor={colours.ORANGE_WEB}
           size={20}
-          onPress={() => increment(isMSQ)}
+          onPress={() => increment(itemKey, item[itemKey])}
         />
       </View>
     </View>
@@ -48,10 +43,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginBottom: 10,
+    marginBottom: 3,
   },
   textInput: {
-    width: moderateScale(58),
+    width: 60,
     backgroundColor: "#FFFFFF",
   },
   center: {
