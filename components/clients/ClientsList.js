@@ -4,7 +4,6 @@ import ClientItem from "./ClientItem";
 import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from "@react-navigation/native";
 import useScreenDimensions from "../../useScreenDimensions";
-import { moderateScale } from "../../Scaling";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 export default function ClientsList({

@@ -37,9 +37,16 @@ export default function ClientsView() {
   const searchForClients = () => {
     //filter array of clients by name or surname
     return clients.filter((client) =>
-      `${client.name.toLowerCase()} ${client.surname.toLowerCase()}`.includes(
-        query.toLowerCase()
-      )
+      `${client.name} ${client.surname}`
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .toLowerCase()
+        .includes(
+          query
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .toLowerCase()
+        )
     );
   };
 
