@@ -39,8 +39,15 @@ const Order = ({
           ]}
         >
           <View style={styles.details}>
-            <View>
-              <View style={{ display: "flex", flexDirection: "row" }}>
+            <View style={styles.client}>
+              <View
+                style={[
+                  {
+                    display: "flex",
+                    flexDirection: "row",
+                  },
+                ]}
+              >
                 {isTablet && (
                   <View style={styles.contactTitles}>
                     <Text style={isTablet && { marginBottom: 5 }}>Name:</Text>
@@ -49,7 +56,7 @@ const Order = ({
                     </Text>
                   </View>
                 )}
-                <View style={styles.client}>
+                <View>
                   <Text style={isTablet && { marginBottom: 5 }}>
                     {!order.clientName && !order.clientSurname
                       ? `-`
