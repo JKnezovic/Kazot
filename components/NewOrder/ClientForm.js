@@ -60,30 +60,6 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
         <DropdownSelect
           reference={null}
           refInput={ref_input2}
-          value={orderState.name}
-          label={"Name"}
-          handleChange={handleChange}
-          clients={allClients}
-          name={"name"}
-          setOrderState={setOrderState}
-          setOpenMenu={setOpenMenu}
-          isOpenMenu={openMenu}
-        />
-        <DropdownSelect
-          reference={ref_input2}
-          refInput={ref_input3}
-          value={orderState.surname}
-          label={"Surname"}
-          handleChange={handleChange}
-          clients={allClients}
-          name={"surname"}
-          setOrderState={setOrderState}
-          setOpenMenu={setOpenMenu}
-          isOpenMenu={openMenu}
-        />
-        <DropdownSelect
-          reference={ref_input3}
-          refInput={ref_input4}
           value={orderState.contact}
           label={"Contact Number"}
           handleChange={handleChange}
@@ -94,6 +70,31 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           setOpenMenu={setOpenMenu}
           isOpenMenu={openMenu}
         />
+        <DropdownSelect
+          reference={ref_input2}
+          refInput={ref_input3}
+          value={orderState.name}
+          label={"Name"}
+          handleChange={handleChange}
+          clients={allClients}
+          name={"name"}
+          setOrderState={setOrderState}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
+        />
+        <DropdownSelect
+          reference={ref_input3}
+          refInput={ref_input4}
+          value={orderState.surname}
+          label={"Surname"}
+          handleChange={handleChange}
+          clients={allClients}
+          name={"surname"}
+          setOrderState={setOrderState}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
+        />
+
         <TextInput
           mode="outlined"
           label="Email"
