@@ -5,6 +5,7 @@ export const colours = {
   ORANGE_WEB: "#FCA311",
   PLATINUM: "#E5E5E5",
   WHITE: "#FFFFFF",
+  AMAZON: "#537A5A",
 };
 
 export const orderOptions = [
@@ -21,6 +22,20 @@ export const orderOptions = [
     value: "delete_order",
   },
 ];
+
+export const colorMap = {
+  Called: colours.OXFORD_BLUE,
+  Closed: colours.BLACK,
+  Created: colours.AMAZON,
+  Diagnosed: colours.OXFORD_BLUE,
+  "NO SHOW": colours.OXFORD_BLUE,
+  "Not Registered": colours.OXFORD_BLUE,
+  Received: colours.OXFORD_BLUE,
+  Registered: colours.OXFORD_BLUE,
+  Opened: colours.OXFORD_BLUE,
+  "Waiting for Parts": colours.OXFORD_BLUE,
+  "Won't come": colours.OXFORD_BLUE,
+};
 
 export const serviceStatuses = [
   {
