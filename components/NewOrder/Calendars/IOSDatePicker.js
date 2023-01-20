@@ -5,13 +5,14 @@ import { isSmartPhoneBasedOnRatio } from "../../../Scaling";
 import { moderateScale } from "../../../Scaling";
 import { colours } from "../../../utils/constants";
 
-export default function IOSDatePicker({ orderState, onChange, open }) {
+export default function IOSDatePicker({ orderState, onChange, open, setOpen }) {
   const isTablet = !isSmartPhoneBasedOnRatio();
 
   return (
     <Portal>
       <Modal
         visible={open}
+        onDismiss={() => setOpen(false)}
         contentContainerStyle={styles.modalContainerStyle}
         style={
           isTablet && {

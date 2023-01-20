@@ -23,6 +23,7 @@ export default function DatePickers({ orderState, onChange, open, setOpen }) {
           onChange={onChange}
           orderState={orderState}
           open={open}
+          setOpen={setOpen}
         />
       ) : open ? (
         <AndroidDatePicker onChange={onChange} orderState={orderState} />

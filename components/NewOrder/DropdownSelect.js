@@ -141,6 +141,7 @@ const DropdownSelect = ({
         keyboardType={keyboardType}
         ref={reference}
         onSubmitEditing={() => onSubmitEditing()}
+        onBlur={() => setVisible(false)}
       />
       {visible ? (
         <View style={styles.container}>
