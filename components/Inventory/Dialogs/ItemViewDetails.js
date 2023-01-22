@@ -5,12 +5,21 @@ import { moderateScale } from "../../../Scaling";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 import DeleteDialog from "./DeleteDialog";
+import NumericValues from "./NumericValues";
+
+const inventoryItemProps = [
+  { label: "Stock:", key: "stock" },
+  { label: "Inventory:", key: "inventoryStock" },
+  { label: "MSQ:", key: "MSQ" },
+];
 
 const ItemViewDetails = ({
   visible,
   setVisible,
   DeleteInventoryItem,
   item,
+  setItem,
+  updateInventory,
 }) => {
   const [isDelete, setIsDelete] = useState(false);
   if (!item) return null;
@@ -20,6 +29,29 @@ const ItemViewDetails = ({
     setIsDelete(false);
     setVisible(false);
   };
+
+  const increment = (name, value) => {
+    let number = parseInt(value) + 1;
+    setItem({ ...item, [name]: number.toString() });
+  };
+
+  const decrement = (name, value) => {
+    let number = parseInt(value) - 1;
+    setItem({ ...item, [name]: number.toString() });
+  };
+
+  const dialogItems = inventoryItemProps.map((inventoryItemProp, key) => (
+    <View style={styles.flexy} key={key}>
+      <Text style={styles.label}>{inventoryItemProp.label}</Text>
+      <NumericValues
+        item={item}
+        setValue={setItem}
+        increment={increment}
+        decrement={decrement}
+        itemKey={inventoryItemProp.key}
+      />
+    </View>
+  ));
 
   return (
     <Dialog
@@ -35,54 +67,32 @@ const ItemViewDetails = ({
         />
       ) : (
         <>
-          <Dialog.Title>Details</Dialog.Title>
+          <Dialog.Title style={{ fontSize: 20 }}>{item?.name}</Dialog.Title>
           <Dialog.Content>
-            <DataTable>
-              <DataTable.Row style={styles.row}>
-                <DataTable.Cell>{"Name:"}</DataTable.Cell>
-                <View style={styles.cell}>
-                  <Text>{item?.name}</Text>
-                </View>
-              </DataTable.Row>
-              <DataTable.Row style={styles.row}>
-                <DataTable.Cell>{"Stock:"}</DataTable.Cell>
-                <View style={styles.cell}>
-                  <Text>{item?.stock}</Text>
-                </View>
-              </DataTable.Row>
-              <DataTable.Row style={styles.row}>
-                <DataTable.Cell>{"Purchased at:"}</DataTable.Cell>
-                <View style={styles.cell}>
-                  <Text>{item?.lastPurchase}</Text>
-                </View>
-              </DataTable.Row>
-              <DataTable.Row style={styles.row}>
-                <DataTable.Cell>{"Inventory:"}</DataTable.Cell>
-                <View style={styles.cell}>
-                  <Text>{item?.inventoryStock}</Text>
-                </View>
-              </DataTable.Row>
-              <DataTable.Row style={styles.row}>
-                <DataTable.Cell>{"Last Inventory:"}</DataTable.Cell>
-                <View style={styles.cell}>
-                  <Text>{item?.lastInventoryCheck}</Text>
-                </View>
-              </DataTable.Row>
-              <DataTable.Row style={styles.row}>
-                <DataTable.Cell>{"MSQ:"}</DataTable.Cell>
-                <View style={styles.cell}>
-                  <Text>{item?.MSQ}</Text>
-                </View>
-              </DataTable.Row>
-            </DataTable>
+            {dialogItems}
+            <View style={styles.flexy}>
+              <Text style={styles.label}>{"Last Inventory:"}</Text>
+              <Text style={{ marginVertical: 15 }}>
+                {item?.lastInventoryCheck}
+              </Text>
+            </View>
           </Dialog.Content>
 
-          <Dialog.Actions>
+          <Dialog.Actions justifyContent>
             <Button
+              contentStyle={{
+                marginRight: "45%",
+              }}
               textColor={colours.ANTIQUE_RUBY}
               onPress={() => setIsDelete(true)}
             >
               Delete
+            </Button>
+            <Button
+              textColor={colours.ORANGE_WEB}
+              onPress={() => updateInventory()}
+            >
+              Save
             </Button>
             <Button
               textColor={colours.OXFORD_BLUE}
@@ -110,6 +120,14 @@ const styles = StyleSheet.create({
   row: {
     paddingHorizontal: 0,
   },
+  flexy: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    borderBottomColor: "#ebebeb",
+    borderBottomWidth: 1,
+  },
+  label: { width: "45%", alignSelf: "center" },
 });
 
 export default ItemViewDetails;
