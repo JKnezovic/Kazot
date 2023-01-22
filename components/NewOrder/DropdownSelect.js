@@ -57,16 +57,28 @@ const DropdownSelect = ({
       switch (name) {
         case "name":
           result = clients.filter((x) =>
-            `${x.name.toLowerCase()} ${x.surname.toLowerCase()}`.startsWith(
-              text.toLowerCase()
-            )
+            `${x.name.toLowerCase()} ${x.surname.toLowerCase()}`
+              .normalize("NFD")
+              .replace(/\p{Diacritic}/gu, "")
+              .startsWith(
+                text
+                  .normalize("NFD")
+                  .replace(/\p{Diacritic}/gu, "")
+                  .toLowerCase()
+              )
           );
           break;
         case "surname":
           result = clients.filter((x) =>
-            `${x.surname.toLowerCase()} ${x.name.toLowerCase()}`.startsWith(
-              text.toLowerCase()
-            )
+            `${x.surname.toLowerCase()} ${x.name.toLowerCase()}`
+              .normalize("NFD")
+              .replace(/\p{Diacritic}/gu, "")
+              .startsWith(
+                text
+                  .normalize("NFD")
+                  .replace(/\p{Diacritic}/gu, "")
+                  .toLowerCase()
+              )
           );
           break;
         case "contact":
