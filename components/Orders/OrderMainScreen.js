@@ -4,6 +4,8 @@ import {
   TouchableWithoutFeedback,
   View,
   Keyboard,
+  Text,
+  Pressable,
 } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Portal, Snackbar, ActivityIndicator } from "react-native-paper";
@@ -11,7 +13,6 @@ import SearchBar from "./SearchBar";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
-import { moderateScale } from "../../Scaling";
 import { colours } from "../../utils/constants";
 import Filters from "./Filters";
 
@@ -41,6 +42,32 @@ export default function OrderMainScreen({ navigation }) {
     "Opened",
   ]);
   const [dateFilter, setDateFilter] = useState(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: (props) => (
+        <Pressable onPress={setFiltersToDefault}>
+          <Text style={{ fontWeight: "600", fontSize: 17 }}>Orders</Text>
+        </Pressable>
+      ),
+    });
+  }, []);
+
+  const setFiltersToDefault = () => {
+    setDateFilter(null);
+    setStatusFilters([
+      "Called",
+      "Created",
+      "Diagnosed",
+      "NO SHOW",
+      "Not Registered",
+      "Received",
+      "Registered",
+      "Waiting for Parts",
+      "Won't come",
+      "Opened",
+    ]);
+  };
 
   // rerender on back
   useEffect(() => {

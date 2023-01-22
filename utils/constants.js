@@ -5,7 +5,7 @@ export const colours = {
   ORANGE_WEB: "#FCA311",
   PLATINUM: "#E5E5E5",
   WHITE: "#FFFFFF",
-  AMAZON: "#537A5A",
+  AMAZON: "#419D78",
 };
 
 export const orderOptions = [

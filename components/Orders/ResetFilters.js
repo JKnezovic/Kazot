@@ -6,18 +6,7 @@ import { colours } from "../../utils/constants";
 const ResetFilters = ({ setDateFilter, setStatusFilters }) => {
   const clearFilters = () => {
     setDateFilter(null);
-    setStatusFilters([
-      "Called",
-      "Created",
-      "Diagnosed",
-      "NO SHOW",
-      "Not Registered",
-      "Received",
-      "Registered",
-      "Waiting for Parts",
-      "Won't come",
-      "Opened",
-    ]);
+    setStatusFilters([]);
   };
 
   return (
