@@ -137,7 +137,11 @@ const DropdownSelect = ({
         style={Styles.form_input}
         value={value}
         activeOutlineColor="#fca311"
-        onChangeText={(text) => handeChange(text)}
+        onChangeText={(text) =>
+          handeChange(
+            keyboardType === "number-pad" ? text.replace(/\D/g, "") : text
+          )
+        }
         keyboardType={keyboardType}
         ref={reference}
         onSubmitEditing={() => onSubmitEditing()}
