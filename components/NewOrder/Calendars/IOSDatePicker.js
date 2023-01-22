@@ -1,12 +1,24 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Portal, Modal } from "react-native-paper";
-import { StyleSheet } from "react-native";
+import { Portal, Modal, Button } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
 import { isSmartPhoneBasedOnRatio } from "../../../Scaling";
 import { moderateScale } from "../../../Scaling";
 import { colours } from "../../../utils/constants";
+import { useState } from "react";
 
 export default function IOSDatePicker({ orderState, onChange, open, setOpen }) {
   const isTablet = !isSmartPhoneBasedOnRatio();
+  const [selectedDate, setSelectedDate] = useState(orderState.date);
+
+  const applyFilter = () => {
+    // set date to filter by
+    // close modal
+    onChange(null, selectedDate);
+  };
+
+  const setDate = (event, date) => {
+    setSelectedDate(date);
+  };
 
   return (
     <Portal>
@@ -23,11 +35,29 @@ export default function IOSDatePicker({ orderState, onChange, open, setOpen }) {
         <DateTimePicker
           display="inline"
           testID="dateTimePicker"
-          value={orderState.date}
+          value={selectedDate}
           mode="date"
           is24Hour={true}
-          onChange={onChange}
+          onChange={setDate}
         />
+        <View style={styles.footer}>
+          <Button
+            mode="outlined"
+            uppercase
+            style={styles.button}
+            onPress={() => setOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            mode="contained"
+            uppercase
+            onPress={applyFilter}
+            buttonColor={colours.ORANGE_WEB}
+          >
+            Apply
+          </Button>
+        </View>
       </Modal>
     </Portal>
   );
@@ -38,5 +68,18 @@ const styles = StyleSheet.create({
     margin: 20,
     padding: 20,
     borderRadius: moderateScale(20),
+  },
+  footer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    borderTopWidth: 1,
+    borderTopColor: colours.PLATINUM,
+    borderStyle: "solid",
+    paddingTop: 10,
+  },
+  button: {
+    marginRight: moderateScale(5),
+    borderColor: colours.ORANGE_WEB,
   },
 });
