@@ -4,11 +4,8 @@ import { TextInput } from "react-native-paper";
 import Styles from "./Styles";
 import DropdownSelect from "./DropdownSelect";
 import Parse from "parse/react-native";
-import { moderateScale } from "../../Scaling";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { FAB } from "react-native-paper";
-import DateToDDMMYY from "../../utils/DateToDDMMYY";
 import clientsTransformer from "../clients/clientsTransformer";
+import DatePickers from "./Calendars/DatePickers";
 
 const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
   const [open, setOpen] = useState(false);
@@ -60,30 +57,6 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
         <DropdownSelect
           reference={null}
           refInput={ref_input2}
-          value={orderState.name}
-          label={"Name"}
-          handleChange={handleChange}
-          clients={allClients}
-          name={"name"}
-          setOrderState={setOrderState}
-          setOpenMenu={setOpenMenu}
-          isOpenMenu={openMenu}
-        />
-        <DropdownSelect
-          reference={ref_input2}
-          refInput={ref_input3}
-          value={orderState.surname}
-          label={"Surname"}
-          handleChange={handleChange}
-          clients={allClients}
-          name={"surname"}
-          setOrderState={setOrderState}
-          setOpenMenu={setOpenMenu}
-          isOpenMenu={openMenu}
-        />
-        <DropdownSelect
-          reference={ref_input3}
-          refInput={ref_input4}
           value={orderState.contact}
           label={"Contact Number"}
           handleChange={handleChange}
@@ -94,6 +67,31 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           setOpenMenu={setOpenMenu}
           isOpenMenu={openMenu}
         />
+        <DropdownSelect
+          reference={ref_input2}
+          refInput={ref_input3}
+          value={orderState.name}
+          label={"Name"}
+          handleChange={handleChange}
+          clients={allClients}
+          name={"name"}
+          setOrderState={setOrderState}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
+        />
+        <DropdownSelect
+          reference={ref_input3}
+          refInput={ref_input4}
+          value={orderState.surname}
+          label={"Surname"}
+          handleChange={handleChange}
+          clients={allClients}
+          name={"surname"}
+          setOrderState={setOrderState}
+          setOpenMenu={setOpenMenu}
+          isOpenMenu={openMenu}
+        />
+
         <TextInput
           mode="outlined"
           label="Email"
@@ -105,28 +103,12 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           keyboardType={"email-address"}
           ref={ref_input4}
         />
-        <FAB
-          icon="calendar"
-          label={"Selected date: " + DateToDDMMYY(orderState.date)}
-          mode="flat"
-          color="#14213D"
-          style={{
-            backgroundColor: "#E5E5E5",
-            marginVertical: "4%",
-            width: moderateScale(300),
-            alignSelf: "center",
-          }}
-          onPress={() => setOpen(true)}
+        <DatePickers
+          onChange={onChange}
+          open={open}
+          setOpen={setOpen}
+          orderState={orderState}
         />
-        {open && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={orderState.date}
-            mode="date"
-            is24Hour={true}
-            onChange={onChange}
-          />
-        )}
       </ScrollView>
     </TouchableWithoutFeedback>
   );

@@ -53,12 +53,50 @@ const DropdownSelect = ({
 
   const openMenu = (text) => {
     if (text.length >= 3) {
-      var result = clients.filter((x) =>
-        `${x.name.toLowerCase()} ${x.surname.toLowerCase()} ${x.contact.toLowerCase()}`.includes(
-          text.toLowerCase()
-        )
-      );
+      var result = [];
+      switch (name) {
+        case "name":
+          result = clients.filter((x) =>
+            `${x.name.toLowerCase()} ${x.surname.toLowerCase()}`.startsWith(
+              text.toLowerCase()
+            )
+          );
+          break;
+        case "surname":
+          result = clients.filter((x) =>
+            `${x.surname.toLowerCase()} ${x.name.toLowerCase()}`.startsWith(
+              text.toLowerCase()
+            )
+          );
+          break;
+        case "contact":
+          result = clients.filter((x) =>
+            `${x.contact.toLowerCase()}`.includes(text.toLowerCase())
+          );
+          break;
+      }
+
       if (result.length > 0) {
+        switch (name) {
+          case "surname":
+            result.sort((a, b) =>
+              a.surname + a.name > b.surname + b.name
+                ? 1
+                : b.surname + b.name > a.surname + a.name
+                ? -1
+                : 0
+            );
+            break;
+          default:
+            result.sort((a, b) =>
+              a.name + a.surname > b.name + b.surname
+                ? 1
+                : b.name + b.surname > a.name + a.surname
+                ? -1
+                : 0
+            );
+            break;
+        }
         setFilterList(result);
         setVisible(true);
         setOpenMenu(true);
@@ -77,7 +115,11 @@ const DropdownSelect = ({
       style={{ justifyContent: "center", height: 40 }}
     >
       <Text style={{ marginLeft: 15 }}>
-        {item.name + " " + item.surname + "   " + item.contact}
+        {name === "name"
+          ? item.name + " " + item.surname + "   " + item.contact
+          : name === "surname"
+          ? item.surname + " " + item.name + "   " + item.contact
+          : item.contact + "  " + item.name + " " + item.surname}
       </Text>
     </Pressable>
   );
@@ -95,10 +137,15 @@ const DropdownSelect = ({
         style={Styles.form_input}
         value={value}
         activeOutlineColor="#fca311"
-        onChangeText={(text) => handeChange(text)}
+        onChangeText={(text) =>
+          handeChange(
+            keyboardType === "number-pad" ? text.replace(/\D/g, "") : text
+          )
+        }
         keyboardType={keyboardType}
         ref={reference}
         onSubmitEditing={() => onSubmitEditing()}
+        onBlur={() => setVisible(false)}
       />
       {visible ? (
         <View style={styles.container}>

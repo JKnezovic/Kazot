@@ -1,5 +1,11 @@
-import { StyleSheet, View, ScrollView, ActivityIndicator } from "react-native";
-import { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  ActivityIndicator,
+  BackHandler,
+} from "react-native";
+import { useState, useEffect, useCallback } from "react";
 import Parse from "parse/react-native.js";
 import Client from "./Client";
 import VehicleIssue from "./VehicleIssue";
@@ -7,20 +13,14 @@ import ServiceStatusHistory from "./ServiceStatusHistory";
 import ServicesDone from "./ServicesDone";
 import PartsSpent from "./PartsSpent";
 import Attachments from "./Attachments";
-import {
-  Divider,
-  Snackbar,
-  Button,
-  Portal,
-  Dialog,
-  DataTable,
-} from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Divider, Snackbar } from "react-native-paper";
 import useScreenDimensions from "../../useScreenDimensions";
-import { serviceStatuses } from "../../utils/constants";
 import serviceOrderTransformer from "../Orders/serviceOrderTransformer";
 import IsLoading from "../Inventory/IsLoading";
-
+import BackButtonOrders from "./BackButtonOrders";
+import OrderStatusButton from "./OrderStatusButton";
+import ServiceStatusDialog from "./ServiceStatusDialog";
+import { useFocusEffect } from "@react-navigation/native";
 const OrderDetailsMainScreen = ({ route, navigation }) => {
   const [service, setService] = useState({});
   const { serviceId } = route.params;
@@ -38,19 +38,33 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       title: service?.serviceId,
+      headerLeft: () => <BackButtonOrders />,
       headerRight: () => (
-        <Button
-          mode="outlined"
-          textColor={colours.ORANGE_WEB}
-          style={{ borderColor: colours.ORANGE_WEB, marginLeft: 10 }}
-          onPress={() => setVisible(true)}
-        >
-          {service.status}
-        </Button>
+        <OrderStatusButton service={service} setVisible={setVisible} />
       ),
       headerTitleAlign: "center",
     });
   }, [navigation, service]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (visible) {
+          return false;
+        } else {
+          navigation.navigate("Orders");
+          return true;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress
+      );
+
+      return () => subscription.remove();
+    }, [visible])
+  );
 
   const setSnackbar = (visible, message) => {
     setSnackbarMessage(message);
@@ -114,14 +128,6 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       </View>
     );
 
-  const items = serviceStatuses.map((item, index) => (
-    <DataTable.Row key={index}>
-      <DataTable.Cell onPress={() => SaveNewStatusHistory(item.value)}>
-        {item.label}
-      </DataTable.Cell>
-    </DataTable.Row>
-  ));
-
   return (
     <>
       <ScrollView style={styles.container}>
@@ -174,20 +180,11 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
       >
         {snackbarMessage}
       </Snackbar>
-      <Portal>
-        <Dialog
-          style={{ backgroundColor: "#FFFFFF" }}
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-        >
-          <Dialog.Title>Change Order Status</Dialog.Title>
-          <Dialog.Content>
-            <DataTable>
-              <ScrollView>{items}</ScrollView>
-            </DataTable>
-          </Dialog.Content>
-        </Dialog>
-      </Portal>
+      <ServiceStatusDialog
+        SaveNewStatusHistory={SaveNewStatusHistory}
+        setVisible={setVisible}
+        visible={visible}
+      />
     </>
   );
 };
