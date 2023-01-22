@@ -7,7 +7,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import InventoryMainScreen from "../Inventory/InventoryMainScreen";
 import NewOrderMainScreen from "../NewOrder/NewOrderMainScreen";
 import ClientsMainScreen from "../clients/ClientsView";
-import { moderateScale } from "../../Scaling";
 
 const Tab = createBottomTabNavigator();
 

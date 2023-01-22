@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { moderateScale } from "../../Scaling";
-import { colours, orderOptions } from "../../utils/constants";
+import { colours, colorMap } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 import OrderMenu from "./order/OrderMenu";
@@ -24,7 +24,12 @@ const Order = ({
     >
       <View style={styles.container}>
         <View
-          style={[styles.header, order.isHighlighted && styles.highlightedBg]}
+          style={[
+            styles.header,
+            order.isHighlighted
+              ? styles.highlightedBg
+              : { backgroundColor: colorMap[order.status] },
+          ]}
         >
           <Text style={styles.text}>{order.serviceId}</Text>
           <Text style={styles.text}>{DateToDDMMYY(order.serviceDate)}</Text>
@@ -39,8 +44,15 @@ const Order = ({
           ]}
         >
           <View style={styles.details}>
-            <View>
-              <View style={{ display: "flex", flexDirection: "row" }}>
+            <View style={styles.client}>
+              <View
+                style={[
+                  {
+                    display: "flex",
+                    flexDirection: "row",
+                  },
+                ]}
+              >
                 {isTablet && (
                   <View style={styles.contactTitles}>
                     <Text style={isTablet && { marginBottom: 5 }}>Name:</Text>
@@ -49,7 +61,7 @@ const Order = ({
                     </Text>
                   </View>
                 )}
-                <View style={styles.client}>
+                <View>
                   <Text style={isTablet && { marginBottom: 5 }}>
                     {!order.clientName && !order.clientSurname
                       ? `-`

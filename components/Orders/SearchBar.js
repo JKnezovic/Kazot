@@ -3,7 +3,7 @@ import { Searchbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { colours } from "../../utils/constants";
 
-const SearchBar = ({ filteredOrders = [], orders = [], setFilteredOrders }) => {
+const SearchBar = ({ orders = [], setFilteredOrders }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -14,10 +14,16 @@ const SearchBar = ({ filteredOrders = [], orders = [], setFilteredOrders }) => {
 
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
+    const queryWithoutDiacritics = searchQueryLower
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
     const filtered = orders.filter(
       (order) =>
-        order.clientName.toLowerCase().includes(searchQueryLower) ||
-        order.clientSurname.toLowerCase().includes(searchQueryLower) ||
+        `${order.clientName} ${order.clientSurname}`
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .toLowerCase()
+          .includes(queryWithoutDiacritics) ||
         order.clientContact.toLowerCase().includes(searchQueryLower) ||
         order.issue.toLowerCase().includes(searchQueryLower) ||
         String(order.serviceId).toLowerCase().includes(searchQueryLower) ||
