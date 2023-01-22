@@ -80,7 +80,7 @@ const Order = ({
               <Text numberOfLines={1} style={isTablet && { marginBottom: 5 }}>
                 <Text>Type:</Text> {order.type || "-"}
               </Text>
-              <Text style={isTablet && { marginBottom: 5 }}>
+              <Text numberOfLines={1} style={isTablet && { marginBottom: 5 }}>
                 <Text>Model:</Text> {order.vehicleModel || "-"}
               </Text>
               <Text numberOfLines={1}>

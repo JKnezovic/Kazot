@@ -41,7 +41,7 @@ const OrdersList = ({
           keyExtractor={(item) => item.serviceOrderId}
           onRefresh={() => setIsRefreshing(true)}
           refreshing={isRefreshing}
-          estimatedItemSize={125}
+          estimatedItemSize={107}
           contentContainerStyle={styles.list}
           ListFooterComponent={() => <View></View>}
           ListFooterComponentStyle={styles.footer}
