@@ -33,12 +33,21 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     getService();
-  }, []);
+  }, [serviceId]);
 
   useEffect(() => {
+    const navHistory = navigation.getState().routes;
     navigation.setOptions({
       title: service?.serviceId,
-      headerLeft: () => <BackButtonOrders />,
+      headerLeft: () => (
+        <BackButtonOrders
+          goTo={
+            navHistory[navHistory.length - 2].name === "Client Details"
+              ? "Client Details"
+              : "Orders"
+          }
+        />
+      ),
       headerRight: () => (
         <OrderStatusButton service={service} setVisible={setVisible} />
       ),
@@ -52,7 +61,10 @@ const OrderDetailsMainScreen = ({ route, navigation }) => {
         if (visible) {
           return false;
         } else {
-          navigation.navigate("Orders");
+          const navHistory = navigation.getState().routes;
+          if (navHistory[navHistory.length - 2].name === "Client Details")
+            navigation.goBack();
+          else navigation.navigate("Orders");
           return true;
         }
       };
