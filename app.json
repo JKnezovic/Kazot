@@ -2,7 +2,7 @@
   "expo": {
     "name": "kazot",
     "slug": "kazot",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -28,8 +28,11 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
-      "versionCode":7,
-      "package": "com.eondevelopers.kazot"
+      "versionCode":8,
+      "package": "com.eondevelopers.kazot",
+      "config": {
+        "targetSdkVersion": 33
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

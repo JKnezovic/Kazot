@@ -26,6 +26,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
   const [updateItem, setUpdateItem] = useState(null);
   const [dropdownDisabled, setDropdownDisabled] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -116,7 +117,8 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
     PartsUsed.set("service_fkey", serviceObject);
     PartsUsed.set("quantity_spent", parseInt(number));
     PartsUsed.set("part_name", valuePU);
-    PartsUsed.set("parts_fkey");
+    PartsUsed.set("SKU", selectedItem.SKU);
+    PartsUsed.set("parts_fkey", selectedItem.objectId);
 
     try {
       let partsUsed = await PartsUsed.save();
@@ -167,6 +169,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
   };
 
   const prepareAddNew = () => {
+    setSelectedItem(null);
     setUpdateItem(null);
     setValuePU("");
     setVisible(true);
@@ -188,7 +191,9 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
   const tableRows = partsUsed.map((item) => (
     <DataTable.Row key={item.id} onPress={() => prepareUpdate(item)}>
       <View style={styles.customCell}>
-        <Text numberOfLines={5}>{item.get("part_name")}</Text>
+        <Text numberOfLines={5}>
+          {item.get("SKU") ? item.get("SKU") : item.get("part_name")}
+        </Text>
       </View>
       <DataTable.Cell numeric>{item.get("quantity_spent")}</DataTable.Cell>
       <DataTable.Cell numeric>
@@ -217,7 +222,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
         <DataTable style={{ paddingLeft: 0, paddingRight: 0 }}>
           <DataTable.Header>
             <View style={styles.customCell}>
-              <Text style={styles.text}>Name</Text>
+              <Text style={styles.text}>SKU</Text>
             </View>
             <View style={styles.customTitle}>
               <Text style={[styles.text, styles.end]}> Quantity</Text>
@@ -261,6 +266,9 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
               items={allParts}
               placeholder="Select Part Used"
               onChangeValue={(text) => setValuePU(text)}
+              onSelectItem={(item) => {
+                setSelectedItem(JSON.parse(JSON.stringify(item)));
+              }}
               setItems={setAllParts}
               setValue={setValuePU}
               setOpen={setOpenPU}
