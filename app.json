@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.eondevelopers.kazot"
@@ -25,14 +23,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FBA310"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
-      "versionCode":8,
-      "package": "com.eondevelopers.kazot",
-      "config": {
-        "targetSdkVersion": 33
-      }
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "versionCode": 8,
+      "package": "com.eondevelopers.kazot"
     },
     "web": {
       "favicon": "./assets/favicon.png"
