@@ -14,18 +14,17 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
 
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
-    const filtered = orders.filter((order) =>
-      order?.name.toLowerCase().includes(searchQueryLower)
-    );
+    const filtered = orders.filter((order) => order?.name.toLowerCase().includes(searchQueryLower));
     setOrders(filtered);
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Searchbar
         placeholder="Search for orders"
         onChangeText={setSearchQuery}
         value={searchQuery}
+        mode="view"
         style={styles.input}
       />
     </View>
@@ -34,7 +33,11 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
 
 export default SearchBar;
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 1,
+  },
   input: {
+    paddingTop: 1,
     backgroundColor: colours.WHITE,
   },
 });

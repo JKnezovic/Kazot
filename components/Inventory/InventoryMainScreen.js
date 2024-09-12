@@ -1,12 +1,6 @@
 import { DataTable, Snackbar } from "react-native-paper";
 import { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  Text,
-  Pressable,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator, Text, Pressable } from "react-native";
 import IsLoading from "./IsLoading";
 import ItemViewDetails from "./Dialogs/ItemViewDetails";
 import Parse from "parse/react-native.js";
@@ -101,8 +95,7 @@ const InventoryMainScreen = () => {
   };
 
   const renderSortIcon = (name) => {
-    if (sortColumn === name)
-      return sortDirection === 1 ? "descending" : "ascending";
+    if (sortColumn === name) return sortDirection === 1 ? "descending" : "ascending";
     else return null;
   };
 
@@ -144,21 +137,13 @@ const InventoryMainScreen = () => {
   if (activityIndicator)
     return (
       <View style={styles.container}>
-        <ActivityIndicator
-          size="large"
-          color="#fca311"
-          style={{ alignSelf: "center" }}
-        />
+        <ActivityIndicator size="large" color="#fca311" style={{ alignSelf: "center" }} />
       </View>
     );
 
   return (
     <>
-      <Searchbar
-        orders={partsFiltered}
-        initialOrders={allParts}
-        setOrders={setPartsFiltered}
-      />
+      <Searchbar orders={partsFiltered} initialOrders={allParts} setOrders={setPartsFiltered} />
       <DataTable>
         <DataTable.Header>
           <Pressable
@@ -212,10 +197,7 @@ const InventoryMainScreen = () => {
         setItem={setViewItem}
         updateInventory={updateInventory}
       />
-      <Snackbar
-        visible={visibleSnackbar}
-        onDismiss={() => setVisibleSnackbar(false)}
-      >
+      <Snackbar visible={visibleSnackbar} onDismiss={() => setVisibleSnackbar(false)}>
         {snackbarMessage}
       </Snackbar>
       <IsLoading loading={loading} />
