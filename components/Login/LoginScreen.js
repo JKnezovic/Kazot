@@ -19,15 +19,11 @@ const LoginScreen = (props) => {
             justifyContent: "center",
           }}
         >
-          <ActivityIndicator
-            size="large"
-            color="#092240"
-            style={{ alignSelf: "center" }}
-          />
+          <ActivityIndicator size="large" color="#092240" style={{ alignSelf: "center" }} />
         </View>
       )}
       <View>
-        <Image source={require("kazot/assets/logo.png")} style={styles.logo} />
+        <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <Text style={[styles.text, styles.bigText]}>Welcome</Text>
         <Text style={[styles.text, styles.description, { marginBottom: 20 }]}>
           Enter username and password
