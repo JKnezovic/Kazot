@@ -24,7 +24,7 @@ const useGetClient = () => {
     setIsLoaded(true);
   };
 
-  return { client, getClient, isLoading, isLoaded };
+  return { client, getClient, setClient, isLoading, isLoaded };
 };
 
 export default useGetClient;
