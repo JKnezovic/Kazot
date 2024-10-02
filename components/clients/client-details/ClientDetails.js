@@ -1,18 +1,38 @@
-import React, { useEffect } from "react";
-import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
-import { Avatar, FAB, ActivityIndicator } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Linking,
+  Pressable,
+} from "react-native";
+import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
 import { colours } from "../../../utils/constants";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
 import { moderateScale } from "../../../Scaling";
 import { useNavigation } from "@react-navigation/native";
 import useGetClient from "./useGetClient";
+import useUpdateClient from "./useUpdateClient";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
 
-  const { client, getClient, isLoading, isLoaded } = useGetClient();
+  const { client, getClient, setClient, isLoading, isLoaded } = useGetClient();
+  const {
+    updateClient,
+    isSuccess: isUpdateSuccess,
+    isError: isUpdateError,
+  } = useUpdateClient({ setClient });
+  const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
+
+  useEffect(() => {
+    if (isUpdateSuccess || isUpdateError) {
+      setIsSnackbarVisible(true);
+    }
+  }, [isUpdateSuccess, isUpdateError]);
 
   useEffect(() => {
     if (id) getClient({ clientId: id });
@@ -26,6 +46,45 @@ const ClientDetails = ({ id = null }) => {
   const goToEmail = async () => {
     await Linking.openURL(`mailto:${client.email}`);
   };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={styles.headerRight}>
+          <Pressable
+            onPress={() =>
+              updateClient({
+                clientId: id,
+                key: "isFavorite",
+                value: !client.isFavorite,
+              })
+            }
+          >
+            {client.isFavorite ? (
+              <AntDesign name="heart" size={24} color="black" />
+            ) : (
+              <AntDesign name="hearto" size={24} color="black" />
+            )}
+          </Pressable>
+          <Pressable
+            onPress={() =>
+              updateClient({
+                clientId: id,
+                key: "isFlagged",
+                value: !client.isFlagged,
+              })
+            }
+          >
+            {client.isFlagged ? (
+              <Ionicons name="flag" size={24} color="black" />
+            ) : (
+              <Ionicons name="flag-outline" size={24} color="black" />
+            )}
+          </Pressable>
+        </View>
+      ),
+    });
+  }, [navigation, client]);
 
   return isLoading && !isLoaded ? (
     <View style={styles.container}>
@@ -78,11 +137,23 @@ const ClientDetails = ({ id = null }) => {
         style={styles.FAB}
         onPress={() => navigation.navigate("New Order", { client: client })}
       />
+
+      <Snackbar
+        visible={isSnackbarVisible}
+        onDismiss={() => setIsSnackbarVisible(false)}
+        duration={1000}
+      >
+        Client updated!
+      </Snackbar>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  headerRight: {
+    display: "flex",
+    flexDirection: "row",
+  },
   container: {
     alignItems: "center",
     padding: 10,
