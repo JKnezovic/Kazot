@@ -7,6 +7,8 @@ export const Colors = {
   WHITE: "#FFFFFF",
   AMAZON: "#419D78",
   DARK_GREY: "#363535",
+  BABY_BLUE: "#31C7F4",
+  WHATSAPP_GREEN: "#25D366",
 };
 
 export const orderOptions = [
@@ -85,9 +87,4 @@ export const serviceStatuses = [
   },
 ];
 
-export const initialServiceOrderStatusFilters = [
-  "Opened",
-  "Created",
-  "Reservation",
-  "Calendly",
-];
+export const initialServiceOrderStatusFilters = ["Opened", "Created", "Reservation", "Calendly"];

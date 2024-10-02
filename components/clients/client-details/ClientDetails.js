@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
 import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
 import { Colors } from "../../../utils/constants";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, Feather } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
 import { moderateScale } from "../../../Scaling";
@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import useGetClient from "./useGetClient";
 import useUpdateClient from "./useUpdateClient";
 import HeaderRight from "./header-right/HeaderRight";
+import useHasWhatsapp from "./useHasWhatsapp";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
@@ -34,6 +35,8 @@ const ClientDetails = ({ id = null }) => {
     if (id) getClient({ clientId: id });
   }, [id]);
 
+  const hasWhatsapp = useHasWhatsapp(client?.contact);
+
   // open contact
   // will not work on a simulator
   const goToCall = async () => {
@@ -41,6 +44,12 @@ const ClientDetails = ({ id = null }) => {
   };
   const goToEmail = async () => {
     await Linking.openURL(`mailto:${client.email}`);
+  };
+  const goToSMS = async () => {
+    await Linking.openURL(`sms:${client.contact}`);
+  };
+  const goToWhatsapp = async () => {
+    await Linking.openURL(`whatsapp://send?phone=${client.contact}`);
   };
 
   useEffect(() => {
@@ -79,23 +88,45 @@ const ClientDetails = ({ id = null }) => {
           <Text style={[styles.title]}>
             {client.name} {client.surname}
           </Text>
+          <View style={styles.row}>
+            <View>
+              <Text style={styles.lightfont}>Mobile </Text>
+              {client.email && <Text style={styles.lightfont}>Email </Text>}
+            </View>
+            <View>
+              <Text selectable={true} style={styles.contactText}>
+                {client.contact}
+              </Text>
+              {client.email && (
+                <Text selectable={true} style={styles.contactText}>
+                  {client.email}
+                </Text>
+              )}
+            </View>
+          </View>
 
           <View style={[styles.row, styles.contact]}>
-            <View style={[styles.row, styles.contactWrap]}>
-              <Ionicons name="call" size={20} color={Colors.OXFORD_BLUE} />
+            <View style={styles.row}>
               <Text onPress={goToCall} style={styles.contactText}>
-                {client.contact}
+                <Feather name="phone-call" size={30} color={colors.AMAZON} />
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text onPress={goToSMS} style={styles.contactText}>
+                <Feather name="message-circle" size={30} color={colors.BABY_BLUE} />
               </Text>
             </View>
             {client.email && (
-              <View style={[styles.row, styles.contactWrap]}>
-                <MaterialIcons
-                  name="email"
-                  size={20}
-                  color={Colors.OXFORD_BLUE}
-                />
+              <View style={styles.row}>
                 <Text onPress={goToEmail} style={styles.contactText}>
-                  {client.email}
+                  <Feather name="mail" size={30} color={colors.ORANGE_WEB} />
+                </Text>
+              </View>
+            )}
+            {hasWhatsapp && (
+              <View style={styles.row}>
+                <Text onPress={goToWhatsapp} style={styles.contactText}>
+                  <FontAwesome name="whatsapp" size={30} color={colors.WHATSAPP_GREEN} />
                 </Text>
               </View>
             )}
@@ -113,11 +144,7 @@ const ClientDetails = ({ id = null }) => {
         onPress={() => navigation.navigate("New Order", { client: client })}
       />
 
-      <Snackbar
-        visible={isSnackbarVisible}
-        onDismiss={dismissSnackbar}
-        duration={1000}
-      >
+      <Snackbar visible={isSnackbarVisible} onDismiss={dismissSnackbar} duration={1000}>
         {toastMessage}
       </Snackbar>
     </>
@@ -177,6 +204,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 10,
     paddingHorizontal: moderateScale(5),
+    paddingVertical: moderateScale(8),
   },
   contactText: {
     color: Colors.OXFORD_BLUE,
@@ -191,11 +219,11 @@ const styles = StyleSheet.create({
     bottom: "3%",
     right: "3%",
   },
-  contactWrap: {
-    paddingVertical: moderateScale(8),
-  },
   label: {
     fontSize: 50,
+  },
+  lightfont: {
+    color: "gray",
   },
 });
 
