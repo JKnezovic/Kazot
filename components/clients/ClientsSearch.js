@@ -11,6 +11,7 @@ export default function ClientsSearch({ setQuery, searchQuery }) {
         value={searchQuery}
         onChangeText={setQuery}
         style={styles.input}
+        mode="view"
       />
     </View>
   );
@@ -19,7 +20,8 @@ export default function ClientsSearch({ setQuery, searchQuery }) {
 const styles = StyleSheet.create({
   container: {
     minHeight: 40,
-    paddingBottom: 5,
+    paddingBottom: 2,
+    paddingTop: 1,
   },
   menuButton: {
     backgroundColor: colours.OXFORD_BLUE,

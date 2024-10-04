@@ -14,9 +14,7 @@ const SearchBar = ({ orders = [], setFilteredOrders }) => {
 
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
-    const queryWithoutDiacritics = searchQueryLower
-      .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "");
+    const queryWithoutDiacritics = searchQueryLower.normalize("NFD").replace(/\p{Diacritic}/gu, "");
     const filtered = orders.filter(
       (order) =>
         `${order.clientName} ${order.clientSurname}`
@@ -34,12 +32,13 @@ const SearchBar = ({ orders = [], setFilteredOrders }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Searchbar
         placeholder="Search for orders"
         onChangeText={setSearchQuery}
         value={searchQuery}
         style={styles.input}
+        mode="view"
         iconColor={colours.OXFORD_BLUE}
       />
     </View>
@@ -49,7 +48,7 @@ const SearchBar = ({ orders = [], setFilteredOrders }) => {
 export default SearchBar;
 const styles = StyleSheet.create({
   container: {
-    minHeight: 40,
+    paddingTop: 1,
   },
   menuButton: {
     backgroundColor: colours.OXFORD_BLUE,

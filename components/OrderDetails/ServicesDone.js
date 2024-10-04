@@ -129,12 +129,8 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
       )}
       description={() => (
         <View style={styles.description}>
-          <Text style={{ color: "grey" }}>
-            {DateToDDMMYY(item.get("createdAt"))}
-          </Text>
-          <Text style={{ color: "gray", marginRight: 15 }}>
-            {item.get("user_name")}
-          </Text>
+          <Text style={{ color: "grey" }}>{DateToDDMMYY(item.get("createdAt"))}</Text>
+          <Text style={{ color: "gray", marginRight: 15 }}>{item.get("user_name")}</Text>
         </View>
       )}
       titleStyle={{ paddingHorizontal: 10 }}
@@ -145,12 +141,12 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
   ));
 
   return (
-    <View>
+    <>
       <List.Accordion
         style={styles.accordion}
         titleStyle={{ color: "#14213D" }}
         title={"Services Done"}
-        left={(props) => <List.Icon icon="wrench" color="#fca311" />}
+        left={(props) => <List.Icon {...props} icon="wrench" color="#fca311" />}
         expanded={expanded}
         onPress={handlePress}
       >
@@ -182,7 +178,7 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
         setIsDelete={setIsDelete}
         isDelete={isDelete}
       />
-    </View>
+    </>
   );
 };
 

@@ -46,9 +46,9 @@ const TimePickerAndroid = ({ dateFilter = null, setDateFilter }) => {
           testID="dateTimePicker"
           value={selectedDate || new Date()}
           onChange={(event, date) => handlePicker(event, date)} // handleAndroidPicker
-          positiveButtonLabel="Save"
-          negativeButtonLabel="Cancel"
-          neutralButtonLabel="Clear"
+          positiveButton={{ label: "Save" }}
+          negativeButton={{ label: "Cancel" }}
+          neutralButton={{ label: "Clear" }}
         />
       )}
     </View>
