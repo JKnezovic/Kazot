@@ -23,6 +23,7 @@ const ClientDetails = ({ id = null }) => {
 
   const { client, getClient, setClient, isLoading, isLoaded } = useGetClient();
   const {
+    toastMessage,
     updateClient,
     isSuccess: isUpdateSuccess,
     isError: isUpdateError,
@@ -118,7 +119,7 @@ const ClientDetails = ({ id = null }) => {
         onDismiss={() => setIsSnackbarVisible(false)}
         duration={1000}
       >
-        Client updated!
+        {toastMessage}
       </Snackbar>
     </>
   );
