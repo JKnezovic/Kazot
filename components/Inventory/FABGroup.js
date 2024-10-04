@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FAB } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { StyleSheet } from "react-native";
 
 const FABGroup = ({ prepareDialogAddNew, prepareDialogUpdate }) => {
@@ -13,7 +13,7 @@ const FABGroup = ({ prepareDialogAddNew, prepareDialogUpdate }) => {
       open={state}
       visible
       icon={"plus"}
-      color={colours.OXFORD_BLUE}
+      color={Colors.OXFORD_BLUE}
       fabStyle={styles.FAB}
       style={styles.position}
       size={"medium"}
@@ -22,7 +22,7 @@ const FABGroup = ({ prepareDialogAddNew, prepareDialogUpdate }) => {
           icon: "database-plus",
           label: "Add New",
           size: "medium",
-          color: colours.OXFORD_BLUE,
+          color: Colors.OXFORD_BLUE,
 
           onPress: () => prepareDialogAddNew(),
         },
@@ -30,14 +30,14 @@ const FABGroup = ({ prepareDialogAddNew, prepareDialogUpdate }) => {
           icon: "chart-bar-stacked",
           label: "Inventory",
           size: "medium",
-          color: colours.OXFORD_BLUE,
+          color: Colors.OXFORD_BLUE,
 
           onPress: () => prepareDialogUpdate(true),
         },
         {
           icon: "cart",
           size: "medium",
-          color: colours.OXFORD_BLUE,
+          color: Colors.OXFORD_BLUE,
           label: "Purchase",
           onPress: () => prepareDialogUpdate(false),
         },
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   FAB: {
-    backgroundColor: colours.ORANGE_WEB,
+    backgroundColor: Colors.ORANGE_WEB,
   },
 });
 

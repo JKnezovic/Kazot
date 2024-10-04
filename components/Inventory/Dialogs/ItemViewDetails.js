@@ -1,6 +1,6 @@
 import { Dialog, Button, DataTable } from "react-native-paper";
 import { View, Text } from "react-native";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 import { moderateScale } from "../../../Scaling";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
@@ -83,19 +83,19 @@ const ItemViewDetails = ({
               contentStyle={{
                 marginRight: "45%",
               }}
-              textColor={colours.ANTIQUE_RUBY}
+              textColor={Colors.ANTIQUE_RUBY}
               onPress={() => setIsDelete(true)}
             >
               Delete
             </Button>
             <Button
-              textColor={colours.ORANGE_WEB}
+              textColor={Colors.ORANGE_WEB}
               onPress={() => updateInventory()}
             >
               Save
             </Button>
             <Button
-              textColor={colours.OXFORD_BLUE}
+              textColor={Colors.OXFORD_BLUE}
               onPress={() => setVisible(false)}
             >
               Close

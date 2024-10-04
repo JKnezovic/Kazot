@@ -1,5 +1,5 @@
 import { IconButton, TextInput } from "react-native-paper";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 import { StyleSheet, View } from "react-native";
 
 const NumericValues = ({ increment, decrement, item, setValue, itemKey }) => {
@@ -14,13 +14,13 @@ const NumericValues = ({ increment, decrement, item, setValue, itemKey }) => {
           style={styles.center}
           icon="minus"
           mode="outlined"
-          iconColor={colours.ORANGE_WEB}
+          iconColor={Colors.ORANGE_WEB}
           size={20}
           onPress={() => decrement(itemKey, item[itemKey])}
         />
         <TextInput
           style={styles.textInput}
-          activeUnderlineColor={colours.ORANGE_WEB}
+          activeUnderlineColor={Colors.ORANGE_WEB}
           keyboardType="number-pad"
           value={item[itemKey].toString()}
           onChangeText={(text) => handleOnChange(text)}
@@ -29,7 +29,7 @@ const NumericValues = ({ increment, decrement, item, setValue, itemKey }) => {
           icon="plus"
           style={styles.center}
           mode="outlined"
-          iconColor={colours.ORANGE_WEB}
+          iconColor={Colors.ORANGE_WEB}
           size={20}
           onPress={() => increment(itemKey, item[itemKey])}
         />

@@ -3,7 +3,7 @@ import { Portal, Modal, Button } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { isSmartPhoneBasedOnRatio } from "../../../Scaling";
 import { moderateScale } from "../../../Scaling";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 import { useState } from "react";
 
 export default function IOSDatePicker({ orderState, onChange, open, setOpen }) {
@@ -53,7 +53,7 @@ export default function IOSDatePicker({ orderState, onChange, open, setOpen }) {
             mode="contained"
             uppercase
             onPress={applyFilter}
-            buttonColor={colours.ORANGE_WEB}
+            buttonColor={Colors.ORANGE_WEB}
           >
             Apply
           </Button>
@@ -64,7 +64,7 @@ export default function IOSDatePicker({ orderState, onChange, open, setOpen }) {
 }
 const styles = StyleSheet.create({
   modalContainerStyle: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     margin: 20,
     padding: 20,
     borderRadius: moderateScale(20),
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     borderTopWidth: 1,
-    borderTopColor: colours.PLATINUM,
+    borderTopColor: Colors.PLATINUM,
     borderStyle: "solid",
     paddingTop: 10,
   },
   button: {
     marginRight: moderateScale(5),
-    borderColor: colours.ORANGE_WEB,
+    borderColor: Colors.ORANGE_WEB,
   },
 });

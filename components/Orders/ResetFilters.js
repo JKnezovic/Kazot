@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 const ResetFilters = ({ setDateFilter, setStatusFilters }) => {
   const clearFilters = () => {
@@ -13,8 +13,8 @@ const ResetFilters = ({ setDateFilter, setStatusFilters }) => {
     <IconButton
       icon="backspace"
       onPress={clearFilters}
-      containerColor={colours.WHITE}
-      iconColor={colours.ORANGE_WEB}
+      containerColor={Colors.WHITE}
+      iconColor={Colors.ORANGE_WEB}
       size={27}
     />
   );

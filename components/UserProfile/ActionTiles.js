@@ -1,20 +1,20 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { moderateScale } from "../../Scaling";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { AntDesign } from "@expo/vector-icons";
 
 const colors = [
   {
-    primary: colours.ORANGE_WEB,
+    primary: Colors.ORANGE_WEB,
     secondary: "#FED086",
   },
   {
-    primary: colours.OXFORD_BLUE,
+    primary: Colors.OXFORD_BLUE,
     secondary: "#A3B6E1",
   },
   {
-    primary: colours.BLACK,
-    secondary: colours.PLATINUM,
+    primary: Colors.BLACK,
+    secondary: Colors.PLATINUM,
   },
 ];
 

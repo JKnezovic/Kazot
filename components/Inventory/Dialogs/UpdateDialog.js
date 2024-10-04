@@ -1,5 +1,5 @@
 import { Dialog, Portal, Button, DataTable } from "react-native-paper";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 import { moderateScale } from "../../../Scaling";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { useState } from "react";
@@ -123,7 +123,7 @@ const UpdateDialog = ({
           style={{ alignSelf: "center" }}
           name="close"
           size={24}
-          color={colours.ANTIQUE_RUBY}
+          color={Colors.ANTIQUE_RUBY}
           onPress={() => removeItem(x.product.partId)}
         />
       </DataTable.Cell>
@@ -184,7 +184,7 @@ const UpdateDialog = ({
             mode="elevated"
             disabled={valuePU === "" || number < 0 ? true : false}
             textColor="grey"
-            buttonColor={colours.WHITE}
+            buttonColor={Colors.WHITE}
             onPress={() => addToArray()}
           >
             {"Add entry  "}
@@ -206,13 +206,13 @@ const UpdateDialog = ({
         </Dialog.Content>
         <Dialog.Actions>
           <Button
-            textColor={colours.OXFORD_BLUE}
+            textColor={Colors.OXFORD_BLUE}
             onPress={() => cleanOnCancel()}
           >
             Cancel
           </Button>
           <Button
-            textColor={colours.ORANGE_WEB}
+            textColor={Colors.ORANGE_WEB}
             disabled={array.length ? false : true}
             onPress={() => updateInventory()}
           >

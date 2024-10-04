@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { View } from "react-native";
 import { IconButton } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 const TimePickerAndroid = ({ dateFilter = null, setDateFilter }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -37,8 +37,8 @@ const TimePickerAndroid = ({ dateFilter = null, setDateFilter }) => {
         icon="calendar"
         size={27}
         onPress={() => setIsPickerOpen(true)}
-        containerColor={colours.WHITE}
-        iconColor={colours.ORANGE_WEB}
+        containerColor={Colors.WHITE}
+        iconColor={Colors.ORANGE_WEB}
       />
 
       {isPickerOpen && (

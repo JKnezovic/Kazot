@@ -8,7 +8,7 @@ import {
   Text,
   IconButton,
 } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import { serviceStatuses } from "../../utils/constants";
 import { isSmartPhoneBasedOnRatio } from "../../Scaling";
@@ -71,8 +71,8 @@ const StatusFilter = ({
       <IconButton
         icon="tune"
         onPress={() => setIsModalOpen(true)}
-        containerColor={colours.WHITE}
-        iconColor={colours.ORANGE_WEB}
+        containerColor={Colors.WHITE}
+        iconColor={Colors.ORANGE_WEB}
         size={27}
       />
       <Portal>
@@ -129,7 +129,7 @@ const StatusFilter = ({
             <Button
               style={styles.button}
               mode="contained"
-              buttonColor={colours.ORANGE_WEB}
+              buttonColor={Colors.ORANGE_WEB}
               onPress={applyFilter}
               uppercase
             >
@@ -146,7 +146,7 @@ export default StatusFilter;
 
 const styles = StyleSheet.create({
   modalContainerStyle: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     margin: 20,
     padding: 20,
     borderRadius: moderateScale(20),
@@ -162,14 +162,14 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 5,
-    borderColor: colours.ORANGE_WEB,
+    borderColor: Colors.ORANGE_WEB,
   },
   buttonContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
     borderTopWidth: 1,
-    borderTopColor: colours.PLATINUM,
+    borderTopColor: Colors.PLATINUM,
     borderStyle: "solid",
     paddingTop: 10,
   },

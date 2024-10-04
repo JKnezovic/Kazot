@@ -1,5 +1,5 @@
 import { Portal } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { StyleSheet, ActivityIndicator, View } from "react-native";
 
 const IsLoading = ({ loading }) => {
@@ -9,7 +9,7 @@ const IsLoading = ({ loading }) => {
         <View style={styles.container}>
           <ActivityIndicator
             size="large"
-            color={colours.ORANGE_WEB}
+            color={Colors.ORANGE_WEB}
             style={{ alignSelf: "center" }}
           />
         </View>

@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FAB, Dialog, Button, List } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import ImageViewer from "react-native-image-zoom-viewer";
 
 const Attachments = ({ service, setSnackbar, open, setLoading }) => {
@@ -239,15 +239,12 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
         <Dialog.Title>Delete Image</Dialog.Title>
         <Dialog.Actions>
           <Button
-            textColor={colours.OXFORD_BLUE}
+            textColor={Colors.OXFORD_BLUE}
             onPress={() => setVisibleDelete(false)}
           >
             Cancel
           </Button>
-          <Button
-            textColor={colours.ANTIQUE_RUBY}
-            onPress={() => removeImage()}
-          >
+          <Button textColor={Colors.ANTIQUE_RUBY} onPress={() => removeImage()}>
             Delete
           </Button>
         </Dialog.Actions>
