@@ -16,6 +16,7 @@ import { moderateScale } from "../../../Scaling";
 import { useNavigation } from "@react-navigation/native";
 import useGetClient from "./useGetClient";
 import useUpdateClient from "./useUpdateClient";
+import HeaderRight from "./header-right/HeaderRight";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
@@ -50,38 +51,12 @@ const ClientDetails = ({ id = null }) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={styles.headerRight}>
-          <Pressable
-            onPress={() =>
-              updateClient({
-                clientId: id,
-                key: "isFavorite",
-                value: !client.isFavorite,
-              })
-            }
-          >
-            {client.isFavorite ? (
-              <AntDesign name="heart" size={24} color="black" />
-            ) : (
-              <AntDesign name="hearto" size={24} color="black" />
-            )}
-          </Pressable>
-          <Pressable
-            onPress={() =>
-              updateClient({
-                clientId: id,
-                key: "isFlagged",
-                value: !client.isFlagged,
-              })
-            }
-          >
-            {client.isFlagged ? (
-              <Ionicons name="flag" size={24} color="black" />
-            ) : (
-              <Ionicons name="flag-outline" size={24} color="black" />
-            )}
-          </Pressable>
-        </View>
+        <HeaderRight
+          clientId={id}
+          isFavorite={client.isFavorite}
+          isFlagged={client.isFlagged}
+          updateClient={updateClient}
+        />
       ),
     });
   }, [navigation, client]);
