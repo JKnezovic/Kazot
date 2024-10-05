@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 import { UserLogin } from "./UserLogin";
 import { moderateScale } from "../../Scaling";
+import { Colors } from "../../utils/constants";
 
 const LoginScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +20,11 @@ const LoginScreen = (props) => {
             justifyContent: "center",
           }}
         >
-          <ActivityIndicator size="large" color="#092240" style={{ alignSelf: "center" }} />
+          <ActivityIndicator
+            size="large"
+            color="#092240"
+            style={{ alignSelf: "center" }}
+          />
         </View>
       )}
       <View>
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
     height: moderateScale(150),
   },
   text: {
-    color: "black",
+    color: Colors.DARK_GREY,
     textAlign: "center",
   },
   description: {
