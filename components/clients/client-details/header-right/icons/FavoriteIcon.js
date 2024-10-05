@@ -8,7 +8,7 @@ const FavoriteIcon = ({ isFavorite }) =>
     <AntDesign
       name="heart"
       size={28}
-      color={colours.ANTIQUE_RUBY}
+      color={colours.ORANGE_WEB}
       style={styles.icon}
     />
   ) : (
