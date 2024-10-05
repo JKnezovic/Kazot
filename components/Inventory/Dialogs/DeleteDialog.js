@@ -1,6 +1,6 @@
 import { Dialog, Button } from "react-native-paper";
 import { Text } from "react-native";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 
 const DeleteDialog = ({ doDelete, setIsDelete, item }) => {
   return (
@@ -12,12 +12,12 @@ const DeleteDialog = ({ doDelete, setIsDelete, item }) => {
       </Dialog.Content>
       <Dialog.Actions>
         <Button
-          textColor={colours.OXFORD_BLUE}
+          textColor={Colors.OXFORD_BLUE}
           onPress={() => setIsDelete(false)}
         >
           Cancel
         </Button>
-        <Button textColor={colours.ANTIQUE_RUBY} onPress={() => doDelete()}>
+        <Button textColor={Colors.ANTIQUE_RUBY} onPress={() => doDelete()}>
           Confirm
         </Button>
       </Dialog.Actions>

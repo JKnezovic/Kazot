@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Searchbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,7 +14,9 @@ const SearchBar = ({ orders = [], initialOrders = [], setOrders }) => {
 
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
-    const filtered = orders.filter((order) => order?.name.toLowerCase().includes(searchQueryLower));
+    const filtered = orders.filter((order) =>
+      order?.name.toLowerCase().includes(searchQueryLower)
+    );
     setOrders(filtered);
   };
 
@@ -38,6 +40,6 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingTop: 1,
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
   },
 });

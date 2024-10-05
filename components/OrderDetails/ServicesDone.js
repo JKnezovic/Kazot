@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { List } from "react-native-paper";
 import { Text, View, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import Parse from "parse/react-native.js";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 import ServicesDialogWrapper from "./ServicesDialogWrapper";
@@ -123,14 +123,18 @@ const ServicesDone = ({ service, setSnackbar, open, setLoading }) => {
             style={{ alignSelf: "center", paddingHorizontal: 10 }}
             name="edit"
             size={20}
-            color={colours.ORANGE_WEB}
+            color={Colors.ORANGE_WEB}
           />
         </View>
       )}
       description={() => (
         <View style={styles.description}>
-          <Text style={{ color: "grey" }}>{DateToDDMMYY(item.get("createdAt"))}</Text>
-          <Text style={{ color: "gray", marginRight: 15 }}>{item.get("user_name")}</Text>
+          <Text style={{ color: "grey" }}>
+            {DateToDDMMYY(item.get("createdAt"))}
+          </Text>
+          <Text style={{ color: "gray", marginRight: 15 }}>
+            {item.get("user_name")}
+          </Text>
         </View>
       )}
       titleStyle={{ paddingHorizontal: 10 }}

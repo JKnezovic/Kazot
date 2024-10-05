@@ -1,5 +1,5 @@
 import { Dialog, Portal, Button, TextInput } from "react-native-paper";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 import { moderateScale } from "../../../Scaling";
 import { StyleSheet } from "react-native";
 
@@ -31,7 +31,7 @@ const AddNewDialog = ({
             mode="outlined"
             label="Name"
             style={styles.textInput}
-            activeUnderlineColor={colours.ORANGE_WEB}
+            activeUnderlineColor={Colors.ORANGE_WEB}
             value={newItem.name}
             onChangeText={(text) => handleChange("name", text)}
           />
@@ -39,7 +39,7 @@ const AddNewDialog = ({
             mode="outlined"
             label="stock"
             style={styles.textInput}
-            activeUnderlineColor={colours.ORANGE_WEB}
+            activeUnderlineColor={Colors.ORANGE_WEB}
             keyboardType="number-pad"
             value={newItem.stock}
             onChangeText={(text) => handleChange("stock", text)}
@@ -49,7 +49,7 @@ const AddNewDialog = ({
             mode="outlined"
             label="MSQ"
             style={styles.textInput}
-            activeUnderlineColor={colours.ORANGE_WEB}
+            activeUnderlineColor={Colors.ORANGE_WEB}
             keyboardType="number-pad"
             value={newItem.MSQ}
             onChangeText={(text) => handleChange("MSQ", text)}
@@ -59,7 +59,7 @@ const AddNewDialog = ({
             mode="outlined"
             label="Inventory"
             style={styles.textInput}
-            activeUnderlineColor={colours.ORANGE_WEB}
+            activeUnderlineColor={Colors.ORANGE_WEB}
             keyboardType="number-pad"
             value={newItem.inventoryStock}
             onChangeText={(text) => handleChange("inventoryStock", text)}
@@ -67,13 +67,13 @@ const AddNewDialog = ({
         </Dialog.Content>
         <Dialog.Actions>
           <Button
-            textColor={colours.OXFORD_BLUE}
+            textColor={Colors.OXFORD_BLUE}
             onPress={() => setVisible(false)}
           >
             Cancel
           </Button>
           <Button
-            textColor={colours.ORANGE_WEB}
+            textColor={Colors.ORANGE_WEB}
             disabled={
               newItem.name &&
               newItem.MSQ &&

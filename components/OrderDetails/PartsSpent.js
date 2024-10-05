@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import Parse from "parse/react-native.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { moderateScale } from "../../Scaling";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
   const [expanded, setExpanded] = useState(open);
@@ -201,7 +201,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
           style={{ alignSelf: "center" }}
           name="edit"
           size={24}
-          color={colours.ORANGE_WEB}
+          color={Colors.ORANGE_WEB}
         />
       </DataTable.Cell>
     </DataTable.Row>
@@ -287,7 +287,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
                 style={{ alignSelf: "center" }}
                 icon="minus"
                 mode="outlined"
-                iconColor={colours.ORANGE_WEB}
+                iconColor={Colors.ORANGE_WEB}
                 size={20}
                 onPress={() => decrement()}
               />
@@ -297,7 +297,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
                   marginVertical: 20,
                   backgroundColor: "#FFFFFF",
                 }}
-                activeUnderlineColor={colours.ORANGE_WEB}
+                activeUnderlineColor={Colors.ORANGE_WEB}
                 keyboardType="number-pad"
                 value={number}
                 onChangeText={(text) => setNumber(text)}
@@ -306,7 +306,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
                 icon="plus"
                 style={{ alignSelf: "center" }}
                 mode="outlined"
-                iconColor={colours.ORANGE_WEB}
+                iconColor={Colors.ORANGE_WEB}
                 size={20}
                 onPress={() => increment()}
               />
@@ -314,7 +314,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              textColor={colours.OXFORD_BLUE}
+              textColor={Colors.OXFORD_BLUE}
               onPress={() => setVisible(false)}
             >
               Cancel
@@ -322,13 +322,13 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
             {update ? (
               <>
                 <Button
-                  textColor={colours.ANTIQUE_RUBY}
+                  textColor={Colors.ANTIQUE_RUBY}
                   onPress={() => DeletePartsUsed()}
                 >
                   Delete
                 </Button>
                 <Button
-                  textColor={colours.ORANGE_WEB}
+                  textColor={Colors.ORANGE_WEB}
                   onPress={() => UpdatePartsUsed()}
                 >
                   Update
@@ -336,7 +336,7 @@ const PartsSpent = ({ service, setSnackbar, open, setLoading }) => {
               </>
             ) : (
               <Button
-                textColor={colours.ORANGE_WEB}
+                textColor={Colors.ORANGE_WEB}
                 disabled={valuePU ? false : true}
                 onPress={() => SavePartsUsed()}
               >
