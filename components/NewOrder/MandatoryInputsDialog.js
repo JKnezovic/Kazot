@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import { Dialog, Button } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 
 export default function MandatoryInputsDialog({
@@ -46,7 +46,7 @@ export default function MandatoryInputsDialog({
       </Dialog.Content>
       <Dialog.Actions>
         <Button
-          textColor={colours.OXFORD_BLUE}
+          textColor={Colors.OXFORD_BLUE}
           onPress={() => setVisibleMandatoryInputs(false)}
         >
           Ok

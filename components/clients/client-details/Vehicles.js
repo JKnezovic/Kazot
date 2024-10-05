@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import useGetVehicles from "./useGetVehicles";
 import { Portal, Snackbar, List } from "react-native-paper";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 import useDeleteVehicle from "./useDeleteVehicle";
 import DeleteVehiclesModal from "./DeleteVehicleModal";
 
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     borderRadius: 5,
   },
   row: {
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   item: {
-    backgroundColor: colours.WHITE,
-    borderColor: colours.ORANGE_WEB,
+    backgroundColor: Colors.WHITE,
+    borderColor: Colors.ORANGE_WEB,
     borderStyle: "solid",
     borderWidth: 1,
     justifyContent: "space-between",
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   divider: {
-    backgroundColor: colours.OXFORD_BLUE,
+    backgroundColor: Colors.OXFORD_BLUE,
     marginVertical: 5,
   },
   snackbar: {

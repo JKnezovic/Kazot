@@ -1,5 +1,5 @@
 import { Dialog, Button, DataTable } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import { StyleSheet, View, ScrollView, Text, Pressable } from "react-native";
 import { useEffect, useState } from "react";
@@ -83,7 +83,7 @@ const ServiceTypeDialog = ({ visible, setVisible, setSnackbar }) => {
           style={{ alignSelf: "center" }}
           name="close"
           size={24}
-          color={colours.ANTIQUE_RUBY}
+          color={Colors.ANTIQUE_RUBY}
           onPress={() => removeItem(x)}
         />
       </DataTable.Cell>
@@ -132,7 +132,7 @@ const ServiceTypeDialog = ({ visible, setVisible, setSnackbar }) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              textColor={colours.OXFORD_BLUE}
+              textColor={Colors.OXFORD_BLUE}
               onPress={() => setVisible(false)}
             >
               Close

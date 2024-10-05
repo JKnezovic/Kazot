@@ -1,5 +1,5 @@
 import { Dialog, Button, TextInput } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
@@ -19,7 +19,7 @@ const ServicesDoneDialog = ({
       <Dialog.Content>
         <TextInput
           mode="outlined"
-          activeOutlineColor={colours.ORANGE_WEB}
+          activeOutlineColor={Colors.ORANGE_WEB}
           onChangeText={onChangeText}
           value={text}
           style={styles.textInput}
@@ -30,21 +30,21 @@ const ServicesDoneDialog = ({
       </Dialog.Content>
       <Dialog.Actions>
         <Button
-          textColor={colours.OXFORD_BLUE}
+          textColor={Colors.OXFORD_BLUE}
           onPress={() => setVisible(false)}
         >
           Cancel
         </Button>
         {serviceDescription ? (
           <Button
-            textColor={colours.ANTIQUE_RUBY}
+            textColor={Colors.ANTIQUE_RUBY}
             onPress={() => setIsDelete(true)}
           >
             Delete
           </Button>
         ) : null}
         <Button
-          textColor={colours.ORANGE_WEB}
+          textColor={Colors.ORANGE_WEB}
           disabled={text === "" || text === serviceDescription ? true : false}
           onPress={
             serviceDescription === ""

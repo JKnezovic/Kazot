@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Avatar } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 export default function ClientItem({
   client = {},
@@ -22,7 +22,7 @@ export default function ClientItem({
           label={client.initials}
           labelStyle={styles.label}
           style={styles.initials}
-          color={colours.WHITE}
+          color={Colors.WHITE}
         />
         <Text style={styles.text}>
           {client.name} {client.surname}
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
   selected: {
-    borderColor: colours.OXFORD_BLUE,
+    borderColor: Colors.OXFORD_BLUE,
     borderStyle: "solid",
     borderWidth: 1,
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   initials: {
-    backgroundColor: colours.ORANGE_WEB,
+    backgroundColor: Colors.ORANGE_WEB,
     marginRight: 10,
   },
   label: {

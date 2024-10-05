@@ -13,7 +13,7 @@ import SearchBar from "./SearchBar";
 import useGetOrders from "./useGetOrders";
 import OrdersList from "./OrdersList";
 import useDeleteOrder from "./useDeleteOrder";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import Filters from "./Filters";
 
 export default function OrderMainScreen({ navigation }) {
@@ -162,7 +162,7 @@ export default function OrderMainScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: colours.PLATINUM,
+    backgroundColor: Colors.PLATINUM,
   },
   fab: {
     position: "absolute",

@@ -1,6 +1,6 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { colours } from "../../../../../utils/constants";
+import { Colors } from "../../../../../utils/constants";
 import { StyleSheet } from "react-native";
 
 const FlagIcon = ({ isFlagged }) =>
@@ -8,7 +8,7 @@ const FlagIcon = ({ isFlagged }) =>
     <Ionicons
       name="flag"
       size={28}
-      color={colours.ANTIQUE_RUBY}
+      color={Colors.ANTIQUE_RUBY}
       style={styles.icon}
     />
   ) : (

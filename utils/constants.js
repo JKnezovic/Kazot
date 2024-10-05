@@ -1,4 +1,4 @@
-export const colours = {
+export const Colors = {
   BLACK: "#000000",
   OXFORD_BLUE: "#14213D",
   ANTIQUE_RUBY: "#93032E",
@@ -24,17 +24,17 @@ export const orderOptions = [
 ];
 
 export const colorMap = {
-  Called: colours.OXFORD_BLUE,
-  Closed: colours.BLACK,
-  Created: colours.AMAZON,
-  Diagnosed: colours.OXFORD_BLUE,
-  "NO SHOW": colours.OXFORD_BLUE,
-  "Not Registered": colours.OXFORD_BLUE,
-  Received: colours.OXFORD_BLUE,
-  Registered: colours.OXFORD_BLUE,
-  Opened: colours.OXFORD_BLUE,
-  "Waiting for Parts": colours.OXFORD_BLUE,
-  "Won't come": colours.OXFORD_BLUE,
+  Called: Colors.OXFORD_BLUE,
+  Closed: Colors.BLACK,
+  Created: Colors.AMAZON,
+  Diagnosed: Colors.OXFORD_BLUE,
+  "NO SHOW": Colors.OXFORD_BLUE,
+  "Not Registered": Colors.OXFORD_BLUE,
+  Received: Colors.OXFORD_BLUE,
+  Registered: Colors.OXFORD_BLUE,
+  Opened: Colors.OXFORD_BLUE,
+  "Waiting for Parts": Colors.OXFORD_BLUE,
+  "Won't come": Colors.OXFORD_BLUE,
 };
 
 export const serviceStatuses = [

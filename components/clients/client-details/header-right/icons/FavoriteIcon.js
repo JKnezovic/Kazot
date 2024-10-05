@@ -1,6 +1,6 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { colours } from "../../../../../utils/constants";
+import { Colors } from "../../../../../utils/constants";
 import { StyleSheet } from "react-native";
 
 const FavoriteIcon = ({ isFavorite }) =>
@@ -8,7 +8,7 @@ const FavoriteIcon = ({ isFavorite }) =>
     <AntDesign
       name="heart"
       size={28}
-      color={colours.ORANGE_WEB}
+      color={Colors.ORANGE_WEB}
       style={styles.icon}
     />
   ) : (

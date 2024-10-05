@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { moderateScale } from "../../Scaling";
-import { colours, colorMap } from "../../utils/constants";
+import { Colors, colorMap } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 import OrderMenu from "./order/OrderMenu";
@@ -116,23 +116,23 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   container: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     marginBottom: 10,
     borderRadius: 10,
     overflow: "hidden",
   },
   highlightedBg: {
-    backgroundColor: colours.ANTIQUE_RUBY,
+    backgroundColor: Colors.ANTIQUE_RUBY,
   },
   header: {
-    backgroundColor: colours.OXFORD_BLUE,
+    backgroundColor: Colors.OXFORD_BLUE,
     paddingVertical: moderateScale(5),
     paddingHorizontal: moderateScale(5),
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  text: { color: colours.WHITE },
+  text: { color: Colors.WHITE },
   content: {
     display: "flex",
     flexDirection: "row",
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderRight: "solid",
-    borderRightColor: colours.PLATINUM,
+    borderRightColor: Colors.PLATINUM,
     borderRightWidth: 1,
     height: "100%",
     marginHorizontal: moderateScale(7),
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   status: {
     textTransform: "uppercase",
     fontWeight: "bold",
-    color: colours.OXFORD_BLUE,
+    color: Colors.OXFORD_BLUE,
   },
   contactTitles: {
     marginRight: 5,

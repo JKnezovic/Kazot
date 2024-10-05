@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Searchbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 const SearchBar = ({ orders = [], setFilteredOrders }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,7 +14,9 @@ const SearchBar = ({ orders = [], setFilteredOrders }) => {
 
   const filterOrders = () => {
     const searchQueryLower = searchQuery.toLowerCase();
-    const queryWithoutDiacritics = searchQueryLower.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    const queryWithoutDiacritics = searchQueryLower
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
     const filtered = orders.filter(
       (order) =>
         `${order.clientName} ${order.clientSurname}`
@@ -39,7 +41,7 @@ const SearchBar = ({ orders = [], setFilteredOrders }) => {
         value={searchQuery}
         style={styles.input}
         mode="view"
-        iconColor={colours.OXFORD_BLUE}
+        iconColor={Colors.OXFORD_BLUE}
       />
     </View>
   );
@@ -51,17 +53,17 @@ const styles = StyleSheet.create({
     paddingTop: 1,
   },
   menuButton: {
-    backgroundColor: colours.OXFORD_BLUE,
+    backgroundColor: Colors.OXFORD_BLUE,
     borderRadius: 0,
   },
   menuButtonText: {
-    color: colours.WHITE,
+    color: Colors.WHITE,
   },
   itemSelected: {
-    backgroundColor: colours.PLATINUM,
+    backgroundColor: Colors.PLATINUM,
   },
   input: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     minWidth: "100%",
   },
 });

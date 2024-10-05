@@ -3,7 +3,7 @@ import Parse from "parse/react-native.js";
 import { Avatar, Divider, Snackbar } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { moderateScale } from "../../Scaling";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import ActionTile from "./ActionTiles";
 import CreateUserDialog from "./CreateUserDialog";
 import ServiceTypeDialog from "./ServiceTypeDialog";
@@ -39,7 +39,7 @@ const UserProfile = ({ setUser }) => {
       <View style={styles.container}>
         <ActivityIndicator
           size="large"
-          color={colours.ORANGE_WEB}
+          color={Colors.ORANGE_WEB}
           style={{ alignSelf: "center" }}
         />
       </View>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     flex: 1,
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     width: "100%",

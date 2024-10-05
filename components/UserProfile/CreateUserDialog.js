@@ -1,5 +1,5 @@
 import { Dialog, Portal, Button, TextInput } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
@@ -60,7 +60,7 @@ const CreateUserDialog = ({ visible, setVisible, setSnackbar }) => {
           mode="outlined"
           label="Name"
           style={styles.textInput}
-          activeUnderlineColor={colours.ORANGE_WEB}
+          activeUnderlineColor={Colors.ORANGE_WEB}
           value={name}
           onChangeText={(text) => setName(text)}
         />
@@ -68,7 +68,7 @@ const CreateUserDialog = ({ visible, setVisible, setSnackbar }) => {
           mode="outlined"
           label="Surname"
           style={styles.textInput}
-          activeUnderlineColor={colours.ORANGE_WEB}
+          activeUnderlineColor={Colors.ORANGE_WEB}
           value={surname}
           onChangeText={(text) => setSurname(text)}
         />
@@ -77,7 +77,7 @@ const CreateUserDialog = ({ visible, setVisible, setSnackbar }) => {
           mode="outlined"
           label="Email"
           style={styles.textInput}
-          activeUnderlineColor={colours.ORANGE_WEB}
+          activeUnderlineColor={Colors.ORANGE_WEB}
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
@@ -87,7 +87,7 @@ const CreateUserDialog = ({ visible, setVisible, setSnackbar }) => {
           mode="outlined"
           label="Password"
           style={styles.textInput}
-          activeUnderlineColor={colours.ORANGE_WEB}
+          activeUnderlineColor={Colors.ORANGE_WEB}
           keyboardType="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
@@ -107,13 +107,13 @@ const CreateUserDialog = ({ visible, setVisible, setSnackbar }) => {
       </Dialog.Content>
       <Dialog.Actions>
         <Button
-          textColor={colours.OXFORD_BLUE}
+          textColor={Colors.OXFORD_BLUE}
           onPress={() => setVisible(false)}
         >
           Cancel
         </Button>
         <Button
-          textColor={colours.ORANGE_WEB}
+          textColor={Colors.ORANGE_WEB}
           disabled={name && surname && password && role && email ? false : true}
           onPress={() => onSave()}
         >

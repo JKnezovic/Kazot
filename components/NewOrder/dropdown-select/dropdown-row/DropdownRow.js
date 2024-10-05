@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colours } from "../../../../utils/constants";
+import { Colors } from "../../../../utils/constants";
 
 const DropdownRow = ({ item, inputName, updateForm }) => {
   /**
@@ -23,7 +23,7 @@ const DropdownRow = ({ item, inputName, updateForm }) => {
           <AntDesign
             name="heart"
             size={20}
-            color={colours.ORANGE_WEB}
+            color={Colors.ORANGE_WEB}
             style={styles.icon}
           />
         )}
@@ -31,7 +31,7 @@ const DropdownRow = ({ item, inputName, updateForm }) => {
           <Ionicons
             name="flag"
             size={20}
-            color={colours.ANTIQUE_RUBY}
+            color={Colors.ANTIQUE_RUBY}
             style={styles.icon}
           />
         )}
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 5,
     height: 40,
-    borderBottomColor: colours.PLATINUM,
+    borderBottomColor: Colors.PLATINUM,
     borderBottomWidth: 1,
   },
   text: {

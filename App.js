@@ -18,7 +18,7 @@ import {
   Provider as PaperProvider,
   Button,
 } from "react-native-paper";
-import { colours } from "./utils/constants";
+import { Colors } from "./utils/constants";
 import { StyleSheet } from "react-native";
 
 Parse.setAsyncStorage(AsyncStorage);
@@ -29,7 +29,7 @@ const theme = {
   ...MD3LightTheme, // or MD3DarkTheme
   colors: {
     ...MD3LightTheme.colors,
-    primary: colours.ORANGE_WEB,
+    primary: Colors.ORANGE_WEB,
   },
 };
 
@@ -91,8 +91,8 @@ const App = () => {
               headerRight: () => (
                 <Button
                   mode="outlined"
-                  textColor={colours.ORANGE_WEB}
-                  style={{ borderColor: colours.ORANGE_WEB }}
+                  textColor={Colors.ORANGE_WEB}
+                  style={{ borderColor: Colors.ORANGE_WEB }}
                 >
                   {"Created"}
                 </Button>
