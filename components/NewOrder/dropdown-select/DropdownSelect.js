@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Pressable, View, Text, Keyboard, StyleSheet } from "react-native";
+import { View, Keyboard, StyleSheet } from "react-native";
 import { Divider, TextInput } from "react-native-paper";
-import Styles from "./Styles";
-import { moderateScale } from "../../Scaling";
+import Styles from "../Styles";
+import { moderateScale } from "../../../Scaling";
 import { FlashList } from "@shopify/flash-list";
+import DropdownRow from "./dropdown-row/DropdownRow";
 
 const DropdownSelect = ({
   label,
@@ -122,18 +123,7 @@ const DropdownSelect = ({
   };
 
   const renderItem = ({ item }) => (
-    <Pressable
-      onPress={() => updateForm(item)}
-      style={{ justifyContent: "center", height: 40 }}
-    >
-      <Text style={{ marginLeft: 15 }}>
-        {name === "name"
-          ? item.name + " " + item.surname + "   " + item.contact
-          : name === "surname"
-          ? item.surname + " " + item.name + "   " + item.contact
-          : item.contact + "  " + item.name + " " + item.surname}
-      </Text>
-    </Pressable>
+    <DropdownRow name={name} item={item} updateForm={updateForm} />
   );
 
   return (

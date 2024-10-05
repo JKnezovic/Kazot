@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import StatusFilter from "./StatusFilter";
 import TimePicker from "./TimePicker";
-import { moderateScale } from "../../Scaling";
 import TimePickerAndroid from "./TimePickerAndroid";
 import ResetFilters from "./ResetFilters";
 
