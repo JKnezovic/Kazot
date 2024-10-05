@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { StyleSheet, View } from "react-native";
 import { Button, Portal, Modal, IconButton, Text } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import { moderateScale } from "../../Scaling";
 import DateToDDMMYY from "../../utils/DateToDDMMYY";
 import { isSmartPhoneBasedOnRatio } from "../../Scaling";
@@ -60,8 +60,8 @@ const TimePicker = ({ dateFilter = null, setDateFilter }) => {
         icon="calendar"
         size={27}
         onPress={() => setIsPickerOpen(true)}
-        containerColor={colours.WHITE}
-        iconColor={colours.ORANGE_WEB}
+        containerColor={Colors.WHITE}
+        iconColor={Colors.ORANGE_WEB}
       />
 
       {isPickerOpen && (
@@ -118,7 +118,7 @@ const TimePicker = ({ dateFilter = null, setDateFilter }) => {
                 mode="contained"
                 uppercase
                 onPress={applyFilter}
-                buttonColor={touched ? colours.ORANGE_WEB : colours.PLATINUM}
+                buttonColor={touched ? Colors.ORANGE_WEB : Colors.PLATINUM}
                 disabled={!touched}
               >
                 Apply
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     paddingVertical: moderateScale(10),
   },
   modalContainerStyle: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     margin: 20,
     padding: 20,
     borderRadius: moderateScale(20),
@@ -152,13 +152,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     borderTopWidth: 1,
-    borderTopColor: colours.PLATINUM,
+    borderTopColor: Colors.PLATINUM,
     borderStyle: "solid",
     paddingTop: 10,
   },
   button: {
     marginRight: moderateScale(5),
-    borderColor: colours.ORANGE_WEB,
+    borderColor: Colors.ORANGE_WEB,
   },
   row: {
     display: "flex",

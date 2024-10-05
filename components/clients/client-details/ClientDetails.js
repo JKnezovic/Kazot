@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Linking,
-  Pressable,
-} from "react-native";
+import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
 import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
-import { colours } from "../../../utils/constants";
-import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { Colors } from "../../../utils/constants";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
 import { moderateScale } from "../../../Scaling";
@@ -81,7 +74,7 @@ const ClientDetails = ({ id = null }) => {
             label={client.initials}
             style={styles.initials}
             labelStyle={styles.label}
-            color={colours.WHITE}
+            color={Colors.WHITE}
           />
           <Text style={[styles.title]}>
             {client.name} {client.surname}
@@ -89,7 +82,7 @@ const ClientDetails = ({ id = null }) => {
 
           <View style={[styles.row, styles.contact]}>
             <View style={[styles.row, styles.contactWrap]}>
-              <Ionicons name="call" size={20} color={colours.OXFORD_BLUE} />
+              <Ionicons name="call" size={20} color={Colors.OXFORD_BLUE} />
               <Text onPress={goToCall} style={styles.contactText}>
                 {client.contact}
               </Text>
@@ -99,7 +92,7 @@ const ClientDetails = ({ id = null }) => {
                 <MaterialIcons
                   name="email"
                   size={20}
-                  color={colours.OXFORD_BLUE}
+                  color={Colors.OXFORD_BLUE}
                 />
                 <Text onPress={goToEmail} style={styles.contactText}>
                   {client.email}
@@ -115,7 +108,7 @@ const ClientDetails = ({ id = null }) => {
         icon="plus"
         label={"New Order"}
         mode="elevated"
-        color={colours.OXFORD_BLUE}
+        color={Colors.OXFORD_BLUE}
         style={styles.FAB}
         onPress={() => navigation.navigate("New Order", { client: client })}
       />
@@ -139,14 +132,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 10,
-    backgroundColor: colours.PLATINUM,
+    backgroundColor: Colors.PLATINUM,
   },
   heading: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
     paddingHorizontal: 5,
     paddingVertical: 10,
     shadowColor: "#000",
@@ -170,7 +163,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   initials: {
-    backgroundColor: colours.ORANGE_WEB,
+    backgroundColor: Colors.ORANGE_WEB,
     marginVertical: 20,
   },
   row: {
@@ -186,14 +179,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
   },
   contactText: {
-    color: colours.OXFORD_BLUE,
+    color: Colors.OXFORD_BLUE,
     fontSize: 15,
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
   },
   FAB: {
-    backgroundColor: colours.ORANGE_WEB,
+    backgroundColor: Colors.ORANGE_WEB,
     position: "absolute",
     bottom: "3%",
     right: "3%",

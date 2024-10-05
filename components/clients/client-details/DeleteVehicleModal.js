@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, Portal, Button, Divider } from "react-native-paper";
 import { StyleSheet, View, Text, Pressable } from "react-native";
-import { colours } from "../../../utils/constants";
+import { Colors } from "../../../utils/constants";
 
 export default function DeleteVehiclesModal({
   isOpen,
@@ -25,7 +25,7 @@ export default function DeleteVehiclesModal({
           <Button
             mode="outlined"
             uppercase
-            textColor={colours.OXFORD_BLUE}
+            textColor={Colors.OXFORD_BLUE}
             style={{ marginRight: 5 }}
             onPress={() => setIsOpen(false)}
           >
@@ -34,7 +34,7 @@ export default function DeleteVehiclesModal({
           <Button
             mode="contained"
             uppercase
-            buttonColor={colours.ANTIQUE_RUBY}
+            buttonColor={Colors.ANTIQUE_RUBY}
             onPress={() => deleteVehicle({ vehicleId: deleteId })}
           >
             Delete
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     borderStyle: "solid",
-    borderColor: colours.PLATINUM,
+    borderColor: Colors.PLATINUM,
     borderTopWidth: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,

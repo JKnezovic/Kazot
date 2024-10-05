@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Searchbar } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 export default function ClientsSearch({ setQuery, searchQuery }) {
   return (
@@ -24,16 +24,16 @@ const styles = StyleSheet.create({
     paddingTop: 1,
   },
   menuButton: {
-    backgroundColor: colours.OXFORD_BLUE,
+    backgroundColor: Colors.OXFORD_BLUE,
     borderRadius: 0,
   },
   menuButtonText: {
-    color: colours.WHITE,
+    color: Colors.WHITE,
   },
   itemSelected: {
-    backgroundColor: colours.PLATINUM,
+    backgroundColor: Colors.PLATINUM,
   },
   input: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: Colors.WHITE,
   },
 });

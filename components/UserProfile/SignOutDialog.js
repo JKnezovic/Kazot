@@ -1,5 +1,5 @@
 import { Dialog, Button } from "react-native-paper";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import Parse from "parse/react-native.js";
 import { Text } from "react-native";
 
@@ -22,7 +22,7 @@ const SignOutDialog = ({ visible, setVisible, setSnackBar, setUser }) => {
     <Dialog
       visible={visible}
       onDismiss={() => setVisible(false)}
-      style={{ backgroundColor: colours.WHITE }}
+      style={{ backgroundColor: Colors.WHITE }}
     >
       <Dialog.Title>Hold on!</Dialog.Title>
       <Dialog.Content>
@@ -30,12 +30,12 @@ const SignOutDialog = ({ visible, setVisible, setSnackBar, setUser }) => {
       </Dialog.Content>
       <Dialog.Actions>
         <Button
-          textColor={colours.OXFORD_BLUE}
+          textColor={Colors.OXFORD_BLUE}
           onPress={() => setVisible(false)}
         >
           Cancel
         </Button>
-        <Button textColor={colours.ORANGE_WEB} onPress={() => doUserLogOut()}>
+        <Button textColor={Colors.ORANGE_WEB} onPress={() => doUserLogOut()}>
           Yes
         </Button>
       </Dialog.Actions>

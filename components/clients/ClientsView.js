@@ -9,7 +9,7 @@ import { ActivityIndicator } from "react-native-paper";
 import ClientsSearch from "./ClientsSearch";
 import ClientsList from "./ClientsList";
 import useGetClients from "./useGetClients";
-import { colours } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 export default function ClientsView() {
   const [filteredClients, setFilteredClients] = useState([]);
@@ -92,6 +92,6 @@ const styles = StyleSheet.create({
   },
   container: {
     height: "100%",
-    backgroundColor: colours.PLATINUM,
+    backgroundColor: Colors.PLATINUM,
   },
 });
