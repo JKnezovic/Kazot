@@ -25,6 +25,7 @@ const ClientDetails = ({ id = null }) => {
   const {
     toastMessage,
     updateClient,
+    reset: resetUpdateClient,
     isSuccess: isUpdateSuccess,
     isError: isUpdateError,
   } = useUpdateClient({ setClient });
@@ -61,6 +62,11 @@ const ClientDetails = ({ id = null }) => {
       ),
     });
   }, [navigation, client]);
+
+  const dismissSnackbar = () => {
+    setIsSnackbarVisible(false);
+    resetUpdateClient();
+  };
 
   return isLoading && !isLoaded ? (
     <View style={styles.container}>
@@ -116,7 +122,7 @@ const ClientDetails = ({ id = null }) => {
 
       <Snackbar
         visible={isSnackbarVisible}
-        onDismiss={() => setIsSnackbarVisible(false)}
+        onDismiss={dismissSnackbar}
         duration={1000}
       >
         {toastMessage}
