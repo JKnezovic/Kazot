@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
 import { Colors } from "../../../utils/constants";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
-import { moderateScale } from "../../../Scaling";
 import { useNavigation } from "@react-navigation/native";
 import useGetClient from "./useGetClient";
 import useUpdateClient from "./useUpdateClient";
 import HeaderRight from "./header-right/HeaderRight";
 import useHasWhatsapp from "./useHasWhatsapp";
-import ContactLables from "./ContactLables";
+import ContactLabels from "./ContactLabels";
 import ContactIcons from "./contact-icons/ContactIcons";
+import styles from "../styles";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
@@ -74,7 +74,7 @@ const ClientDetails = ({ id = null }) => {
           <Text style={[styles.title]}>
             {client.name} {client.surname}
           </Text>
-          <ContactLables client={client} />
+          <ContactLabels client={client} />
           <ContactIcons hasWhatsapp={hasWhatsapp} client={client} />
         </View>
         <Vehicles clientId={id} />
@@ -95,65 +95,5 @@ const ClientDetails = ({ id = null }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  headerRight: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  container: {
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: Colors.PLATINUM,
-  },
-  heading: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: Colors.WHITE,
-    paddingHorizontal: 5,
-    paddingVertical: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 30,
-  },
-  initials: {
-    backgroundColor: Colors.ORANGE_WEB,
-    marginVertical: 20,
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  contact: {
-    justifyContent: "space-around",
-    flexWrap: "wrap",
-    width: "100%",
-    marginTop: 10,
-    paddingHorizontal: moderateScale(5),
-    paddingVertical: moderateScale(8),
-  },
-  FAB: {
-    backgroundColor: Colors.ORANGE_WEB,
-    position: "absolute",
-    bottom: "3%",
-    right: "3%",
-  },
-  label: {
-    fontSize: 50,
-  },
-});
 
 export default ClientDetails;
