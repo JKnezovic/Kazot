@@ -11,7 +11,7 @@ const DropdownSelect = ({
   value,
   handleChange,
   clients,
-  name,
+  inputName,
   setOrderState,
   keyboardType,
   refInput,
@@ -47,15 +47,16 @@ const DropdownSelect = ({
     setOrderState((prevState) => ({ ...prevState, ...object }));
   };
 
-  const handeChange = (text) => {
-    handleChange(name, text);
+  const onInputChange = (text) => {
+    console.log(text, inputName);
+    handleChange(inputName, text);
     if (text !== value) setDebouncedTerm(text);
   };
 
   const openMenu = (text) => {
     if (text.length >= 3) {
       var result = [];
-      switch (name) {
+      switch (inputName) {
         case "name":
           result = clients.filter((x) =>
             `${x.name.toLowerCase()} ${x.surname.toLowerCase()}`
@@ -90,7 +91,7 @@ const DropdownSelect = ({
       }
 
       if (result.length > 0) {
-        switch (name) {
+        switch (inputName) {
           case "surname":
             result.sort((a, b) =>
               a.surname + a.name > b.surname + b.name
@@ -123,7 +124,7 @@ const DropdownSelect = ({
   };
 
   const renderItem = ({ item }) => (
-    <DropdownRow name={name} item={item} updateForm={updateForm} />
+    <DropdownRow inputName={inputName} item={item} updateForm={updateForm} />
   );
 
   return (
@@ -140,7 +141,7 @@ const DropdownSelect = ({
         value={value}
         activeOutlineColor="#fca311"
         onChangeText={(text) =>
-          handeChange(
+          onInputChange(
             keyboardType === "number-pad" ? text.replace(/\D/g, "") : text
           )
         }

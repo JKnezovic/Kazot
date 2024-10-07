@@ -61,7 +61,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           label={"Contact Number"}
           handleChange={handleChange}
           clients={allClients}
-          inputName={"contact_number"}
+          inputName={"contact"}
           setOrderState={setOrderState}
           keyboardType={"number-pad"}
           setOpenMenu={setOpenMenu}
@@ -74,7 +74,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           label={"Name"}
           handleChange={handleChange}
           clients={allClients}
-          inputName={"first_name"}
+          inputName={"name"}
           setOrderState={setOrderState}
           setOpenMenu={setOpenMenu}
           isOpenMenu={openMenu}

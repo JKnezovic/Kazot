@@ -8,7 +8,7 @@ const DropdownRow = ({ item, inputName, updateForm }) => {
    * Render row text based on which dropdown input is being used
    */
   const textContent = useMemo(() => {
-    if (inputName === "first_name")
+    if (inputName === "name")
       return item.name + " " + item.surname + "   " + item.contact;
     if (inputName === "surname")
       return item.surname + " " + item.name + "   " + item.contact;
