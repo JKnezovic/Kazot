@@ -3,6 +3,7 @@ import { Alert, TextInput, KeyboardAvoidingView } from "react-native";
 import Parse from "parse/react-native";
 import Styles from "../../Styles";
 import Button from "./Button";
+import { Colors } from "../../utils/constants";
 
 export const UserLogin = (props) => {
   const [username, setUsername] = useState("");
@@ -48,7 +49,11 @@ export const UserLogin = (props) => {
         autoCapitalize={"none"}
         onChangeText={(text) => setPassword(text)}
       />
-      <Button title={"Sign in"} onPress={() => doUserLogin()} />
+      <Button
+        style={{ backgroundColor: Colors.DARK_GREY }}
+        title={"Sign in"}
+        onPress={() => doUserLogin()}
+      />
     </KeyboardAvoidingView>
   );
 };
