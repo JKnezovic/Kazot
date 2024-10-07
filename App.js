@@ -9,7 +9,7 @@ import MainScreen from "./components/MainScreen/MainScreen";
 import NewOrderMainScreen from "./components/NewOrder/NewOrderMainScreen.js";
 import ClientDetailsView from "./components/clients/client-details/ClientDetailsView.js";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { isSmartPhoneBasedOnRatio } from "./Scaling";
+import { isSmartPhoneBasedOnRatio, moderateScale } from "./Scaling";
 import { APPLICATION_ID, JAVASCRIPT_KEY } from "./auth_keys.js";
 import { StatusBar } from "expo-status-bar";
 
@@ -19,6 +19,7 @@ import {
   Button,
 } from "react-native-paper";
 import { Colors } from "./utils/constants";
+import { StyleSheet } from "react-native";
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize(APPLICATION_ID, JAVASCRIPT_KEY);
@@ -59,7 +60,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        <Stack.Navigator initialRouteName="Main">
+        <Stack.Navigator
+          initialRouteName="Main"
+          screenOptions={styles.navigator}
+        >
           {!isSignedIn ? (
             <Stack.Screen name="Login" options={{ headerShown: false }}>
               {(props) => <LoginScreen {...props} setUser={setUser} />}
@@ -101,5 +105,13 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  navigator: {
+    headerStyle: {
+      height: moderateScale(50),
+    },
+  },
+});
 
 export default App;

@@ -8,6 +8,8 @@ export default function clientTransformer({ client = new Parse.Object() }) {
     contact: client.get("contact") || "",
     email: client.get("email") || "",
     initials: getInitials(client),
+    isFavorite: client.get("isFavorite") || false,
+    isFlagged: client.get("isFlagged") || false,
   };
 }
 

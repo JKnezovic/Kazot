@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
-import { Avatar, FAB, ActivityIndicator } from "react-native-paper";
+import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
 import { Colors } from "../../../utils/constants";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
@@ -8,11 +8,27 @@ import ServicesHistory from "./ServicesHistory";
 import { moderateScale } from "../../../Scaling";
 import { useNavigation } from "@react-navigation/native";
 import useGetClient from "./useGetClient";
+import useUpdateClient from "./useUpdateClient";
+import HeaderRight from "./header-right/HeaderRight";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
 
-  const { client, getClient, isLoading, isLoaded } = useGetClient();
+  const { client, getClient, setClient, isLoading, isLoaded } = useGetClient();
+  const {
+    toastMessage,
+    updateClient,
+    reset: resetUpdateClient,
+    isSuccess: isUpdateSuccess,
+    isError: isUpdateError,
+  } = useUpdateClient({ setClient });
+  const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
+
+  useEffect(() => {
+    if (isUpdateSuccess || isUpdateError) {
+      setIsSnackbarVisible(true);
+    }
+  }, [isUpdateSuccess, isUpdateError]);
 
   useEffect(() => {
     if (id) getClient({ clientId: id });
@@ -25,6 +41,24 @@ const ClientDetails = ({ id = null }) => {
   };
   const goToEmail = async () => {
     await Linking.openURL(`mailto:${client.email}`);
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderRight
+          clientId={id}
+          isFavorite={client.isFavorite}
+          isFlagged={client.isFlagged}
+          updateClient={updateClient}
+        />
+      ),
+    });
+  }, [navigation, client]);
+
+  const dismissSnackbar = () => {
+    setIsSnackbarVisible(false);
+    resetUpdateClient();
   };
 
   return isLoading && !isLoaded ? (
@@ -78,11 +112,23 @@ const ClientDetails = ({ id = null }) => {
         style={styles.FAB}
         onPress={() => navigation.navigate("New Order", { client: client })}
       />
+
+      <Snackbar
+        visible={isSnackbarVisible}
+        onDismiss={dismissSnackbar}
+        duration={1000}
+      >
+        {toastMessage}
+      </Snackbar>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  headerRight: {
+    display: "flex",
+    flexDirection: "row",
+  },
   container: {
     alignItems: "center",
     padding: 10,
