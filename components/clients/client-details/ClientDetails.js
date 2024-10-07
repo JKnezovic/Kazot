@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
+import { StyleSheet, ScrollView, View, Text } from "react-native";
 import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
 import { Colors } from "../../../utils/constants";
-import { FontAwesome, Feather } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
 import { moderateScale } from "../../../Scaling";
@@ -11,6 +10,8 @@ import useGetClient from "./useGetClient";
 import useUpdateClient from "./useUpdateClient";
 import HeaderRight from "./header-right/HeaderRight";
 import useHasWhatsapp from "./useHasWhatsapp";
+import ContactLables from "./ContactLables";
+import ContactIcons from "./contact-icons/ContactIcons";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
@@ -36,21 +37,6 @@ const ClientDetails = ({ id = null }) => {
   }, [id]);
 
   const hasWhatsapp = useHasWhatsapp(client?.contact);
-
-  // open contact
-  // will not work on a simulator
-  const goToCall = async () => {
-    await Linking.openURL(`tel:${client.contact}`);
-  };
-  const goToEmail = async () => {
-    await Linking.openURL(`mailto:${client.email}`);
-  };
-  const goToSMS = async () => {
-    await Linking.openURL(`sms:${client.contact}`);
-  };
-  const goToWhatsapp = async () => {
-    await Linking.openURL(`whatsapp://send?phone=${client.contact}`);
-  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -88,49 +74,8 @@ const ClientDetails = ({ id = null }) => {
           <Text style={[styles.title]}>
             {client.name} {client.surname}
           </Text>
-          <View style={styles.row}>
-            <View>
-              <Text style={styles.lightfont}>Mobile </Text>
-              {client.email && <Text style={styles.lightfont}>Email </Text>}
-            </View>
-            <View>
-              <Text selectable={true} style={styles.contactText}>
-                {client.contact}
-              </Text>
-              {client.email && (
-                <Text selectable={true} style={styles.contactText}>
-                  {client.email}
-                </Text>
-              )}
-            </View>
-          </View>
-
-          <View style={[styles.row, styles.contact]}>
-            <View style={styles.row}>
-              <Text onPress={goToCall} style={styles.contactText}>
-                <Feather name="phone-call" size={30} color={colors.AMAZON} />
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text onPress={goToSMS} style={styles.contactText}>
-                <Feather name="message-circle" size={30} color={colors.BABY_BLUE} />
-              </Text>
-            </View>
-            {client.email && (
-              <View style={styles.row}>
-                <Text onPress={goToEmail} style={styles.contactText}>
-                  <Feather name="mail" size={30} color={colors.ORANGE_WEB} />
-                </Text>
-              </View>
-            )}
-            {hasWhatsapp && (
-              <View style={styles.row}>
-                <Text onPress={goToWhatsapp} style={styles.contactText}>
-                  <FontAwesome name="whatsapp" size={30} color={colors.WHATSAPP_GREEN} />
-                </Text>
-              </View>
-            )}
-          </View>
+          <ContactLables client={client} />
+          <ContactIcons hasWhatsapp={hasWhatsapp} client={client} />
         </View>
         <Vehicles clientId={id} />
         <ServicesHistory clientId={id} />
@@ -183,12 +128,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
   },
-  info: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    width: "100%",
-  },
   initials: {
     backgroundColor: Colors.ORANGE_WEB,
     marginVertical: 20,
@@ -206,13 +145,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
     paddingVertical: moderateScale(8),
   },
-  contactText: {
-    color: Colors.OXFORD_BLUE,
-    fontSize: 15,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
-  },
   FAB: {
     backgroundColor: Colors.ORANGE_WEB,
     position: "absolute",
@@ -221,9 +153,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 50,
-  },
-  lightfont: {
-    color: "gray",
   },
 });
 
