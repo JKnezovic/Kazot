@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Image,
-  View,
-  Pressable,
-  StyleSheet,
-  FlatList,
-  Modal,
-} from "react-native";
+import { Image, View, Pressable, StyleSheet, FlatList, Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FAB, Dialog, Button } from "react-native-paper";
@@ -129,40 +122,18 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
             justifyContent: "space-around",
           }}
         >
-          <Button
-            textColor="#14213D"
-            icon="camera"
-            onPress={() => captureImage()}
-          >
+          <Button textColor="#14213D" icon="camera" onPress={() => captureImage()}>
             Capture Photo
           </Button>
-          <Button
-            textColor="#14213D"
-            icon="folder-image"
-            onPress={() => pickImage()}
-          >
+          <Button textColor="#14213D" icon="folder-image" onPress={() => pickImage()}>
             Upload
           </Button>
         </Dialog.Content>
       </Dialog>
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setIsVisible(false)}
-      >
+      <Modal visible={visible} transparent={true} onRequestClose={() => setIsVisible(false)}>
         <ImageViewer
-          renderHeader={() => (
-            <Pressable
-              alignSelf="flex-end"
-              right={8}
-              top={15}
-              zIndex={1}
-              position="absolute"
-              onPress={() => setIsVisible(false)}
-            >
-              <MaterialIcons name="highlight-remove" size={28} color="white" />
-            </Pressable>
-          )}
+          enableSwipeDown={true}
+          onSwipeDown={() => setIsVisible(false)}
           saveToLocalByLongPress={false}
           imageUrls={images}
           index={index}

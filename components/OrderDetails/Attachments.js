@@ -175,10 +175,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
                     overflow: "hidden",
                   }}
                 />
-                <Image
-                  source={{ uri: item.get("attachment").url() }}
-                  style={styles.imageItem}
-                />
+                <Image source={{ uri: item.get("attachment").url() }} style={styles.imageItem} />
               </Pressable>
             ))}
           </View>
@@ -215,18 +212,10 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
             justifyContent: "space-around",
           }}
         >
-          <Button
-            textColor="#14213D"
-            icon="camera"
-            onPress={() => captureImage()}
-          >
+          <Button textColor="#14213D" icon="camera" onPress={() => captureImage()}>
             Capture Photo
           </Button>
-          <Button
-            textColor="#14213D"
-            icon="folder-image"
-            onPress={() => pickImage()}
-          >
+          <Button textColor="#14213D" icon="folder-image" onPress={() => pickImage()}>
             Upload
           </Button>
         </Dialog.Content>
@@ -238,10 +227,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
       >
         <Dialog.Title>Delete Image</Dialog.Title>
         <Dialog.Actions>
-          <Button
-            textColor={Colors.OXFORD_BLUE}
-            onPress={() => setVisibleDelete(false)}
-          >
+          <Button textColor={Colors.OXFORD_BLUE} onPress={() => setVisibleDelete(false)}>
             Cancel
           </Button>
           <Button textColor={Colors.ANTIQUE_RUBY} onPress={() => removeImage()}>
@@ -249,24 +235,10 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
           </Button>
         </Dialog.Actions>
       </Dialog>
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setIsVisible(false)}
-      >
+      <Modal visible={visible} transparent={true} onRequestClose={() => setIsVisible(false)}>
         <ImageViewer
-          renderHeader={() => (
-            <Pressable
-              alignSelf="flex-end"
-              right={8}
-              top={15}
-              zIndex={1}
-              position="absolute"
-              onPress={() => setIsVisible(false)}
-            >
-              <MaterialIcons name="highlight-remove" size={28} color="white" />
-            </Pressable>
-          )}
+          enableSwipeDown={true}
+          onSwipeDown={() => setIsVisible(false)}
           saveToLocalByLongPress={false}
           imageUrls={images}
           index={index}
