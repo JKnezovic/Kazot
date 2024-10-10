@@ -26,7 +26,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
       allowsMultipleSelection: true,
       base64: true,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       if (Array.isArray(result.selected)) {
         let arrayURL = result.selected.map((v) => ({ ...v, url: v.uri }));
         setImages((array) => [...array, ...arrayURL]);
@@ -47,7 +47,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         quality: 0.4,
         base64: true,
       });
-      if (!result.cancelled) {
+      if (!result.canceled) {
         result.url = result.uri;
         setImages((array) => [...array, result]);
       }

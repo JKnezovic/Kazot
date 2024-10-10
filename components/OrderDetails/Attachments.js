@@ -106,7 +106,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
       allowsMultipleSelection: true,
       base64: true,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       if (Array.isArray(result.selected)) UploadAttachments(result.selected);
       else UploadAttachments([result]);
     }
@@ -122,7 +122,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
         quality: 0.4,
         base64: true,
       });
-      if (!result.cancelled) {
+      if (!result.canceled) {
         UploadAttachments([result]);
       }
     }
