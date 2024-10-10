@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Image, View, Pressable, StyleSheet, FlatList, Modal } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FAB, Dialog, Button } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import ImageViewer from "react-native-image-zoom-viewer";
+import useImagePicker from "../../utils/useImagePicker";
+import { Colors } from "../../utils/constants";
 
 const UploadImageForm = ({ FadeIn, images, setImages }) => {
   const [visible, setIsVisible] = useState(false);
@@ -12,46 +13,24 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
   const hideDialog = () => setVisibleDialog(false);
   const [index, setIndex] = useState(0);
 
+  const { pickImage, captureImage } = useImagePicker();
+
   useEffect(() => {
     FadeIn();
   }, []);
 
-  const pickImage = async () => {
+  const handlePickImage = () => {
     hideDialog();
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      aspect: [4, 3],
-      quality: 0.4,
-      allowsMultipleSelection: true,
-      base64: true,
+    pickImage((selectedImages) => {
+      setImages((array) => [...array, ...selectedImages]);
     });
-    if (!result.canceled) {
-      if (Array.isArray(result.selected)) {
-        let arrayURL = result.selected.map((v) => ({ ...v, url: v.uri }));
-        setImages((array) => [...array, ...arrayURL]);
-      } else {
-        result.url = result.uri;
-        setImages((array) => [...array, result]);
-      }
-    }
   };
 
-  const captureImage = async () => {
+  const handleCaptureImage = () => {
     hideDialog();
-    let status = await ImagePicker.requestCameraPermissionsAsync();
-    if (status) {
-      let result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 3],
-        quality: 0.4,
-        base64: true,
-      });
-      if (!result.canceled) {
-        result.url = result.uri;
-        setImages((array) => [...array, result]);
-      }
-    }
+    captureImage((capturedImage) => {
+      setImages((array) => [...array, ...capturedImage]);
+    });
   };
 
   const removeImage = (uri) => {
@@ -68,9 +47,9 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         icon="upload"
         label="Upload images"
         mode="flat"
-        color="#14213D"
+        color={Colors.OXFORD_BLUE}
         style={{
-          backgroundColor: "#E5E5E5",
+          backgroundColor: Colors.PLATINUM,
           marginVertical: "8%",
           width: moderateScale(300),
           alignSelf: "center",
@@ -87,7 +66,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
             <MaterialIcons
               name="highlight-remove"
               size={24}
-              color="#fca311"
+              color={Colors.ORANGE_WEB}
               onPress={() => removeImage(item.uri)}
               style={{
                 position: "absolute",
@@ -109,7 +88,7 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
         visible={visibleDialog}
         onDismiss={hideDialog}
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: Colors.WHITE,
           width: moderateScale(300),
           alignSelf: "center",
         }}
@@ -122,17 +101,17 @@ const UploadImageForm = ({ FadeIn, images, setImages }) => {
             justifyContent: "space-around",
           }}
         >
-          <Button textColor="#14213D" icon="camera" onPress={() => captureImage()}>
+          <Button textColor={Colors.OXFORD_BLUE} icon="camera" onPress={handleCaptureImage}>
             Capture Photo
           </Button>
-          <Button textColor="#14213D" icon="folder-image" onPress={() => pickImage()}>
+          <Button textColor={Colors.OXFORD_BLUE} icon="folder-image" onPress={handlePickImage}>
             Upload
           </Button>
         </Dialog.Content>
       </Dialog>
-      <Modal visible={visible} transparent={true} onRequestClose={() => setIsVisible(false)}>
+      <Modal visible={visible} transparent onRequestClose={() => setIsVisible(false)}>
         <ImageViewer
-          enableSwipeDown={true}
+          enableSwipeDown
           onSwipeDown={() => setIsVisible(false)}
           saveToLocalByLongPress={false}
           imageUrls={images}
