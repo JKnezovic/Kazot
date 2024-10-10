@@ -14,7 +14,9 @@ export const handleContactAction = async (type, client) => {
       await Linking.openURL(`sms:${contact}`);
       break;
     case "whatsapp":
-      await Linking.openURL(`whatsapp://send?phone=${contact}`);
+      //whatsapp only accepts country code starting with '+' not '00'
+      const formattedNumber = contact.startsWith("00") ? contact.replace(/^00/, "+") : contact;
+      await Linking.openURL(`whatsapp://send?phone=${formattedNumber}`);
       break;
     default:
       console.log("Invalid action type");
