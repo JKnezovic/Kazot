@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { Pressable, View, Text, Keyboard, StyleSheet } from "react-native";
+import { View, Keyboard, StyleSheet } from "react-native";
 import { Divider, TextInput } from "react-native-paper";
-import Styles from "./Styles";
-import { moderateScale } from "../../Scaling";
+import Styles from "../Styles";
+import { moderateScale } from "../../../Scaling";
 import { FlashList } from "@shopify/flash-list";
+import DropdownRow from "./dropdown-row/DropdownRow";
 
 const DropdownSelect = ({
   label,
   value,
   handleChange,
   clients,
-  name,
+  inputName,
   setOrderState,
   keyboardType,
   refInput,
@@ -46,15 +47,15 @@ const DropdownSelect = ({
     setOrderState((prevState) => ({ ...prevState, ...object }));
   };
 
-  const handeChange = (text) => {
-    handleChange(name, text);
+  const onInputChange = (text) => {
+    handleChange(inputName, text);
     if (text !== value) setDebouncedTerm(text);
   };
 
   const openMenu = (text) => {
     if (text.length >= 3) {
       var result = [];
-      switch (name) {
+      switch (inputName) {
         case "name":
           result = clients.filter((x) =>
             `${x.name.toLowerCase()} ${x.surname.toLowerCase()}`
@@ -89,7 +90,7 @@ const DropdownSelect = ({
       }
 
       if (result.length > 0) {
-        switch (name) {
+        switch (inputName) {
           case "surname":
             result.sort((a, b) =>
               a.surname + a.name > b.surname + b.name
@@ -122,18 +123,7 @@ const DropdownSelect = ({
   };
 
   const renderItem = ({ item }) => (
-    <Pressable
-      onPress={() => updateForm(item)}
-      style={{ justifyContent: "center", height: 40 }}
-    >
-      <Text style={{ marginLeft: 15 }}>
-        {name === "name"
-          ? item.name + " " + item.surname + "   " + item.contact
-          : name === "surname"
-          ? item.surname + " " + item.name + "   " + item.contact
-          : item.contact + "  " + item.name + " " + item.surname}
-      </Text>
-    </Pressable>
+    <DropdownRow inputName={inputName} item={item} updateForm={updateForm} />
   );
 
   return (
@@ -150,7 +140,7 @@ const DropdownSelect = ({
         value={value}
         activeOutlineColor="#fca311"
         onChangeText={(text) =>
-          handeChange(
+          onInputChange(
             keyboardType === "number-pad" ? text.replace(/\D/g, "") : text
           )
         }

@@ -89,10 +89,7 @@ const AnimatedMultistep = ({ steps, setSnackbar, navigation, client }) => {
           await attachments.save();
           if (index === array.length - 1) resolve();
         } catch (error) {
-          setSnackbar(
-            true,
-            "Opps, something went wrong when uploading images."
-          );
+          setSnackbar(true, "Image upload unsuccessful.");
         }
       });
     });

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { ScrollView, TouchableWithoutFeedback } from "react-native";
 import { TextInput } from "react-native-paper";
 import Styles from "./Styles";
-import DropdownSelect from "./DropdownSelect";
+import DropdownSelect from "./dropdown-select/DropdownSelect";
 import Parse from "parse/react-native";
 import clientsTransformer from "../clients/clientsTransformer";
 import DatePickers from "./Calendars/DatePickers";
@@ -61,7 +61,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           label={"Contact Number"}
           handleChange={handleChange}
           clients={allClients}
-          name={"contact"}
+          inputName={"contact"}
           setOrderState={setOrderState}
           keyboardType={"number-pad"}
           setOpenMenu={setOpenMenu}
@@ -74,7 +74,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           label={"Name"}
           handleChange={handleChange}
           clients={allClients}
-          name={"name"}
+          inputName={"name"}
           setOrderState={setOrderState}
           setOpenMenu={setOpenMenu}
           isOpenMenu={openMenu}
@@ -86,7 +86,7 @@ const ClientForm = ({ orderState, setOrderState, FadeIn }) => {
           label={"Surname"}
           handleChange={handleChange}
           clients={allClients}
-          name={"surname"}
+          inputName={"surname"}
           setOrderState={setOrderState}
           setOpenMenu={setOpenMenu}
           isOpenMenu={openMenu}
