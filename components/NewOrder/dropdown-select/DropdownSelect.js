@@ -48,7 +48,6 @@ const DropdownSelect = ({
   };
 
   const onInputChange = (text) => {
-    console.log(text, inputName);
     handleChange(inputName, text);
     if (text !== value) setDebouncedTerm(text);
   };
