@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, ScrollView, View, Text, Linking } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import { Avatar, FAB, ActivityIndicator, Snackbar } from "react-native-paper";
 import { Colors } from "../../../utils/constants";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Vehicles from "./Vehicles";
 import ServicesHistory from "./ServicesHistory";
-import { moderateScale } from "../../../Scaling";
 import { useNavigation } from "@react-navigation/native";
 import useGetClient from "./useGetClient";
 import useUpdateClient from "./useUpdateClient";
 import HeaderRight from "./header-right/HeaderRight";
+import useHasWhatsapp from "./useHasWhatsapp";
+import ContactLabels from "./ContactLabels";
+import ContactIcons from "./contact-icons/ContactIcons";
+import styles from "../styles";
 
 const ClientDetails = ({ id = null }) => {
   const navigation = useNavigation();
@@ -34,14 +36,7 @@ const ClientDetails = ({ id = null }) => {
     if (id) getClient({ clientId: id });
   }, [id]);
 
-  // open contact
-  // will not work on a simulator
-  const goToCall = async () => {
-    await Linking.openURL(`tel:${client.contact}`);
-  };
-  const goToEmail = async () => {
-    await Linking.openURL(`mailto:${client.email}`);
-  };
+  const hasWhatsapp = useHasWhatsapp(client?.contact);
 
   useEffect(() => {
     navigation.setOptions({
@@ -79,27 +74,8 @@ const ClientDetails = ({ id = null }) => {
           <Text style={[styles.title]}>
             {client.name} {client.surname}
           </Text>
-
-          <View style={[styles.row, styles.contact]}>
-            <View style={[styles.row, styles.contactWrap]}>
-              <Ionicons name="call" size={20} color={Colors.OXFORD_BLUE} />
-              <Text onPress={goToCall} style={styles.contactText}>
-                {client.contact}
-              </Text>
-            </View>
-            {client.email && (
-              <View style={[styles.row, styles.contactWrap]}>
-                <MaterialIcons
-                  name="email"
-                  size={20}
-                  color={Colors.OXFORD_BLUE}
-                />
-                <Text onPress={goToEmail} style={styles.contactText}>
-                  {client.email}
-                </Text>
-              </View>
-            )}
-          </View>
+          <ContactLabels client={client} />
+          <ContactIcons hasWhatsapp={hasWhatsapp} client={client} />
         </View>
         <Vehicles clientId={id} />
         <ServicesHistory clientId={id} />
@@ -113,90 +89,11 @@ const ClientDetails = ({ id = null }) => {
         onPress={() => navigation.navigate("New Order", { client: client })}
       />
 
-      <Snackbar
-        visible={isSnackbarVisible}
-        onDismiss={dismissSnackbar}
-        duration={1000}
-      >
+      <Snackbar visible={isSnackbarVisible} onDismiss={dismissSnackbar} duration={1000}>
         {toastMessage}
       </Snackbar>
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  headerRight: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  container: {
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: Colors.PLATINUM,
-  },
-  heading: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    backgroundColor: Colors.WHITE,
-    paddingHorizontal: 5,
-    paddingVertical: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 30,
-  },
-  info: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    width: "100%",
-  },
-  initials: {
-    backgroundColor: Colors.ORANGE_WEB,
-    marginVertical: 20,
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  contact: {
-    justifyContent: "space-around",
-    flexWrap: "wrap",
-    width: "100%",
-    marginTop: 10,
-    paddingHorizontal: moderateScale(5),
-  },
-  contactText: {
-    color: Colors.OXFORD_BLUE,
-    fontSize: 15,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
-  },
-  FAB: {
-    backgroundColor: Colors.ORANGE_WEB,
-    position: "absolute",
-    bottom: "3%",
-    right: "3%",
-  },
-  contactWrap: {
-    paddingVertical: moderateScale(8),
-  },
-  label: {
-    fontSize: 50,
-  },
-});
 
 export default ClientDetails;
