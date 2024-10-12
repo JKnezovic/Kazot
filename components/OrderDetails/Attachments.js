@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Image, View, Pressable, StyleSheet, Modal } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FAB, Dialog, Button, List } from "react-native-paper";
 import { moderateScale } from "../../Scaling";
 import Parse from "parse/react-native.js";
 import { Colors } from "../../utils/constants";
 import ImageViewer from "react-native-image-zoom-viewer";
+import useImagePicker from "../../utils/useImagePicker";
+import useImageUpload from "../../utils/useImageUpload";
 
 const Attachments = ({ service, setSnackbar, open, setLoading }) => {
   const [expanded, setExpanded] = useState(open);
@@ -36,27 +37,17 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
       return false;
     }
   };
+  const { uploadImages, removeImage, isLoading } = useImageUpload(
+    service,
+    setSnackbar,
+    getAttachments
+  );
+
+  const { pickImage, captureImage } = useImagePicker();
 
   const createImageArray = (Attachments) => {
     var array = Attachments.map((x) => ({ url: x.get("attachment").url() }));
     setImages(array);
-  };
-
-  const removeImage = async () => {
-    setLoading(true);
-    try {
-      const image_id = deleteItem;
-      const params = { image_id };
-      const result = await Parse.Cloud.run("deleteGalleryPicture", params);
-      setVisibleDelete(false);
-      setSnackbar(true, "Image deleted");
-      setLoading(false);
-      getAttachments();
-    } catch (error) {
-      setLoading(false);
-      setSnackbar(true, "Delete Error: " + error);
-      console.log(error);
-    }
   };
 
   const prepareImageDelete = (id) => {
@@ -64,74 +55,34 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
     setVisibleDelete(true);
   };
 
-  const UploadAttachments = async (images) => {
-    setLoading(true);
-    // 1. Create a file
-    var bar = new Promise((resolve, reject) => {
-      images.forEach(async (image, index, array) => {
-        const { base64 } = image;
-        const filename = "testing" + index;
-        const parseFile = new Parse.File(filename, { base64 });
-        // 2. Save the file
-        try {
-          const responseFile = await parseFile.save();
-          const Attachments = Parse.Object.extend("Attachments");
-          const attachments = new Attachments();
-          attachments.set("attachment", responseFile);
-          const serviceObject = new Parse.Object("Services", {
-            id: service.serviceOrderId,
-          });
-          attachments.set("service_fkey", serviceObject);
-          await attachments.save();
-          if (index === array.length - 1) resolve();
-        } catch (error) {
-          setSnackbar(true, "Oops, something went wrong!");
-        }
-      });
-    });
-    bar.then(() => {
-      setSnackbar(true, "Images saved");
-      getAttachments();
-      setLoading(false);
-    });
-  };
-
-  const pickImage = async () => {
-    hideDialog();
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      aspect: [4, 3],
-      quality: 0.4,
-      allowsMultipleSelection: true,
-      base64: true,
-    });
-    if (!result.cancelled) {
-      if (Array.isArray(result.selected)) UploadAttachments(result.selected);
-      else UploadAttachments([result]);
-    }
-  };
-
-  const captureImage = async () => {
-    hideDialog();
-    let status = await ImagePicker.requestCameraPermissionsAsync();
-    if (status) {
-      let result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 3],
-        quality: 0.4,
-        base64: true,
-      });
-      if (!result.cancelled) {
-        UploadAttachments([result]);
-      }
-    }
+  const handleDeleteImage = async () => {
+    await removeImage(deleteItem);
+    setVisibleDelete(false);
   };
 
   const prepareImageView = (index) => {
     setIsVisible(true);
     setIndex(index);
   };
+
+  const handlePickImage = async () => {
+    hideDialog();
+    pickImage(async (selectedImages) => {
+      await uploadImages(selectedImages);
+    });
+  };
+
+  const handleCaptureImage = async () => {
+    hideDialog();
+    captureImage(async (capturedImages) => {
+      await uploadImages(capturedImages);
+    });
+  };
+
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading]);
+
   useEffect(() => {
     getAttachments();
   }, []);
@@ -140,9 +91,9 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
     <>
       <List.Accordion
         style={{ backgroundColor: "rgba(229, 229, 229, 0.4)" }}
-        titleStyle={{ color: "#14213D" }}
+        titleStyle={{ color: Colors.OXFORD_BLUE }}
         title={"Attachments"}
-        left={(props) => <List.Icon {...props} icon="image" color="#fca311" />}
+        left={(props) => <List.Icon {...props} icon="image" color={Colors.ORANGE_WEB} />}
         expanded={expanded}
         onPress={handlePress}
       >
@@ -163,7 +114,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
                 <MaterialIcons
                   name="highlight-remove"
                   size={24}
-                  color="#fca311"
+                  color={Colors.ORANGE_WEB}
                   onPress={() => prepareImageDelete(item.id)}
                   style={{
                     position: "absolute",
@@ -175,10 +126,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
                     overflow: "hidden",
                   }}
                 />
-                <Image
-                  source={{ uri: item.get("attachment").url() }}
-                  style={styles.imageItem}
-                />
+                <Image source={{ uri: item.get("attachment").url() }} style={styles.imageItem} />
               </Pressable>
             ))}
           </View>
@@ -187,9 +135,9 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
           icon="upload"
           label="Upload images"
           mode="elevated"
-          color="#14213D"
+          color={Colors.OXFORD_BLUE}
           style={{
-            backgroundColor: "#E5E5E5",
+            backgroundColor: Colors.PLATINUM,
             marginVertical: "8%",
             width: moderateScale(250),
             alignSelf: "center",
@@ -202,7 +150,7 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
         visible={visibleDialog}
         onDismiss={hideDialog}
         style={{
-          backgroundColor: "#E5E5E5",
+          backgroundColor: Colors.PLATINUM,
           width: moderateScale(300),
           alignSelf: "center",
         }}
@@ -215,58 +163,33 @@ const Attachments = ({ service, setSnackbar, open, setLoading }) => {
             justifyContent: "space-around",
           }}
         >
-          <Button
-            textColor="#14213D"
-            icon="camera"
-            onPress={() => captureImage()}
-          >
+          <Button textColor={Colors.OXFORD_BLUE} icon="camera" onPress={handleCaptureImage}>
             Capture Photo
           </Button>
-          <Button
-            textColor="#14213D"
-            icon="folder-image"
-            onPress={() => pickImage()}
-          >
+          <Button textColor={Colors.OXFORD_BLUE} icon="folder-image" onPress={handlePickImage}>
             Upload
           </Button>
         </Dialog.Content>
       </Dialog>
       <Dialog
-        style={{ backgroundColor: "#FFFFFF" }}
+        style={{ backgroundColor: Colors.WHITE }}
         visible={visibleDelete}
         onDismiss={() => setVisibleDelete(false)}
       >
         <Dialog.Title>Delete Image</Dialog.Title>
         <Dialog.Actions>
-          <Button
-            textColor={Colors.OXFORD_BLUE}
-            onPress={() => setVisibleDelete(false)}
-          >
+          <Button textColor={Colors.OXFORD_BLUE} onPress={() => setVisibleDelete(false)}>
             Cancel
           </Button>
-          <Button textColor={Colors.ANTIQUE_RUBY} onPress={() => removeImage()}>
+          <Button textColor={Colors.ANTIQUE_RUBY} onPress={handleDeleteImage}>
             Delete
           </Button>
         </Dialog.Actions>
       </Dialog>
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setIsVisible(false)}
-      >
+      <Modal visible={visible} transparent={true} onRequestClose={() => setIsVisible(false)}>
         <ImageViewer
-          renderHeader={() => (
-            <Pressable
-              alignSelf="flex-end"
-              right={8}
-              top={15}
-              zIndex={1}
-              position="absolute"
-              onPress={() => setIsVisible(false)}
-            >
-              <MaterialIcons name="highlight-remove" size={28} color="white" />
-            </Pressable>
-          )}
+          enableSwipeDown={true}
+          onSwipeDown={() => setIsVisible(false)}
           saveToLocalByLongPress={false}
           imageUrls={images}
           index={index}

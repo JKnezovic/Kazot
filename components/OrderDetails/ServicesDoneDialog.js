@@ -1,6 +1,5 @@
 import { Dialog, Button, TextInput } from "react-native-paper";
 import { Colors } from "../../utils/constants";
-import { moderateScale } from "../../Scaling";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 
@@ -29,17 +28,11 @@ const ServicesDoneDialog = ({
         />
       </Dialog.Content>
       <Dialog.Actions>
-        <Button
-          textColor={Colors.OXFORD_BLUE}
-          onPress={() => setVisible(false)}
-        >
+        <Button textColor={Colors.OXFORD_BLUE} onPress={() => setVisible(false)}>
           Cancel
         </Button>
         {serviceDescription ? (
-          <Button
-            textColor={Colors.ANTIQUE_RUBY}
-            onPress={() => setIsDelete(true)}
-          >
+          <Button textColor={Colors.ANTIQUE_RUBY} onPress={() => setIsDelete(true)}>
             Delete
           </Button>
         ) : null}
@@ -60,22 +53,9 @@ const ServicesDoneDialog = ({
 };
 
 const styles = StyleSheet.create({
-  dialog: {
-    backgroundColor: "#FFFFFF",
-    width: moderateScale(330),
-    alignSelf: "center",
-  },
   textInput: {
     marginVertical: 5,
     backgroundColor: "#FFFFFF",
-  },
-  downPush: {
-    backgroundColor: "#FFFFFF",
-  },
-  customCell: {
-    width: "50%",
-    marginVertical: 8,
-    justifyContent: "center",
   },
 });
 
